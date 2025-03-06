@@ -3,7 +3,9 @@ using UnityEngine;
 
 public interface IInput
 {
-    public event Action<Vector2> OnMovement;
+    public event Action<Vector2> OnDirection;
     public event Action<Vector2> OnAim;
-    public event Action OnJump;
+    public event Action OnSetAim;
+    public event Action OnSpace;
+    public event Action OnShoot;
 }

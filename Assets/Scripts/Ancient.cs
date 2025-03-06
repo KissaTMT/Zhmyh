@@ -10,17 +10,17 @@ public class Ancient : MonoBehaviour
     [SerializeField] private float _speed;
 
     private Transform _transform;
-    private Rigidbody _rigidbody;
+    private Rigidbody2D _rigidbody;
 
 
-    private MovementController _movementController;
+    private NPhMovementController _movementController;
 
     private Vector2 _currentDirection;
     public Ancient Init()
     {
         _transform = GetComponent<Transform>();
-        _rigidbody = GetComponent<Rigidbody>();
-        _movementController = new MovementController(_transform, _rigidbody, _speed);
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _movementController = new NPhMovementController(_transform, _speed);
         return this;
     }
     public void Move()

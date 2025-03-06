@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraMover : MonoBehaviour
 {
     [SerializeField] private Transform _target;
-    [SerializeField] private Vector3 _offset;
+    [SerializeField] private Vector2 _offset;
     [SerializeField] private float _speed;
     private Transform _transform;
 
@@ -13,8 +13,8 @@ public class CameraMover : MonoBehaviour
     {
         _transform = GetComponent<Transform>();
     }
-    private void FixedUpdate()
+    private void Update()
     {
-        _transform.position = Vector3.Lerp(_transform.position, _target.position + _offset, _speed * Time.deltaTime);
+        _transform.position = Vector3.Lerp(_transform.position, new Vector3(_target.position.x,_target.position.y,_transform.position.z) + (Vector3)_offset, _speed * Time.deltaTime);
     }
 }

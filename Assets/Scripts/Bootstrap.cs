@@ -6,9 +6,9 @@ public class Bootstrap : MonoBehaviour
 {
     private void Awake()
     {
-        Cursor.visible = false;
+        UnityEngine.Cursor.visible = false;
 #if UNITY_EDITOR
-        Cursor.visible = true;
+        //UnityEngine.Cursor.visible = true;
 #endif
     }
 }
