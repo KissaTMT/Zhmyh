@@ -5,6 +5,7 @@ public class ClimbController
     private Transform _transform;
     private Transform _checker;
     private float _climbForce;
+    private Vector2 _surfaceDirection;
 
     public ClimbController(Transform transform, Transform checker, float climbForce)
     {
@@ -24,8 +25,10 @@ public class ClimbController
     private Vector3 CalculateDirection(Vector2 input)
     {
         var hit = OnClimb();
+        if (hit.collider == null) return -_surfaceDirection;
         var normal = hit.normal.normalized;
         var product = Vector2.Dot(input, normal);
-        return input - product * normal;
+        _surfaceDirection = input - product * normal;
+        return _surfaceDirection;
     }
 }

@@ -20,17 +20,20 @@ public class ZhmyhClimbState : State
     }
     public override void Enter()
     {
-        _animator.SetBool("IsRun", true);
+        _animator.SetBool("IsClimbing", true);
         Run = ReloadRun;
     }
 
     public override void Exit()
     {
-        _animator.SetBool("IsRun", false);
+        _animator.SetBool("IsClimbing", false);
     }
     public override void ReloadRun()
     {
         Climb();
     }
-    public void Climb() => _climbController.Climb(_direction);
+    public void Climb()
+    {
+        _climbController.Climb(_direction);
+    }
 }

@@ -32,6 +32,6 @@ public class ZhmyhAimingState : DecorateState
         var angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
         _bow.rotation = Quaternion.Euler(0f, 0f, angle);
     }
-    public void Shift() => _shifter.Shift(_aim);
+    public void Shift() => _shifter.Shift(_aim - (Vector2)_transform.position);
     public override string ToString() => $"{base.ToString()} + {baseState}";
 }

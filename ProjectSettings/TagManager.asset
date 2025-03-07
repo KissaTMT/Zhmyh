@@ -44,3 +44,6 @@ TagManager:
   - name: UI
     uniqueID: 1011701313
     locked: 0
+  - name: Overlapping light
+    uniqueID: 3852808893
+    locked: 0

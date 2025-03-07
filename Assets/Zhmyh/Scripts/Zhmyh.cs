@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Zhmyh : MonoBehaviour
 {
+    public Transform Transform => _transform;
     [SerializeField] private Transform _bow;
     [SerializeField] private Transform _arrow;
     [SerializeField] private float _movementSpeed;
@@ -63,9 +64,9 @@ public class Zhmyh : MonoBehaviour
         _movementState.SetDirection(_currentDirection);
         _climbState.SetDirection(_currentDirection);
     }
-    public void SetAim(Vector2 aim)
+    public void SetAim(Vector2 input)
     {
-        _aimDirection = aim;
+        _aimDirection = input;
         _aimingState.SetDirection(_aimDirection);
     }
     public void OnShoot()

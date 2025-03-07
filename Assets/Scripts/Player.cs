@@ -1,19 +1,21 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Zenject;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private RectTransform _aim;
+    public Transform Transform => _unit.Transform;
+
     private Zhmyh _unit;
-    private Camera _cameraMain;
+    private Cursor _cursor;
     private IInput _input;
 
-    private void Awake()
+    [Inject]
+    public void Construct(IInput input, Cursor cursor)
     {
-        _input = new InputHandler();
-
-        _unit = GetComponent<Zhmyh>().Init();
-        _cameraMain = Camera.main;
+        _input = input;
+        _cursor = cursor;
 
         _input.OnDirection += SetDirection;
         _input.OnSpace += OnSpace;
@@ -21,7 +23,10 @@ public class Player : MonoBehaviour
         _input.OnShoot += Shoot;
         _input.OnSetAim += SetAimReady;
     }
-
+    public void Init()
+    {
+        _unit = GetComponent<Zhmyh>().Init();
+    }
     private void SetAimReady() => _unit.SetAimReady();
 
     private void Shoot() => _unit.OnShoot();
@@ -35,7 +40,7 @@ public class Player : MonoBehaviour
         _input.OnSetAim -= SetAimReady;
     }
     private void SetDirection(Vector2 vector) => _unit.SetDirection(vector);
-    private void SetAim(Vector2 delta) => _unit.SetAim(_aim.transform.position);
+    private void SetAim(Vector2 delta) => _unit.SetAim(_cursor.RectTransform.position);
     private void OnSpace() => _unit.OnClimb();
     private void Update() => _unit.Run();
 }

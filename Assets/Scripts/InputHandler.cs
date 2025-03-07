@@ -10,7 +10,6 @@ public class InputHandler : IDisposable, IInput
     public event Action OnSetAim;
 
     private InputActions _inputs;
-    private float _sensivity = 4;
 
     public InputHandler()
     {
@@ -20,7 +19,7 @@ public class InputHandler : IDisposable, IInput
         _inputs.Gameplay.Direction.performed += movement => OnDirection?.Invoke(movement.ReadValue<Vector2>());
         _inputs.Gameplay.Direction.canceled += movement => OnDirection?.Invoke(Vector2.zero);
 
-        _inputs.Gameplay.Aim.performed += aim => OnAim?.Invoke(aim.ReadValue<Vector2>()* _sensivity);
+        _inputs.Gameplay.Aim.performed += aim => OnAim?.Invoke(aim.ReadValue<Vector2>());
         _inputs.Gameplay.Aim.canceled += aim => OnAim?.Invoke(Vector2.zero);
 
         _inputs.Gameplay.Space.performed += space => OnSpace?.Invoke();
