@@ -6,20 +6,18 @@ using UnityEngine;
 public class Shifter
 {
     private const int MAX_VIEW_COUNT = 6;
-
-    public event Action OnShifted;
-    public event Action OnAttached;
-    public event Action OnDetached;
     public Vector2 FacingDirection => _facingDirection;
 
     private readonly Vector2[] _directions = {Vector2.right, Vector2.left, new Vector2(1,1), new Vector2(-1,-1), new Vector2(1,-1),new Vector2(-1,1)};
 
+    private SpriteSorterRenderer _sorter;
     private Dictionary<Vector2, ShiftConfig> _views;
     private SpriteRenderer[] _nodes;
     private Vector2 _facingDirection;
     private int _order;
-    public Shifter(Transform root, ShiftConfig[] configs)
+    public Shifter(Transform root, ShiftConfig[] configs, SpriteSorterRenderer sorter)
     {
+        _sorter = sorter;
         _nodes = root.GetComponentsInChildren<SpriteRenderer>();
         _views = new Dictionary<Vector2, ShiftConfig>();
 
@@ -53,16 +51,16 @@ public class Shifter
             _nodes[i].transform.localScale = view.LocalScales[i];
             _nodes[i].transform.eulerAngles = view.EulerAngles[i];
         }
-        OnShifted?.Invoke();
+        _sorter.ReSort();
         _facingDirection = facingDirection;
     }
     public void Attach(Transform transform, Action action)
     {
-        OnAttached?.Invoke();
+        _sorter.ReSort();
     }
     public void Detach(Transform transform)
     {
-        OnDetached?.Invoke();
+        _sorter.ReSort();
     }
     private Vector2 Interpolate(Vector2 direction, Vector2[] except = null)
     {

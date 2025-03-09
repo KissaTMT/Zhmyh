@@ -19,7 +19,6 @@ public class Player : MonoBehaviour
 
         _input.OnDirection += SetDirection;
         _input.OnSpace += OnSpace;
-        _input.OnAim += SetAim;
         _input.OnShoot += Shoot;
         _input.OnSetAim += SetAimReady;
     }
@@ -35,12 +34,14 @@ public class Player : MonoBehaviour
     {
         _input.OnDirection -= SetDirection;
         _input.OnSpace -= OnSpace;
-        _input.OnAim -= SetAim;
         _input.OnShoot -= Shoot;
         _input.OnSetAim -= SetAimReady;
     }
     private void SetDirection(Vector2 vector) => _unit.SetDirection(vector);
-    private void SetAim(Vector2 delta) => _unit.SetAim(_cursor.RectTransform.position);
     private void OnSpace() => _unit.OnClimb();
-    private void Update() => _unit.Run();
+    private void Update()
+    {
+        _unit.SetAim(_cursor.RectTransform.transform.position);
+        _unit.Run();
+    }
 }

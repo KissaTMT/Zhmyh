@@ -19,7 +19,7 @@ public class Gniling : MonoBehaviour
     {
         _transform = GetComponent<Transform>();
         _movement = new NPhMovementController(_transform, _speed);
-        _shifter = new Shifter(_transform, _configs);
+        _shifter = new Shifter(_transform, _configs, GetComponentInChildren<SpriteSorterRenderer>());
         return this;
     }
     public void SetDirection(Vector2 input) => _currentDirection = input;

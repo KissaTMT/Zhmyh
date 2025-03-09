@@ -4,7 +4,7 @@ using Zenject;
 public class Cursor : MonoBehaviour
 {
     public RectTransform RectTransform => _crosshairRectTransform;
-    [SerializeField] private float _mouseSensitivity = 0.01f;
+    [SerializeField] private float _mouseSensitivity = 1;
     [SerializeField] private float _gamepadSensitivity = 100f;
     [SerializeField] private float _rotationSpeed;
     private IInput _input;

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Zhmyh : MonoBehaviour
 {
+    public Vector2 AimDirection => _aimDirection;
     public Transform Transform => _transform;
     [SerializeField] private Transform _bow;
     [SerializeField] private Transform _arrow;
@@ -21,7 +22,7 @@ public class Zhmyh : MonoBehaviour
     private Shifter _shifter;
     private StateMachine _sm;
 
-    private Vector2 _currentDirection;
+    private Vector2 _currentDirection = Vector2.zero;
     private Vector2 _aimDirection = Vector2.zero;
 
     private bool _isClimbing = false;
@@ -36,7 +37,7 @@ public class Zhmyh : MonoBehaviour
         _transform = GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<Animator>();
-        _shifter = new Shifter(_transform, _configs);
+        _shifter = new Shifter(_transform, _configs,GetComponentInChildren<SpriteSorterRenderer>());
 
         _sm = new StateMachine();
 

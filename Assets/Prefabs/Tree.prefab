@@ -92,8 +92,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8606584672838143034}
   - component: {fileID: 2701311185719650438}
-  - component: {fileID: 675938723107015909}
-  - component: {fileID: 5119525458390096982}
+  - component: {fileID: 2131134334303068584}
+  - component: {fileID: 6183942629918262368}
+  - component: {fileID: 4252094965262548712}
   m_Layer: 0
   m_Name: root
   m_TagString: Untagged
@@ -143,7 +144,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &675938723107015909
+--- !u!114 &2131134334303068584
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,10 +153,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3419337213125690137}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 985948e08ec1537449df6d09593f1675, type: 3}
+  m_Script: {fileID: 11500000, guid: 68750a4aae04bf44bbe206032f2c355b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5119525458390096982
+--- !u!114 &6183942629918262368
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,9 +165,56 @@ MonoBehaviour:
   m_GameObject: {fileID: 3419337213125690137}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4c01dc20804b6b44b5983f92a4492b8, type: 3}
+  m_Script: {fileID: 11500000, guid: 97c685aaf8df9d241a39336205ae7092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!60 &4252094965262548712
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3419337213125690137}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 8.423993, y: 6.4612103}
+      - {x: 10.583318, y: 12.795501}
+      - {x: 9.69711, y: 18.40067}
+      - {x: 6.33287, y: 21.983133}
+      - {x: 0.43464446, y: 23.68837}
+      - {x: -7.401539, y: 22.133392}
+      - {x: -11.418009, y: 14.157671}
+      - {x: -9.711254, y: 6.679746}
+      - {x: -0.01772219, y: 3.6595814}
+      - {x: -0.06621361, y: -1.0698029}
+      - {x: -0.21536231, y: -7.4484158}
+      - {x: -10.042061, y: -4.6589255}
+      - {x: -0.2348609, y: -8.793561}
+      - {x: -1.1810236, y: -13.833747}
+      - {x: -2.584888, y: -19.069748}
+      - {x: 2.6485534, y: -19.050632}
+      - {x: 1.1720116, y: -13.527027}
+      - {x: 0.5321025, y: -7.22655}
+      - {x: 0.38806826, y: -2.6244566}
+      - {x: 9.312797, y: 0.9508009}
+      - {x: 0.57909536, y: -1.5646944}
+      - {x: 0.34255773, y: 3.6123054}
 --- !u!1 &4775855831315899700
 GameObject:
   m_ObjectHideFlags: 0
