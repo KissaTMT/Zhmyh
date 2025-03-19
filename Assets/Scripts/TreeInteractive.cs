@@ -28,5 +28,6 @@ public class TreeInteractive : MonoBehaviour
     private void Awake()
     {
         _transform = GetComponent<Transform>();
+        _transform.localScale = Vector3.one * Random.Range(0.0008f,0.0012f);
     }
 }

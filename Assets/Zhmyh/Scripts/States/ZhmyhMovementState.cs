@@ -25,7 +25,12 @@ public class ZhmyhMovementState : State
         Move();
         Shift();
     }
-    public void SetDirection(Vector2 direction) => _direction = direction;
+    public void SetDirection(Vector2 direction)
+    {
+        _direction = direction;
+        _animator.SetFloat("X", _direction.x);
+        _animator.SetFloat("Y", _direction.y);
+    }
     public void Move() => _movement.Move(_direction);
     public void Shift() => _shifter.Shift(_direction);
 }

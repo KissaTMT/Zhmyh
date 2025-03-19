@@ -5,14 +5,12 @@ using UnityEngine;
 
 public class Zhmyh : MonoBehaviour
 {
-    public Vector2 AimDirection => _aimDirection;
     public Transform Transform => _transform;
-    [SerializeField] private Transform _bow;
-    [SerializeField] private Transform _arrow;
+    [SerializeField] private Bow _bow;
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _climbSpeed;
     [SerializeField] private ShiftConfig[] _configs;
-    [SerializeField] private GameObject _aim;
+    [SerializeField] private Transform _aim;
     [SerializeField] private Transform _body;
     
     private Transform _transform;
@@ -44,7 +42,7 @@ public class Zhmyh : MonoBehaviour
         _idleState = new ZhmyhIdleState(_animator);
         _movementState = new ZhmyhMovementState(_transform, _animator, _shifter,_movementSpeed);
         _climbState = new ZhmyhClimbState(_body, _animator, _shifter, _climbSpeed);
-        _aimingState = new ZhmyhAimingState(transform, _aim.transform,_shifter);
+        _aimingState = new ZhmyhAimingState(this,transform, _aim,_bow,_shifter);
 
         _sm.AddTransition(_idleState, _movementState, () => _currentDirection.magnitude > 0.1f);
         _sm.AddTransition(_movementState, _idleState, () => _currentDirection.magnitude < 0.1f);
@@ -70,24 +68,20 @@ public class Zhmyh : MonoBehaviour
         _aimDirection = input;
         _aimingState.SetDirection(_aimDirection);
     }
-    public void OnShoot()
-    {
-        if (_sm.CurrentState is ZhmyhAimingState)
-        {
-            var arrow = Instantiate(_arrow, _bow.transform.position, Quaternion.identity).GetComponent<Arrow>();
-            arrow.Init(_aimDirection);
-        }
-    }
     public void OnClimb()
     {
         if (_climbState.ClimbController.IsClimb()) _isClimbing = !_isClimbing;
     }
-    public void Run()
+    public void Tick()
     {
         _sm.Update();
     }
-    public void SetAimReady()
+    public void SetAimReady(bool isAiming)
     {
-        _isAiming = !_isAiming;
+        _isAiming = isAiming;
+    }
+    public void Shoot()
+    {
+        _aimingState.Shoot();
     }
 }

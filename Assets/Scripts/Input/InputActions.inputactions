@@ -53,6 +53,17 @@
             ],
             "bindings": [
                 {
+                    "name": "",
+                    "id": "d3cecdbd-b08a-43d8-b7ff-0b7ad162c0eb",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "StickDeadzone",
+                    "groups": "Gamepad",
+                    "action": "Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "WASD",
                     "id": "83719320-47b9-49b8-9410-d68d595544ff",
                     "path": "2DVector",
@@ -164,12 +175,12 @@
                 },
                 {
                     "name": "",
-                    "id": "d3cecdbd-b08a-43d8-b7ff-0b7ad162c0eb",
-                    "path": "<Gamepad>/leftStick",
+                    "id": "214740cc-260b-4f16-91e8-7dbca58cf552",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Direction",
+                    "action": "Space",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -186,45 +197,23 @@
                 },
                 {
                     "name": "",
-                    "id": "214740cc-260b-4f16-91e8-7dbca58cf552",
-                    "path": "<Gamepad>/buttonSouth",
+                    "id": "7b9224fe-a25e-40d9-9cf2-2fddf4c61dad",
+                    "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "StickDeadzone,ScaleVector2(x=10,y=10)",
                     "groups": "Gamepad",
-                    "action": "Space",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "34526722-b38d-4d79-86b0-28012832bf29",
+                    "id": "25c00e47-eca0-4e4a-84ec-ab0996d4e6f4",
                     "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Aim",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "4f6f6b51-9662-40d3-9ad3-ceeaa1f73cfa",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Aim",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b2aa33a9-2dd4-4d51-8044-1f22fac679d0",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -241,22 +230,33 @@
                 },
                 {
                     "name": "",
-                    "id": "368ecbaf-14d8-429f-a384-f3b468a6f567",
-                    "path": "<Mouse>/rightButton",
+                    "id": "b2aa33a9-2dd4-4d51-8044-1f22fac679d0",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "SetAim",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "6c023720-e728-44af-ae58-9c5ce9985dd3",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "SetAim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "368ecbaf-14d8-429f-a384-f3b468a6f567",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "Keyboard",
                     "action": "SetAim",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -273,13 +273,24 @@
                     "devicePath": "<Keyboard>",
                     "isOptional": false,
                     "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
                 }
             ]
         },
         {
             "name": "Gamepad",
             "bindingGroup": "Gamepad",
-            "devices": []
+            "devices": [
+                {
+                    "devicePath": "<Gamepad>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
         }
     ]
 }

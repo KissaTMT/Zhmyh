@@ -3,13 +3,13 @@ using Zenject;
 
 public class Cursor : MonoBehaviour
 {
-    public RectTransform RectTransform => _crosshairRectTransform;
-    [SerializeField] private float _mouseSensitivity = 1;
-    [SerializeField] private float _gamepadSensitivity = 100f;
     [SerializeField] private float _rotationSpeed;
+    
+    private Canvas _canvas;
+    private RectTransform _canvasRectTransform;
+    private RectTransform _rectTransform;
+
     private IInput _input;
-    private RectTransform _crosshairRectTransform;
-    private Vector2 _delta;
 
     [Inject]
     public void Construct(IInput input)
@@ -19,20 +19,26 @@ public class Cursor : MonoBehaviour
     }
     private void Awake()
     {
-        _crosshairRectTransform = GetComponent<RectTransform>();
+        _rectTransform = GetComponent<RectTransform>();
+        _canvas = GetComponentInParent<Canvas>();
+        _canvasRectTransform = _canvas.GetComponent<RectTransform>();
     }
     private void OnDisable()
     {
         _input.OnAim -= Aim;
     }
 
-    private void Aim(Vector2 delta)
+    private void Aim(Vector2 position)
     {
-        _delta = delta;
+        AuchorPosition(position);
+    }
+    private void AuchorPosition(Vector2 position)
+    {
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRectTransform,position, _canvas.renderMode == RenderMode.ScreenSpaceOverlay?null:Camera.main,out var achoredPosition);
+        _rectTransform.anchoredPosition = achoredPosition;
     }
     private void Update()
     {
-        _crosshairRectTransform.localPosition += (Vector3)_delta * _mouseSensitivity;
-        _crosshairRectTransform.Rotate(0,0, -_rotationSpeed * Time.deltaTime);
+        _rectTransform.Rotate(0,0, -_rotationSpeed * Time.deltaTime);
     }
 }
