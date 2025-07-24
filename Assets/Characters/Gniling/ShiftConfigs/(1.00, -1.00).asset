@@ -1,0 +1,427 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc13cd14679d7634e8f55f390f4ecd62, type: 3}
+  m_Name: (1.00, -1.00)
+  m_EditorClassIdentifier: 
+  Direction: {x: 1, y: -1}
+  _shiftTransformData:
+  - Key: Head
+    Value:
+      Name: Head
+      Position: {x: 0, y: 10.94, z: -0.1}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Left hear/Head
+    Value:
+      Name: Left hear/Head
+      Position: {x: 5.21, y: 6.8, z: 0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Right hear/Head
+    Value:
+      Name: Right hear/Head
+      Position: {x: -4.720001, y: 6.9399977, z: 0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Right eye/Head
+    Value:
+      Name: Right eye/Head
+      Position: {x: -2, y: -1.15, z: -0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: eye white/Right eye/Head
+    Value:
+      Name: eye white/Right eye/Head
+      Position: {x: 0.39, y: -0.33, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: pupil/eye white/Right eye/Head
+    Value:
+      Name: pupil/eye white/Right eye/Head
+      Position: {x: 0.02, y: 0.12, z: -0.001}
+      Scale: {x: -1, y: 1, z: 1}
+      Angle: 0
+  - Key: eyelash/Right eye/Head
+    Value:
+      Name: eyelash/Right eye/Head
+      Position: {x: 0, y: 1.26, z: -0.004}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Left eye/Head
+    Value:
+      Name: Left eye/Head
+      Position: {x: 4.78, y: -1.15, z: -0.001}
+      Scale: {x: -0.8, y: 0.95, z: 1}
+      Angle: 2.9999971
+  - Key: eye white/Left eye/Head
+    Value:
+      Name: eye white/Left eye/Head
+      Position: {x: 0.39, y: -0.33, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: pupil/eye white/Left eye/Head
+    Value:
+      Name: pupil/eye white/Left eye/Head
+      Position: {x: -0.09, y: 0.18, z: -0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: eyelash/Left eye/Head
+    Value:
+      Name: eyelash/Left eye/Head
+      Position: {x: 0, y: 1.26, z: -0.004}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Mouth/Head
+    Value:
+      Name: Mouth/Head
+      Position: {x: 1.57, y: -5.1, z: -0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: lips/Mouth/Head
+    Value:
+      Name: lips/Mouth/Head
+      Position: {x: 0, y: 0.551, z: -0.001}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: tongue/Mouth/Head
+    Value:
+      Name: tongue/Mouth/Head
+      Position: {x: 0, y: 0, z: 0}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: Hair/Head
+    Value:
+      Name: Hair/Head
+      Position: {x: 0, y: 0, z: -0.015}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: top/Hair/Head
+    Value:
+      Name: top/Hair/Head
+      Position: {x: 0.1, y: 9.83, z: 0}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: front/Hair/Head
+    Value:
+      Name: front/Hair/Head
+      Position: {x: 6.3, y: 3.23, z: 0.01}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: front(1)/Hair/Head
+    Value:
+      Name: front(1)/Hair/Head
+      Position: {x: -1.88, y: 3.8, z: 0}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: front(2)/Hair/Head
+    Value:
+      Name: front(2)/Hair/Head
+      Position: {x: -5.93, y: -1.98, z: 0}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: front(3)/Hair/Head
+    Value:
+      Name: front(3)/Hair/Head
+      Position: {x: 1.23, y: 4.08, z: 0}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: front(4)/Hair/Head
+    Value:
+      Name: front(4)/Hair/Head
+      Position: {x: 2.82, y: 3.59, z: -0.01}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: front(5)/Hair/Head
+    Value:
+      Name: front(5)/Hair/Head
+      Position: {x: 2.81, y: 5.08, z: -0.02}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: front(6)/Hair/Head
+    Value:
+      Name: front(6)/Hair/Head
+      Position: {x: 0.83, y: 5.48, z: -0.02}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: front(7)/Hair/Head
+    Value:
+      Name: front(7)/Hair/Head
+      Position: {x: 6.4, y: 2.43, z: -0.1}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: front(8)/Hair/Head
+    Value:
+      Name: front(8)/Hair/Head
+      Position: {x: -3.88, y: 2.41, z: -0.18}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: front(9)/Hair/Head
+    Value:
+      Name: front(9)/Hair/Head
+      Position: {x: -1.42, y: 5.75, z: -0.04}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: back/Hair/Head
+    Value:
+      Name: back/Hair/Head
+      Position: {x: 7.200001, y: -1.69, z: 0.07}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 0
+  - Key: Body
+    Value:
+      Name: Body
+      Position: {x: 0.22, y: 0, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Cape/Body
+    Value:
+      Name: Cape/Body
+      Position: {x: -0.26, y: -0.7600002, z: -0.03}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Right/Cape/Body
+    Value:
+      Name: Right/Cape/Body
+      Position: {x: -3.29, y: -0.2, z: -0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Left/Cape/Body
+    Value:
+      Name: Left/Cape/Body
+      Position: {x: 6, y: 0.24, z: -0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Right collar/Cape/Body
+    Value:
+      Name: Right collar/Cape/Body
+      Position: {x: -0.52, y: 5.76, z: -0.002}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Left collar/Cape/Body
+    Value:
+      Name: Left collar/Cape/Body
+      Position: {x: 3.36, y: 5.68, z: -0.002}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Back collar/Cape/Body
+    Value:
+      Name: Back collar/Cape/Body
+      Position: {x: 1.25, y: 0, z: 0.3}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Suit/Body
+    Value:
+      Name: Suit/Body
+      Position: {x: -0.26, y: 0, z: -0.02}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: belt/Suit/Body
+    Value:
+      Name: belt/Suit/Body
+      Position: {x: 2.47, y: -1.94, z: -0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Left suit part/Suit/Body
+    Value:
+      Name: Left suit part/Suit/Body
+      Position: {x: 4.35, y: -0.86, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Right suit part/Suit/Body
+    Value:
+      Name: Right suit part/Suit/Body
+      Position: {x: -0.75, y: -1.08, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Tail/Body
+    Value:
+      Name: Tail/Body
+      Position: {x: -8.499999, y: 2.1599998, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 343.68
+  - Key: Left hand
+    Value:
+      Name: Left hand
+      Position: {x: 6.35, y: 1.5, z: 0.5}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 247.83003
+  - Key: Hand/Left hand
+    Value:
+      Name: Hand/Left hand
+      Position: {x: 0, y: 0, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: big finger/Hand/Left hand
+    Value:
+      Name: big finger/Hand/Left hand
+      Position: {x: -1.59, y: 0.44, z: -0.004}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: index finger/Hand/Left hand
+    Value:
+      Name: index finger/Hand/Left hand
+      Position: {x: -0.2, y: 1.86, z: -0.003}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: middle finger/Hand/Left hand
+    Value:
+      Name: middle finger/Hand/Left hand
+      Position: {x: 0.85, y: 1.05, z: -0.002}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: pinky finger/Hand/Left hand
+    Value:
+      Name: pinky finger/Hand/Left hand
+      Position: {x: 1.39, y: -0.14, z: -0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Palm/Hand/Left hand
+    Value:
+      Name: Palm/Hand/Left hand
+      Position: {x: 0, y: 0, z: 0}
+      Scale: {x: 2, y: 2, z: 1}
+      Angle: 88.109985
+  - Key: Right hand
+    Value:
+      Name: Right hand
+      Position: {x: -5.09, y: 1.5, z: -0.5}
+      Scale: {x: -1, y: 1, z: 1}
+      Angle: 232.63
+  - Key: Hand/Right hand
+    Value:
+      Name: Hand/Right hand
+      Position: {x: 0, y: 0, z: 0}
+      Scale: {x: -1, y: 1, z: 1}
+      Angle: 0
+  - Key: big finger/Hand/Right hand
+    Value:
+      Name: big finger/Hand/Right hand
+      Position: {x: -1.59, y: 0.44, z: -0.005}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: index finger/Hand/Right hand
+    Value:
+      Name: index finger/Hand/Right hand
+      Position: {x: -0.2, y: 1.86, z: -0.004}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: middle finger/Hand/Right hand
+    Value:
+      Name: middle finger/Hand/Right hand
+      Position: {x: 0.85, y: 1.05, z: -0.003}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: pinky finger/Hand/Right hand
+    Value:
+      Name: pinky finger/Hand/Right hand
+      Position: {x: 1.39, y: -0.14, z: -0.002}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Palm/Hand/Right hand
+    Value:
+      Name: Palm/Hand/Right hand
+      Position: {x: 0, y: 0, z: -0.006}
+      Scale: {x: 2, y: 2, z: 1}
+      Angle: 88.109985
+  - Key: Sword/Right hand
+    Value:
+      Name: Sword/Right hand
+      Position: {x: -0.62, y: 0.37, z: -0.001}
+      Scale: {x: 0.55, y: 0.55, z: 1}
+      Angle: 123.99999
+  - Key: Right leg
+    Value:
+      Name: Right leg
+      Position: {x: -0.25, y: -7.6, z: 0.1}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Left leg
+    Value:
+      Name: Left leg
+      Position: {x: 5.37, y: -6.59, z: 0.15}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  _shiftVisualData:
+  - Key: Head
+    Value: {fileID: 21300000, guid: 4b1ce51e06355da468e49458686c242f, type: 3}
+  - Key: Left hear
+    Value: {fileID: 21300000, guid: 62ee0a270daa067479977af981d6ec61, type: 3}
+  - Key: Right hear
+    Value: {fileID: 21300000, guid: 03b1950ded781b345a4a04ec92dd358a, type: 3}
+  - Key: eye white
+    Value: {fileID: 21300000, guid: e2d6081ddcbbaa74999094459cfce746, type: 3}
+  - Key: pupil
+    Value: {fileID: 21300000, guid: 068369d69ac135046933d02f6f082e46, type: 3}
+  - Key: eyelash
+    Value: {fileID: 21300000, guid: 4ee96ac30ac921c4b8d138fce97b6e5d, type: 3}
+  - Key: lips
+    Value: {fileID: 21300000, guid: 085bde4a8dbd1884a9c1c6b6535bc756, type: 3}
+  - Key: tongue
+    Value: {fileID: 21300000, guid: 3849c143ad644f64eabdb4849254637f, type: 3}
+  - Key: top
+    Value: {fileID: 21300000, guid: 5de935e3909b83542af9123dc4f965ec, type: 3}
+  - Key: front
+    Value: {fileID: 21300000, guid: 25012a86ad9eef94b924b953263b978b, type: 3}
+  - Key: front(1)
+    Value: {fileID: 21300000, guid: 416b1aadced77104098050149a6f639a, type: 3}
+  - Key: front(2)
+    Value: {fileID: 21300000, guid: ea2ee4ddfcb1b95449c1c897d38c557e, type: 3}
+  - Key: front(3)
+    Value: {fileID: 21300000, guid: 4f213306a9af79641bc04fdfe370bed2, type: 3}
+  - Key: front(4)
+    Value: {fileID: 21300000, guid: 6b41246010ad6a84d9fd76a712129608, type: 3}
+  - Key: front(5)
+    Value: {fileID: 21300000, guid: b4230e4d7459791448a1ada58ada5099, type: 3}
+  - Key: front(6)
+    Value: {fileID: 21300000, guid: 62918d6dcae626248955b669d83b489d, type: 3}
+  - Key: front(7)
+    Value: {fileID: 21300000, guid: c112bdbea942629458854e8dd5181278, type: 3}
+  - Key: front(8)
+    Value: {fileID: 21300000, guid: 01f14b2f49472bc4598d4599820251a5, type: 3}
+  - Key: front(9)
+    Value: {fileID: 21300000, guid: 21a8927a9a041244f89f4261687afb98, type: 3}
+  - Key: back
+    Value: {fileID: 21300000, guid: 0db77d82e73539b44b4c8d15d9d7b8dc, type: 3}
+  - Key: Right
+    Value: {fileID: 21300000, guid: 6fcd38f1b48f7ac44b68bada574e68b7, type: 3}
+  - Key: Left
+    Value: {fileID: 21300000, guid: ea6493f21fab646428d2eef7e1e235b7, type: 3}
+  - Key: Right collar
+    Value: {fileID: 21300000, guid: 2ee808a648652954e81f49793a37615e, type: 3}
+  - Key: Left collar
+    Value: {fileID: 21300000, guid: 95459908b5481b640b0fd5422b2324d3, type: 3}
+  - Key: Back collar
+    Value: {fileID: 21300000, guid: 8c8d1e2258dec734c9a51402d931f6e6, type: 3}
+  - Key: belt
+    Value: {fileID: 21300000, guid: fdd592244e15fe14b9478646f8030d3b, type: 3}
+  - Key: Left suit part
+    Value: {fileID: 21300000, guid: e710fb27d6297984584f8ebac1b88256, type: 3}
+  - Key: Right suit part
+    Value: {fileID: 21300000, guid: 52f6078db09ace0498bfc250adcd0b8a, type: 3}
+  - Key: Tail
+    Value: {fileID: 21300000, guid: b73ad8700c5974d44bbf03d1a778abb8, type: 3}
+  - Key: big finger
+    Value: {fileID: 21300000, guid: b0daeeccc68159f4985c720a86015bd7, type: 3}
+  - Key: index finger
+    Value: {fileID: 21300000, guid: 5eb1457604586684ba963ec70cdf1251, type: 3}
+  - Key: middle finger
+    Value: {fileID: 21300000, guid: eb9a91c386e141d46ad76b1567795175, type: 3}
+  - Key: pinky finger
+    Value: {fileID: 21300000, guid: 6e7a34a2f758ec941b9a39e96e70d65b, type: 3}
+  - Key: Palm
+    Value: {fileID: 21300000, guid: 5eb1457604586684ba963ec70cdf1251, type: 3}
+  - Key: Sword
+    Value: {fileID: 21300000, guid: d4a33e47163139642aa2351fbc156865, type: 3}
+  - Key: Right leg
+    Value: {fileID: 21300000, guid: 27c3945544630f94c95a7cc809f41411, type: 3}
+  - Key: Left leg
+    Value: {fileID: 21300000, guid: 27c3945544630f94c95a7cc809f41411, type: 3}

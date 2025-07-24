@@ -1,0 +1,267 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc13cd14679d7634e8f55f390f4ecd62, type: 3}
+  m_Name: (1.00, -1.00)
+  m_EditorClassIdentifier: 
+  Direction: {x: 1, y: -1}
+  _shiftTransformData:
+  - Key: Head
+    Value:
+      Name: Head
+      Position: {x: 0, y: 31.6, z: -0.1}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Face/Head
+    Value:
+      Name: Face/Head
+      Position: {x: -0.9000015, y: -4.300001, z: -0.02}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Right hear/Head
+    Value:
+      Name: Right hear/Head
+      Position: {x: -22.7, y: 9.6, z: -0.01}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Left hear/Head
+    Value:
+      Name: Left hear/Head
+      Position: {x: 25.439999, y: 9.77, z: 0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Left eye/Head
+    Value:
+      Name: Left eye/Head
+      Position: {x: 13.6, y: -8.3, z: -0.03}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Right eye/Head
+    Value:
+      Name: Right eye/Head
+      Position: {x: -7.2, y: -7.5, z: -0.03}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: eyelash/Right eye/Head
+    Value:
+      Name: eyelash/Right eye/Head
+      Position: {x: -1.01, y: 4.19, z: -0.02}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: pupil/Right eye/Head
+    Value:
+      Name: pupil/Right eye/Head
+      Position: {x: 0.8899946, y: -0.21000099, z: -0.01}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Back hair/Head
+    Value:
+      Name: Back hair/Head
+      Position: {x: 1.3, y: 14.4, z: -0.005}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Front Hair/Head
+    Value:
+      Name: Front Hair/Head
+      Position: {x: 1.3, y: 14.399996, z: -0.0075}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Body
+    Value:
+      Name: Body
+      Position: {x: 0, y: 0, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: tie/Body
+    Value:
+      Name: tie/Body
+      Position: {x: 0.25, y: 0.71, z: -0.01}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Bow/Body
+    Value:
+      Name: Bow/Body
+      Position: {x: 0, y: 5, z: 0.1}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 315
+  - Key: Shoot point/Bow/Body
+    Value:
+      Name: Shoot point/Bow/Body
+      Position: {x: 0, y: 0, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Top bow part/Bow/Body
+    Value:
+      Name: Top bow part/Bow/Body
+      Position: {x: -6.6, y: 24.1, z: 0}
+      Scale: {x: 8, y: 8, z: 1}
+      Angle: 6.999997
+  - Key: top bone/Top bow part/Bow/Body
+    Value:
+      Name: top bone/Top bow part/Bow/Body
+      Position: {x: 0.559509, y: -2.2519531, z: 0}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 95.57105
+  - Key: Bottom bow part/Bow/Body
+    Value:
+      Name: Bottom bow part/Bow/Body
+      Position: {x: -7.4, y: -19.9, z: 0}
+      Scale: {x: 8, y: 8, z: 1}
+      Angle: 353
+  - Key: bottom bone/Bottom bow part/Bow/Body
+    Value:
+      Name: bottom bone/Bottom bow part/Bow/Body
+      Position: {x: 0.71111727, y: 1.774363, z: 0}
+      Scale: {x: 1, y: 1, z: 0}
+      Angle: 243.49673
+  - Key: Handle bow/Bow/Body
+    Value:
+      Name: Handle bow/Bow/Body
+      Position: {x: 0.03, y: 0.03, z: 0}
+      Scale: {x: 8, y: 8, z: 1}
+      Angle: 0
+  - Key: tail/Body
+    Value:
+      Name: tail/Body
+      Position: {x: -28.4, y: 28.8, z: 0.15}
+      Scale: {x: 6, y: 6, z: 1}
+      Angle: 0
+  - Key: Left leg
+    Value:
+      Name: Left leg
+      Position: {x: 8.2, y: -11, z: 0.01}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Right leg
+    Value:
+      Name: Right leg
+      Position: {x: -3.2, y: -12.5, z: 0.01}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Right hand
+    Value:
+      Name: Right hand
+      Position: {x: -5, y: 5, z: -0.5}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: hand/Right hand
+    Value:
+      Name: hand/Right hand
+      Position: {x: 0, y: 0, z: -0.01}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: big finger/hand/Right hand
+    Value:
+      Name: big finger/hand/Right hand
+      Position: {x: -0.9, y: 2.7, z: 0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: index finger/hand/Right hand
+    Value:
+      Name: index finger/hand/Right hand
+      Position: {x: 2.6200008, y: 2.3, z: 0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: middle finger/hand/Right hand
+    Value:
+      Name: middle finger/hand/Right hand
+      Position: {x: 2.300001, y: -0.4600001, z: 0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: pinky finger/hand/Right hand
+    Value:
+      Name: pinky finger/hand/Right hand
+      Position: {x: 2, y: -2.9, z: 0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: Left hand
+    Value:
+      Name: Left hand
+      Position: {x: 15, y: 5, z: 0.1}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: hand/Left hand
+    Value:
+      Name: hand/Left hand
+      Position: {x: 0, y: 0, z: -0.01}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: big finger/hand/Left hand
+    Value:
+      Name: big finger/hand/Left hand
+      Position: {x: -0.9, y: 2.7, z: -0.004}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: index finger/hand/Left hand
+    Value:
+      Name: index finger/hand/Left hand
+      Position: {x: 2.6200008, y: 2.3, z: -0.003}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: middle finger/hand/Left hand
+    Value:
+      Name: middle finger/hand/Left hand
+      Position: {x: 2.300001, y: -0.4600001, z: -0.002}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  - Key: pinky finger/hand/Left hand
+    Value:
+      Name: pinky finger/hand/Left hand
+      Position: {x: 2, y: -2.9, z: -0.001}
+      Scale: {x: 1, y: 1, z: 1}
+      Angle: 0
+  _shiftVisualData:
+  - Key: Head
+    Value: {fileID: 21300000, guid: 9869630a92e6e2e4ea4f81850c3e52f6, type: 3}
+  - Key: Face
+    Value: {fileID: 21300000, guid: 6406201dc54da5d4f9a762dc229ba064, type: 3}
+  - Key: Right hear
+    Value: {fileID: 21300000, guid: 848125d9d3e99a5448498280f113ebf1, type: 3}
+  - Key: Left hear
+    Value: {fileID: 21300000, guid: 0d5443597384fa641aa69a08ad7fff0d, type: 3}
+  - Key: Left eye
+    Value: {fileID: 21300000, guid: 9b5434f25133c094780121ab8c10b12a, type: 3}
+  - Key: Right eye
+    Value: {fileID: 21300000, guid: 881758486d6d91644bf2facea31b438f, type: 3}
+  - Key: eyelash
+    Value: {fileID: 21300000, guid: 409d90280125eaf49b6717204203f8d8, type: 3}
+  - Key: pupil
+    Value: {fileID: 21300000, guid: 2e22b13efea7c914a8abe3ace244033b, type: 3}
+  - Key: Back hair
+    Value: {fileID: 21300000, guid: 61a74049217e3dd41bba872019269a4b, type: 3}
+  - Key: Front Hair
+    Value: {fileID: 21300000, guid: 8e4adcca4852a2749aff06d971906b5a, type: 3}
+  - Key: Body
+    Value: {fileID: 21300000, guid: 26b2307a14816b14785a8d82802ae70b, type: 3}
+  - Key: tie
+    Value: {fileID: 21300000, guid: 5fdb130e960283b47a3d2df195c6d9f9, type: 3}
+  - Key: Top bow part
+    Value: {fileID: 21300000, guid: bcdb6aae1d63f0e4ea217fad1a67eb02, type: 3}
+  - Key: Bottom bow part
+    Value: {fileID: 21300000, guid: ea0cd21ed41890c4b9ff49fc7c70d3c0, type: 3}
+  - Key: Handle bow
+    Value: {fileID: 21300000, guid: 2c87790d4ab82d04fa2ba1b6691ebb25, type: 3}
+  - Key: tail
+    Value: {fileID: 21300000, guid: c9299136b57905146b77fe7b4ed285ec, type: 3}
+  - Key: Left leg
+    Value: {fileID: 21300000, guid: 09fe0b1214174674aa2df0ee7fc51256, type: 3}
+  - Key: Right leg
+    Value: {fileID: 21300000, guid: 09fe0b1214174674aa2df0ee7fc51256, type: 3}
+  - Key: hand
+    Value: {fileID: 21300000, guid: 1651a8122b2166a4e9e136aa750b7283, type: 3}
+  - Key: big finger
+    Value: {fileID: 21300000, guid: 5d01c6b82d38f7948b761ba7eaf785c3, type: 3}
+  - Key: index finger
+    Value: {fileID: 21300000, guid: 8a6d13d718fb27041aa58a95e51b11f2, type: 3}
+  - Key: middle finger
+    Value: {fileID: 21300000, guid: a983e0ae8a2ab9b42b0262e03e6715c3, type: 3}
+  - Key: pinky finger
+    Value: {fileID: 21300000, guid: 910e641372307f046a87ecd7b5cea473, type: 3}

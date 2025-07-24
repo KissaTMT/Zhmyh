@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Zenject;
 
 public class Player : MonoBehaviour
@@ -8,6 +6,7 @@ public class Player : MonoBehaviour
     public Transform Transform => _unit.Transform;
 
     private Zhmyh _unit;
+    private Camera _cameraMain;
     private IInput _input;
 
     [Inject]
@@ -22,10 +21,11 @@ public class Player : MonoBehaviour
         _input.OnSetAim += SetAimReady;
     }
 
-    private void Aim(Vector2 vector) => _unit.SetAim(Camera.main.ScreenToWorldPoint(vector));
+    private void Aim(Vector2 vector) => _unit.SetAim(_cameraMain.ScreenToWorldPoint(vector));
     public void Init()
     {
         _unit = GetComponent<Zhmyh>().Init();
+        _cameraMain = Camera.main;
     }
     private void SetAimReady(bool isAiming) => _unit.SetAimReady(isAiming);
 

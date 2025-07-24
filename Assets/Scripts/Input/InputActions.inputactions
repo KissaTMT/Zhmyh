@@ -200,7 +200,7 @@
                     "id": "7b9224fe-a25e-40d9-9cf2-2fddf4c61dad",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "StickDeadzone,ScaleVector2(x=10,y=10)",
+                    "processors": "StickDeadzone(min=0.1),ScaleVector2(x=10,y=10)",
                     "groups": "Gamepad",
                     "action": "Aim",
                     "isComposite": false,

@@ -1,12 +1,26 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "ShiftConfig", menuName = "Configs/ShiftConfig")]
 public class ShiftConfig : ScriptableObject
 {
     public Vector2 Direction;
-    public List<Vector3> LocalPositions = new List<Vector3>();
-    public List<Vector3> LocalScales = new List<Vector3>();
-    public List<Vector3> EulerAngles = new List<Vector3>();
-    public List<Sprite> Sprites = new List<Sprite>();
+    
+    public Dictionary<string, ShiftTransformData> ShiftTransformData = new();
+    public Dictionary<string, Sprite> ShiftVisualData = new();
+
+    [SerializeField, Header("Transform")] private List<KeyValuePair<string, ShiftTransformData>> _shiftTransformData = new();
+    [SerializeField, Header("Visual")] private List<KeyValuePair<string, Sprite>> _shiftVisualData = new();
+
+    public void Serialize()
+    {
+        KeyValuePair<string, ShiftTransformData>.Serialize(ShiftTransformData, _shiftTransformData);
+        KeyValuePair<string, Sprite>.Serialize(ShiftVisualData, _shiftVisualData);
+    }
+
+    public void Deserialize()
+    {
+        KeyValuePair<string, ShiftTransformData>.Deserialize(ShiftTransformData, _shiftTransformData);
+        KeyValuePair<string, Sprite>.Deserialize(ShiftVisualData, _shiftVisualData);
+    }
 }

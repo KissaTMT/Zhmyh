@@ -1,70 +1,89 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public class Shifter
 {
-    private const int MAX_VIEW_COUNT = 6;
-    public Vector2 FacingDirection => _facingDirection;
+    public static readonly Vector2[] directions = { Vector2.right, Vector2.left, new Vector2(1, 1), new Vector2(-1, -1), new Vector2(1, -1), new Vector2(-1, 1) };
+    public IReadOnlyDictionary<string, ShiftTransformNode> ShiftNodes => _shiftNodes;
+    public Vector2 CurrentDirection => _currentDirection;
+    public Transform Root => _root;
+    public event Action<Vector2> OnShift;
+    public event Action<Transform> OnAttached;
+    public event Action<Transform> OnDetached;
 
-    private readonly Vector2[] _directions = {Vector2.right, Vector2.left, new Vector2(1,1), new Vector2(-1,-1), new Vector2(1,-1),new Vector2(-1,1)};
+    private Dictionary<string, ShiftTransformNode> _shiftNodes;
 
-    private SpriteSorterRenderer _sorter;
-    private Dictionary<Vector2, ShiftConfig> _views;
-    private SpriteRenderer[] _nodes;
-    private Vector2 _facingDirection;
-    private int _order;
-    public Shifter(Transform root, ShiftConfig[] configs, SpriteSorterRenderer sorter)
+    private Transform _root;
+    private Vector2 _currentDirection;
+    public Shifter(Transform root, ShiftConfig[] configs)
     {
-        _sorter = sorter;
-        _nodes = root.GetComponentsInChildren<SpriteRenderer>();
-        _views = new Dictionary<Vector2, ShiftConfig>();
+        _root = root;
 
-        _order = configs.Length;
+        var transformNodes = root.GetComponentsInChildren<Transform>().ToList();
+        transformNodes.Remove(root);
 
-        for (var i = 0; i < configs.Length; i++)
+        _shiftNodes = new Dictionary<string, ShiftTransformNode>();
+        for(var i = 0; i < transformNodes.Count; i++)
         {
-            _views.Add(configs[i].Direction, configs[i]);
-        }
-        if(_order < MAX_VIEW_COUNT)
-        {
-            var keys = _directions.Except(_views.Keys).ToArray();
-
-            for(var i=0;i<keys.Length;i++)
-            {
-                _views.Add(keys[i], _views[Interpolate(keys[i], keys)]);
-            }
-        }
+            var node = transformNodes[i];
+            _shiftNodes[GetPath(node)] = new ShiftTransformNode(node, configs);
+        }   
+    }
+    public Shifter SetPrimeShift()
+    {
+        Shift(new Vector2(1, -1));
+        return this;
     }
     public void Shift(Vector2 direction)
     {
         if(direction == Vector2.zero) return;
 
-        var facingDirection = Interpolate(direction);
+        var approximateDirection = GetClosestDirection(direction);
 
-        for (var i = 0; i < _views[facingDirection].Sprites.Count; i++)
+        if (approximateDirection == _currentDirection) return;
+
+        foreach (var key in _shiftNodes.Keys)
         {
-            var view = _views[facingDirection];
-            _nodes[i].sprite = view.Sprites[i];
-            _nodes[i].transform.localPosition = view.LocalPositions[i];
-            _nodes[i].transform.localScale = view.LocalScales[i];
-            _nodes[i].transform.eulerAngles = view.EulerAngles[i];
+            var node = _shiftNodes[key];
+            if(node.Enabled) node.Shift(approximateDirection);
         }
-        _sorter.ReSort();
-        _facingDirection = facingDirection;
+
+        OnShift?.Invoke(approximateDirection);
+        _currentDirection = approximateDirection;
     }
-    public void Attach(Transform transform, Action action)
+    public void Attach(Transform transform)
     {
-        _sorter.ReSort();
+        //Debug.Log("Attach");
+        if (_shiftNodes.TryGetValue(GetPath(transform), out var shiftNode))
+        {
+            shiftNode.Enabled = true;
+            shiftNode.Shift(_currentDirection);
+        }
+        OnAttached?.Invoke(transform);
     }
     public void Detach(Transform transform)
     {
-        _sorter.ReSort();
+        //Debug.Log("Detach");
+        if (_shiftNodes.TryGetValue(GetPath(transform), out var shiftNode)) shiftNode.Enabled = false;
+        OnDetached?.Invoke(transform);
     }
-    private Vector2 Interpolate(Vector2 direction, Vector2[] except = null)
+    public static string GetPath(Transform node)
     {
-        if (except != null) return _directions.Except(except).OrderBy(i => Vector2.Distance(direction, i)).ToArray()[0];
-        else return _directions.OrderBy(i => Vector2.Distance(direction, i)).ToArray()[0];
+        var result = new StringBuilder(node.name);
+        var current = node;
+        while(current.parent.name != "root")
+        {
+            result.Append($"/{current.parent.name}");
+            current = current.parent;
+        }
+        return result.ToString();
+    }
+    public static Vector2 GetClosestDirection(Vector2 direction, Vector2[] except = null)
+    {
+        if (except != null) return directions.Except(except).OrderBy(i => Vector2.Distance(direction, i)).First();
+        else return directions.OrderBy(i => Vector2.Distance(direction, i)).First();
     }
 }

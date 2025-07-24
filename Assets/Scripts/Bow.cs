@@ -4,21 +4,26 @@ using UnityEngine;
 
 public class Bow : MonoBehaviour
 {
+    public Transform Transform => _transform;
     public float Tension => _tension;
     [SerializeField] private Arrow _arrow;
+    [SerializeField] private Transform _shootPoint;
     [SerializeField] private Transform _topPart;
     [SerializeField] private Transform _bottomPart;
+    [SerializeField] private Transform _handlePart;
 
     private float _topPartPrimeAngle;
     private float _bottomPartPrimeAngle;
 
     private float _tension;
     private Coroutine _release;
+    private Transform _transform;
 
     private void Awake()
     {
         _topPartPrimeAngle = _topPart.localRotation.eulerAngles.z;
         _bottomPartPrimeAngle = _bottomPart.localRotation.eulerAngles.z;
+        _transform = GetComponent<Transform>();
     }
     public void Pull()
     {
@@ -35,7 +40,7 @@ public class Bow : MonoBehaviour
     {
         _release = StartCoroutine(ReleaseRoutine(10*_tension));
         if (_tension < 0.9f) return;
-        var arrow = Instantiate(_arrow, transform.position, Quaternion.identity).GetComponent<Arrow>();
+        var arrow = Instantiate(_arrow, _shootPoint.position, Quaternion.identity).GetComponent<Arrow>();
         arrow.Init(direction);
     }
     public void Cancel()

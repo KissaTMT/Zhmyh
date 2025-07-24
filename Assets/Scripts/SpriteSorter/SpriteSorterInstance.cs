@@ -21,16 +21,6 @@ public class SpriteSorterInstance : MonoBehaviour
     {
         RemoveToSorting();
     }
-    private void OnBecameVisible()
-    {
-        Debug.Log("V");
-        AddToSorting();
-    }
-    private void OnBecameInvisible()
-    {
-        Debug.Log("I");
-        RemoveToSorting();
-    }
     private void AddToSorting()
     {
         _spriteSorter.Sorters.Add(_sorter);

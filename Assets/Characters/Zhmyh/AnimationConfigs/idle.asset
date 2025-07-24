@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79362116feeb3ec4183f73afd314d4fc, type: 3}
+  m_Name: idle
+  m_EditorClassIdentifier: 
+  Loop: 1
+  PlaybackSpeed: 1
+  Overridden: 0
+  _animationNodes:
+  - Key: Head
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: 0, y: 31.6}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.5
+      PositionKey: {x: 0, y: 32.6}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 2
+    - TimeKey: 1
+      PositionKey: {x: 0, y: 31.6}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+  - Key: Right hand
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: -5, y: 5}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.5
+      PositionKey: {x: -5, y: 6}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 1
+      PositionKey: {x: -5, y: 5}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+  - Key: Left hand
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: 15, y: 5}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.5
+      PositionKey: {x: 15, y: 6}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 1
+      PositionKey: {x: 15, y: 5}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+  - Key: tail/Body
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: -28.4, y: 28.8}
+      ScaleKey: {x: 6, y: 6}
+      AngleKey: 0
+    - TimeKey: 0.5
+      PositionKey: {x: -28.4, y: 26}
+      ScaleKey: {x: 6, y: 6}
+      AngleKey: 3
+    - TimeKey: 1
+      PositionKey: {x: -28.4, y: 28.8}
+      ScaleKey: {x: 6, y: 6}
+      AngleKey: 0
+  - Key: Body
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: 0, y: 0}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.5
+      PositionKey: {x: 0, y: 0.5}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 1
+      PositionKey: {x: 0, y: 0}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0

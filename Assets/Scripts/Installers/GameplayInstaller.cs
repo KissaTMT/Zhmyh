@@ -9,8 +9,6 @@ public class GameplayInstaller : MonoInstaller
     {
         UnityEngine.Cursor.visible = false;
 
-        Container.BindInterfacesAndSelfTo<SpriteSorter>().AsSingle();
-
         var zhmyh = Container.InstantiatePrefab(_zhmyh);
         Player = Container.InstantiateComponent<Player>(zhmyh);
         Player.name = "Player";
