@@ -48,27 +48,49 @@ public class Shifter
         foreach (var key in _shiftNodes.Keys)
         {
             var node = _shiftNodes[key];
-            if(node.Enabled) node.Shift(approximateDirection);
+            if (node.Enabled) node.Shift(approximateDirection);
         }
 
         OnShift?.Invoke(approximateDirection);
         _currentDirection = approximateDirection;
     }
-    public void Attach(Transform transform)
+    public void Attach(Transform transform, bool includeChildren = true)
     {
-        //Debug.Log("Attach");
-        if (_shiftNodes.TryGetValue(GetPath(transform), out var shiftNode))
+        if (includeChildren)
         {
-            shiftNode.Enabled = true;
-            shiftNode.Shift(_currentDirection);
+            var children = transform.GetComponentsInChildren<Transform>();
+
+            foreach(var child in children)
+            {
+                if(_shiftNodes.TryGetValue(GetPath(child), out var shiftNode)) Attach(shiftNode);
+            }
         }
-        OnAttached?.Invoke(transform);
+        else if (_shiftNodes.TryGetValue(GetPath(transform), out var shiftNode)) Attach(shiftNode);
     }
-    public void Detach(Transform transform)
+    
+    public void Detach(Transform transform, bool includeChildren = true)
     {
-        //Debug.Log("Detach");
-        if (_shiftNodes.TryGetValue(GetPath(transform), out var shiftNode)) shiftNode.Enabled = false;
-        OnDetached?.Invoke(transform);
+        if (includeChildren)
+        {
+            var children = transform.GetComponentsInChildren<Transform>();
+
+            foreach (var child in children)
+            {
+                if (_shiftNodes.TryGetValue(GetPath(child), out var shiftNode)) Detach(shiftNode);
+            }
+        }
+        else if (_shiftNodes.TryGetValue(GetPath(transform), out var shiftNode)) Detach(shiftNode);
+    }
+    private void Attach(ShiftTransformNode node)
+    {
+        node.Enabled = true;
+        node.Shift(_currentDirection);
+        OnAttached?.Invoke(node.Transform);
+    }
+    private void Detach(ShiftTransformNode node)
+    {
+        node.Enabled = false;
+        OnDetached?.Invoke(node.Transform);
     }
     public static string GetPath(Transform node)
     {

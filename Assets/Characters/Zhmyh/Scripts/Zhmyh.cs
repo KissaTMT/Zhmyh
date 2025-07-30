@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Zhmyh : MonoBehaviour
+public class Zhmyh : Unit
 {
     public Transform Transform => _transform;
     

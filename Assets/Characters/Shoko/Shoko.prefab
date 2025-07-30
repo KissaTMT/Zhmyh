@@ -1282,6 +1282,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2423600461937733894}
+  - component: {fileID: 3171132011250453265}
   m_Layer: 0
   m_Name: Shoko
   m_TagString: Untagged
@@ -1305,6 +1306,19 @@ Transform:
   - {fileID: 3011591807687379893}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3171132011250453265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4464122472252650611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 274ef9699ef6c5940bd7d1dbdf95e6d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 0}
 --- !u!1 &4466886314028217886
 GameObject:
   m_ObjectHideFlags: 0

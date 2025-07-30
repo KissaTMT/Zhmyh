@@ -28,8 +28,7 @@ public class ZhmyhAimingState : DecorateState
         _handPrimeLocalPosition = _rightHand.localPosition;
 
         _aim = new GameObject("aim").transform;
-        Transform(_aim,_shifter.Root,new Vector3(0,5,-1),Quaternion.identity);
-        _aim.localScale = Vector3.one;
+        Transform(_aim,_shifter.Root,new Vector3(0,5,-1),Vector3.one, Quaternion.identity);
 
         _body = _bow.Transform.parent;
     }
@@ -45,11 +44,9 @@ public class ZhmyhAimingState : DecorateState
         _shifter.Detach(_rightHand);
         _shifter.Detach(_leftHand);
 
-        Transform(_rightHand, _aim, Vector3.zero, Quaternion.identity);
-        Transform(_leftHand, _aim, new Vector3(15, 0), Quaternion.identity);
-        Transform(_bow.Transform, _leftHand, new Vector3(0, 0, 0.0105f), Quaternion.identity);
-
-        _bow.Transform.localScale = new Vector3(-1, 1, 1); 
+        Transform(_rightHand, _aim, Vector3.zero, Vector3.one, Quaternion.identity);
+        Transform(_leftHand, _aim, new Vector3(15, 0), Vector3.one, Quaternion.identity);
+        Transform(_bow.Transform, _leftHand, new Vector3(0, 0, 0.0105f), Vector3.one, Quaternion.identity);
 
     }
     public override void Exit()
@@ -87,10 +84,11 @@ public class ZhmyhAimingState : DecorateState
     }
     public void Shift() => _shifter.Shift(_direction - new Vector2(_transform.position.x, _transform.position.z));
     public override string ToString() => $"{base.ToString()} + {baseState}";
-    private void Transform(Transform o,Transform parent, Vector3 position, Quaternion rotation)
+    private void Transform(Transform o,Transform parent, Vector3 position, Vector3 scale,Quaternion rotation)
     {
         o.parent = parent;
         o.localPosition = position;
+        o.localScale = scale;
         o.localRotation = rotation;
     }
     private void RotateToDirection()

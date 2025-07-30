@@ -8,9 +8,11 @@ public class InputHandler : IDisposable, IInput
     private const float SENSIVITY = 100f;
     public event Action<Vector2> OnDirection;
     public event Action<Vector2> OnAim;
+    public event Action<Vector2> OnAimDelta;
     public event Action OnSpace;
     public event Action OnShoot;
     public event Action<bool> OnSetAim;
+    
 
     private Mouse _virtualMouse;
     private InputActions _inputs;
@@ -57,6 +59,7 @@ public class InputHandler : IDisposable, IInput
         InputState.Change(_virtualMouse.delta, delta);
 
         OnAim?.Invoke(position);
+        OnAimDelta?.Invoke(delta);
     }
     private void InitializeVirtualMouse()
     {

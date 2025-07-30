@@ -3,9 +3,11 @@ using Zenject;
 
 public class Cursor : MonoBehaviour
 {
+    public RectTransform RectTransform => _rectTransform;
     [SerializeField] private float _rotationSpeed;
     
     private Canvas _canvas;
+    private Camera _cameraMian;
     private RectTransform _canvasRectTransform;
     private RectTransform _rectTransform;
 
@@ -21,6 +23,7 @@ public class Cursor : MonoBehaviour
     {
         _rectTransform = GetComponent<RectTransform>();
         _canvas = GetComponentInParent<Canvas>();
+        _cameraMian = Camera.main;
         _canvasRectTransform = _canvas.GetComponent<RectTransform>();
     }
     private void OnDisable()
@@ -34,7 +37,7 @@ public class Cursor : MonoBehaviour
     }
     private void AuchorPosition(Vector2 position)
     {
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRectTransform,position, _canvas.renderMode == RenderMode.ScreenSpaceOverlay?null:Camera.main,out var achoredPosition);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRectTransform,position, _canvas.renderMode == RenderMode.ScreenSpaceOverlay?null: _cameraMian, out var achoredPosition);
         _rectTransform.anchoredPosition = achoredPosition;
     }
     private void Update()

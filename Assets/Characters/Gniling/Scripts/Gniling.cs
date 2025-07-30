@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class Gniling : MonoBehaviour
+public class Gniling : Unit
 {
     [SerializeField] private float _speed;
     [SerializeField] private ShiftConfig[] _shiftConfigs;
@@ -52,13 +52,15 @@ public class Gniling : MonoBehaviour
         _movement.Move(_currentDirection);
         _shifter.Shift(_facingDirection);
     }
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Init();
     }
-    private void Update()
+    protected override void Update()
     {
-        var delta = new Vector2(_target.position.x - _transform.position.x, _target.position.z - _transform.position.z);
+        base.Update();
+        var delta = Vector2.zero;
         if (delta.magnitude > 25) delta.Normalize();
         else delta = Vector2.zero;
         SetDirection(delta);
