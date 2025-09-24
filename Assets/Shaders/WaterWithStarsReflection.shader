@@ -6,7 +6,7 @@ Shader "Custom/URP/WaterWithStarsReflection"
         _ReflectionTex ("Reflection Texture", 2D) = "black" { }
         _StarTex ("Stars Texture", 2D) = "white" { }
         _NormalTex ("Normal Map", 2D) = "bump" { }
-        _WaveStrength ("Wave Strength", Range(0, 1)) = 0.5
+        _WaveStrength ("Wave Strength", float) = 10
         _TilingStars ("Tiling Stars", Range(0, 1)) = 0.5
         _Reflectivity ("Reflectivity", Range(0, 1)) = 0.8
     }
@@ -65,7 +65,7 @@ Shader "Custom/URP/WaterWithStarsReflection"
             // Vertex Shader
             Varyings vert(Attributes v)
             {
-                float waveOffset = sin(v.position.x * 0.1 + _Time.y) * _WaveStrength; // Simple sine wave based on vertex X position and time
+                float waveOffset = sin(v.position.x + _Time.y) * _WaveStrength; // Simple sine wave based on vertex X position and time
                 v.position.y += waveOffset;
 
                 Varyings o;

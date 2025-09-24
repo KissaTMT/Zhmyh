@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bow : MonoBehaviour
 {
+    public Vector3 ShootPoint => _shootPoint.transform.position;
     public Transform Transform => _transform;
     public float Tension => _tension;
     [SerializeField] private Arrow _arrow;
@@ -36,7 +37,7 @@ public class Bow : MonoBehaviour
         _topPart.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(_topPartPrimeAngle, _topPartPrimeAngle + 32, _tension));
         _bottomPart.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(_bottomPartPrimeAngle, _bottomPartPrimeAngle - 32, _tension));
     }
-    public void Release(Vector2 direction)
+    public void Release(Vector3 direction)
     {
         _release = StartCoroutine(ReleaseRoutine(10*_tension));
         if (_tension < 0.9f) return;

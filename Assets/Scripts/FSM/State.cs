@@ -2,9 +2,16 @@
 
 public abstract class State
 {
-    public Action Run;
-    public virtual void Update() => Run?.Invoke();
-    public virtual void Enter() { }
-    public virtual void Exit() { }
-    public virtual void ReloadRun() { }
+    public Action Ticker;
+    public void Tick() => Ticker?.Invoke();
+    public virtual void Enter()
+    {
+        ResetTicker();
+        OnEnter();
+    }
+    public virtual void Exit() => OnExit();
+    public virtual void OnEnter() { }
+    public virtual void OnExit() { }
+    public virtual void OnTick() { }
+    protected void ResetTicker() => Ticker = OnTick;
 }

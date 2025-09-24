@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class ZhmyhIdleState : State
 {
     private ShiftAnimator _shiftAnimator;
@@ -10,7 +5,7 @@ public class ZhmyhIdleState : State
     {
         _shiftAnimator = shiftAnimator;
     }
-    public override void Enter()
+    public override void OnEnter()
     {
         _shiftAnimator.SetAnimation("idle");
     }

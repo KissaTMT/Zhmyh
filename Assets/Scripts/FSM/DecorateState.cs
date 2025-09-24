@@ -3,20 +3,38 @@ using System.Collections.Generic;
 
 public abstract class DecorateState : State
 {
-    public State BaseState => baseState;
-
-    protected State baseState;
+    public State BaseState { get; private set; }
 
     private Dictionary<State, Action> _overrides = new Dictionary<State, Action>();
 
-    public void SetBaseState(State baseState) => this.baseState = baseState;
-    public void AddOverride(State baseState, Action runOverride) => _overrides[baseState] = runOverride;
-    public void SetOverride() => baseState.Run = _overrides.ContainsKey(baseState) ? _overrides[baseState] : baseState.Run;
-    public override void Enter() => baseState.Run = SetOverride;
-    public override void Exit() => baseState.Run = baseState.ReloadRun;
-    public override void Update()
+    public void SetBaseState(State baseState)
     {
-        base.Update();
-        baseState.Update();
+        if(BaseState != null) Unsubscribe();
+
+        BaseState = baseState;
+
+        Subscribe();
+    }
+    public void AddOverride(State baseState, Action tickerOverride) => _overrides[baseState] = tickerOverride;
+    public override void Enter()
+    {
+        base.Enter();
+        Subscribe();
+    }
+    public override void Exit()
+    {
+        Unsubscribe();
+        base.Exit();
+    }
+    private Action SetOverride() => _overrides.ContainsKey(BaseState) ? _overrides[BaseState] : BaseState.Ticker;
+    private void Subscribe()
+    {
+        BaseState.Ticker = SetOverride();
+        Ticker += BaseState.Ticker;
+    }
+    private void Unsubscribe()
+    {
+        BaseState.Ticker = BaseState.OnTick;
+        ResetTicker();
     }
 }

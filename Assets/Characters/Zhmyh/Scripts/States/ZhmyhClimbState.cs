@@ -3,26 +3,24 @@ using UnityEngine;
 
 public class ZhmyhClimbState : State
 {
-    public ClimbController ClimbController => _climbController;
+    public SurfaceClimber ClimbController => _climbController;
     private Vector2 _direction;
-    private ClimbController _climbController;
+    private SurfaceClimber _climbController;
     private ShiftAnimator _shiftAnimator;
     public ZhmyhClimbState(Transform transform, ShiftAnimator shiftAnimator,Shifter shifter, float climbForce)
     {
-        _climbController = new ClimbController(transform.parent.parent, transform, climbForce);
+        _climbController = new SurfaceClimber(transform.parent.parent, transform, climbForce);
         _shiftAnimator = shiftAnimator;
-
-        Run += Climb;
     }
     public void SetDirection(Vector2 direction)
     {
         _direction = direction;
     }
-    public override void Enter()
+    public override void OnEnter()
     {
-        Run = ReloadRun;
+        Ticker = OnTick;
     }
-    public override void ReloadRun()
+    public override void OnTick()
     {
         Climb();
     }

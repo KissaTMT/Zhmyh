@@ -1,20 +1,37 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Linq;
+using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
+    [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private float _speed;
     private Transform _transform;
-    private Vector2 _target;
+    private Vector3 _target;
 
-    public void Init(Vector2 target)
+    public void Init(Vector3 target)
     {
         _transform = GetComponent<Transform>();
         _target = target;
+        StartCoroutine(DestroyRoutine());
     }
     private void Update()
     {
-        _transform.position = Vector3.MoveTowards(GetDirection(_transform.position), GetDirection(_target), _speed * Time.deltaTime);
-        if(Vector2.Distance(GetDirection(_transform.position), GetDirection(_target)) <0.01f) Destroy(gameObject);
+        _transform.position = Vector3.MoveTowards(_transform.position, _target, _speed * Time.deltaTime);
     }
-    private Vector3 GetDirection(Vector2 vector) => new Vector3(vector.x, _transform.position.y, vector.y);
+    private void OnTriggerEnter(Collider other)
+    {
+        var unit = other.GetComponentInParent<Zhmyh>();
+        if (unit)
+        {
+            unit.Health.Decrement();
+            Instantiate(_particleSystem, _transform.position, Quaternion.identity);
+        }
+        Destroy(gameObject);
+    }
+    private IEnumerator DestroyRoutine()
+    {
+        yield return new WaitForSeconds(3);
+        Destroy(gameObject);
+    }
 }

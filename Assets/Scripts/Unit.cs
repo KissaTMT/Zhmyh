@@ -1,18 +1,16 @@
-﻿using Unity.Cinemachine;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
-public class Unit : MonoBehaviour
+public abstract class Unit : MonoBehaviour
 {
-    private Transform _camera;
-    private Transform _root;
-    protected virtual void Awake()
+    public Dictionary<string, ReactiveProperty<float>> Properties => properties;
+    public Transform Transform => transform;
+    protected Dictionary<string, ReactiveProperty<float>> properties = new();
+    protected new Transform transform;
+    public virtual Unit Init()
     {
-        _camera = Camera.main.transform;
-        _root = transform.GetChild(0);
+        transform = GetComponent<Transform>();
+        return this;
     }
-    protected virtual void Update()
-    {
-        _root.localEulerAngles = _camera.eulerAngles;
-    }
+    public abstract void Tick();
 }

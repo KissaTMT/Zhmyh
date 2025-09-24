@@ -1,20 +1,16 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 public class InputHandler : IDisposable, IInput
 {
-    private const float SENSIVITY = 100f;
-    public event Action<Vector2> OnDirection;
-    public event Action<Vector2> OnAim;
-    public event Action<Vector2> OnAimDelta;
-    public event Action OnSpace;
-    public event Action OnShoot;
-    public event Action<bool> OnSetAim;
+    public event Action<Vector2> Direction;
+    public event Action<Vector2> Aiming;
+    public event Action Space;
+    public event Action<bool> SetPull;
+    public event Action<bool> SetAim;
     
 
-    private Mouse _virtualMouse;
     private InputActions _inputs;
 
     public InputHandler()
@@ -22,54 +18,42 @@ public class InputHandler : IDisposable, IInput
         _inputs = new InputActions();
         _inputs.Enable();
 
-        InitializeVirtualMouse();
-        InputState.Change(_virtualMouse.position, new Vector2(Screen.width/2,Screen.height/2));
-        InputSystem.onAfterUpdate += Update;
-
-        _inputs.Gameplay.Direction.performed += movement => OnDirection?.Invoke(movement.ReadValue<Vector2>());
-        _inputs.Gameplay.Direction.canceled += movement => OnDirection?.Invoke(Vector2.zero);
-        _inputs.Gameplay.Space.performed += space => OnSpace?.Invoke();
-        _inputs.Gameplay.Shoot.canceled += shoot => OnShoot?.Invoke();
-        _inputs.Gameplay.SetAim.started += setAim => OnSetAim?.Invoke(true);
-        _inputs.Gameplay.SetAim.canceled += setAim => OnSetAim?.Invoke(false);
+        _inputs.Gameplay.Direction.performed += DirectionHandle;
+        _inputs.Gameplay.Direction.canceled += ResetDirectionHandle;
+        _inputs.Gameplay.Space.performed += SpaceHandle;
+        _inputs.Gameplay.Pull.started += PullStartedHandle;
+        _inputs.Gameplay.Pull.canceled += PullCanceledHandle;
+        _inputs.Gameplay.SetAim.started += SetAimStartedHandle;
+        _inputs.Gameplay.SetAim.canceled += SetAimCanceledHandle;
+        _inputs.Gameplay.Aiming.performed += AimingHandle;
+        _inputs.Gameplay.Aiming.canceled += ResetAimingHandle;
     }
+
+    
+
     public void Dispose()
     {
-        InputSystem.onAfterUpdate -= Update;
-
-        _inputs.Gameplay.Direction.performed -= movement => OnDirection?.Invoke(movement.ReadValue<Vector2>());
-        _inputs.Gameplay.Direction.canceled -= movement => OnDirection?.Invoke(Vector2.zero);
-        _inputs.Gameplay.Space.performed -= space => OnSpace?.Invoke();
-        _inputs.Gameplay.Shoot.canceled -= shoot => OnShoot?.Invoke();
-        _inputs.Gameplay.SetAim.started -= setAim => OnSetAim?.Invoke(true);
-        _inputs.Gameplay.SetAim.canceled -= setAim => OnSetAim?.Invoke(false);
+        _inputs.Gameplay.Direction.performed -= DirectionHandle;
+        _inputs.Gameplay.Direction.canceled -= ResetDirectionHandle;
+        _inputs.Gameplay.Space.performed -= SpaceHandle;
+        _inputs.Gameplay.Pull.started -= PullStartedHandle;
+        _inputs.Gameplay.Pull.canceled -= PullCanceledHandle;
+        _inputs.Gameplay.SetAim.started -= SetAimStartedHandle;
+        _inputs.Gameplay.SetAim.canceled -= SetAimCanceledHandle;
+        _inputs.Gameplay.Aiming.performed -= AimingHandle;
+        _inputs.Gameplay.Aiming.canceled -= ResetAimingHandle;
 
         _inputs.Disable();
-        if (_virtualMouse != null) InputSystem.RemoveDevice(_virtualMouse);
+        _inputs?.Dispose();
     }
-    private void Update()
-    {
-        var delta = _inputs.Gameplay.Aim.ReadValue<Vector2>();
-        var position = _virtualMouse.position.ReadValue() + delta * Time.deltaTime * SENSIVITY;
+    private void DirectionHandle(InputAction.CallbackContext context) => Direction?.Invoke(context.ReadValue<Vector2>());
+    private void ResetDirectionHandle(InputAction.CallbackContext context) => Direction?.Invoke(Vector2.zero);
+    private void SpaceHandle(InputAction.CallbackContext context) => Space?.Invoke();
+    private void AimingHandle(InputAction.CallbackContext context) => Aiming?.Invoke(context.ReadValue<Vector2>());
+    private void ResetAimingHandle(InputAction.CallbackContext context) => Aiming?.Invoke(Vector2.zero);
+    private void PullStartedHandle(InputAction.CallbackContext context) => SetPull?.Invoke(true);
+    private void PullCanceledHandle(InputAction.CallbackContext context) => SetPull?.Invoke(false);
+    private void SetAimStartedHandle(InputAction.CallbackContext context) => SetAim?.Invoke(true);
+    private void SetAimCanceledHandle(InputAction.CallbackContext context) => SetAim?.Invoke(false);
 
-        position.x = Mathf.Clamp(position.x, 0, Screen.width);
-        position.y = Mathf.Clamp(position.y, 0, Screen.height);
-
-        InputState.Change(_virtualMouse.position, position);
-        InputState.Change(_virtualMouse.delta, delta);
-
-        OnAim?.Invoke(position);
-        OnAimDelta?.Invoke(delta);
-    }
-    private void InitializeVirtualMouse()
-    {
-        if (_virtualMouse == null)
-        {
-            _virtualMouse = InputSystem.AddDevice<Mouse>("VirtualMouse");
-        }
-        else if (!_virtualMouse.added)
-        {
-            InputSystem.AddDevice(_virtualMouse);
-        }
-    }
 }

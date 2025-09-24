@@ -6,10 +6,9 @@ public class Gniling : Unit
     [SerializeField] private float _speed;
     [SerializeField] private ShiftConfig[] _shiftConfigs;
     [SerializeField] private ShiftAnimation[] _shiftAnimations;
-    private Transform _transform;
     private Transform _target;
 
-    private IMovementController _movement;
+    private IMover _movement;
     private Shifter _shifter;
     private ShiftAnimator _shiftAnimator;
     private StateMachine _sm;
@@ -18,13 +17,14 @@ public class Gniling : Unit
     private Vector2 _facingDirection;
 
     [Inject]
-    public void Construct(Player player)
+    public void Construct(PlayerUnitBrian player)
     {
         _target = player.Transform;
     }
 
-    public Gniling Init()
+    public override Unit Init()
     {
+        base.Init();
         for (var i = 0; i < _shiftConfigs.Length; i++)
         {
             _shiftConfigs[i].Deserialize();
@@ -33,9 +33,9 @@ public class Gniling : Unit
         {
             _shiftAnimations[i].Deserialize();
         }
-        _transform = GetComponent<Transform>();
-        _movement = new NPhMovementController(_transform, _speed);
-        _shifter = new Shifter(_transform.GetChild(0), _shiftConfigs).SetPrimeShift();
+        transform = GetComponent<Transform>();
+        _movement = new DirectionalNotPhysicalMover(transform, _speed);
+        _shifter = new Shifter(transform.GetChild(0), _shiftConfigs).SetPrimeShift();
         _shiftAnimator = new ShiftAnimator(_shifter,_shiftAnimations);
 
         _shiftAnimator.SetAnimation("idle");
@@ -49,18 +49,22 @@ public class Gniling : Unit
     public void Move()
     {
         _shiftAnimator.SetAnimation("walk");
-        _movement.Move(_currentDirection);
+        _movement.Move(new Vector3(_currentDirection.x,0,_currentDirection.y));
         _shifter.Shift(_facingDirection);
     }
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         Init();
     }
-    protected override void Update()
+    private void Update()
     {
-        base.Update();
-        var delta = Vector2.zero;
+        Tick();
+    }
+
+    public override void Tick()
+    {
+        var delta = new Vector2(_target.position.x - transform.position.x, _target.position.z - transform.position.z);
+        delta = Vector2.zero;
         if (delta.magnitude > 25) delta.Normalize();
         else delta = Vector2.zero;
         SetDirection(delta);

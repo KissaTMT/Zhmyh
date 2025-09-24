@@ -158,3 +158,5 @@ MonoBehaviour:
       PositionKey: {x: -8.499999, y: 2.1599998}
       ScaleKey: {x: 1, y: 1}
       AngleKey: -16.320007
+  offset:
+  - Key: 

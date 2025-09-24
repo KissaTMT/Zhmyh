@@ -3,10 +3,9 @@ using UnityEngine;
 
 public interface IInput
 {
-    public event Action<Vector2> OnDirection;
-    public event Action<Vector2> OnAim;
-    public event Action<Vector2> OnAimDelta;
-    public event Action<bool> OnSetAim;
-    public event Action OnSpace;
-    public event Action OnShoot;
+    public event Action<Vector2> Direction;
+    public event Action<Vector2> Aiming;
+    public event Action Space;
+    public event Action<bool> SetAim;
+    public event Action<bool> SetPull;
 }

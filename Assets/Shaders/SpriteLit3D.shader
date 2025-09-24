@@ -15,8 +15,7 @@
         Cull Off
         ZTest LEqual
         ZWrite On
-        //Blend SrcAlpha OneMinusSrcAlpha
-        //Blend [_SrcBlend][_DstBlend]
+
         LOD 100
 
         Pass
@@ -40,7 +39,6 @@
             {
                 float4 positionOS : POSITION;
                 float2 uv : TEXCOORD0;
-                float3 normals : NORMAL;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -48,7 +46,7 @@
             {
                 float4 positionHCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
-                float3 normals : TEXCOORD1;
+                float2 rotatedUV : TEXCOORD1;
 
                 UNITY_VERTEX_INPUT_INSTANCE_ID
                 UNITY_VERTEX_OUTPUT_STEREO
@@ -69,19 +67,25 @@
                 UNITY_TRANSFER_INSTANCE_ID(IN, OUT);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
 
-                // Мировая позиция
-                float4 worldPos = mul(GetObjectToWorldMatrix(), IN.positionOS);
+                float4x4 objectToWorld = GetObjectToWorldMatrix();
 
-                // Плоская нормаль в -Z → переводим в мировое пространство
+                float4 worldPos = mul(objectToWorld, IN.positionOS);
+                
+                float2x2 rotationMatrix = float2x2(
+                    objectToWorld[0].x, objectToWorld[0].y,
+                    objectToWorld[1].x, objectToWorld[1].y
+                );
+                
+                float2 right = normalize(rotationMatrix[0]);
+                float2 up = normalize(rotationMatrix[1]);
+                rotationMatrix = float2x2(right, up);
+                
+                float2 centeredUV = IN.uv - 0.5;
 
-                float3 normalOS = float3(0,0,-1);
-                //float3 tangentOS = float3(1,0,0);
-
-                OUT.normals = normalOS;
-                // Преобразуем в пространство клипа
                 OUT.positionHCS = TransformWorldToHClip(worldPos.xyz);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
-
+                OUT.rotatedUV = mul(rotationMatrix, centeredUV) + 0.5;
+                
                 return OUT;
             }
 
@@ -91,17 +95,15 @@
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
                 float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
             
-                // Получаем направление главного источника света
                 Light mainLight = GetMainLight();
             
-                float3 normal = IN.normals;
-                float NdotL = max(0, dot(normal, mainLight.direction));
+                float3 lightNormals = float3(0,0,-1);
+                float NdotL = max(0, dot(lightNormals, mainLight.direction));
                 float3 lighting = mainLight.color.rgb * NdotL;
                 clip(texColor.a - _Cutoff);
-                float shade = max(IN.uv.y*1.5,0.4);
+                float shade = max(IN.rotatedUV.y*1.5,0.2);
             
-                //return float4(IN.uv,-normal.z,1);
-                return float4(texColor.rgb * lighting*shade, 1);
+                return float4(texColor.rgb * lighting * shade, 1);
             }
             ENDHLSL
         }

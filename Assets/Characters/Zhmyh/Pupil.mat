@@ -43,8 +43,8 @@ Material:
     - _Blob1Pos: {r: 0.35, g: 0.35, b: 0, a: 0}
     - _Blob2Pos: {r: 0.65, g: 0.65, b: 0, a: 0}
     - _GradientColor: {r: 0.3529412, g: 0.73333335, b: 0.9960785, a: 1}
-    - _GradientColor1: {r: 0.5415094, g: 0.92497414, b: 1, a: 1}
-    - _GradientColor2: {r: 0, g: 0.5921569, b: 0.74509805, a: 1}
+    - _GradientColor1: {r: 0.7660377, g: 0, b: 0.03647821, a: 1}
+    - _GradientColor2: {r: 0.49411765, g: 0, b: 0.023529412, a: 1}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
     - _Shine1Pos: {r: 0.25, g: 0.3, b: 0, a: 0}
     - _Shine2Pos: {r: 0.89, g: 0.7, b: 0, a: 0}

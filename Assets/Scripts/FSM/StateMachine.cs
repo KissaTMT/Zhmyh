@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 public class StateMachine
@@ -13,12 +12,11 @@ public class StateMachine
     private List<Transition> _anyTransitions = new List<Transition>();
     private static List<Transition> empty = new List<Transition>(0);
 
-    public void Update()
+    public void Tick()
     {
         var transition = GetTransition();
         if (transition != null) SetState(transition.To);
-
-        _currentState?.Update();
+        _currentState?.Tick();
     }
     public void SetState(State state)
     {
@@ -28,18 +26,12 @@ public class StateMachine
         {
             var baseState = decorate1.BaseState;
 
-            if (_transitions.TryGetValue(baseState.GetType(), out var baseTransitions))
+            if (_transitions.TryGetValue(baseState.GetType(), out var baseTransitions) && baseTransitions.Exists(i => i.To == state))
             {
-                foreach (var transition in baseTransitions)
-                {
-                    if (transition.To == state)
-                    {
-                        baseState.Exit();
-                        decorate1.SetBaseState(state);
-                        state.Enter();
-                        return;
-                    }
-                }
+                baseState.Exit();
+                decorate1.SetBaseState(state);
+                state.Enter();
+                return;
             }
             _currentState.Exit();
             _currentState = state;
@@ -79,23 +71,23 @@ public class StateMachine
     public void AddAnyTransition(State to, Func<bool> predicate) => _anyTransitions.Add(new Transition(to, predicate));
     private Transition GetTransition()
     {
-        foreach (var transition in _anyTransitions)
+        for (var i = 0; i < _anyTransitions.Count;i++)
         {
-            if (transition.Condition()) return transition;
+            if (_anyTransitions[i].Condition()) return _anyTransitions[i];
         }
 
-        foreach (var transition in _currentTransitions)
+        for (var i = 0; i < _currentTransitions.Count; i++)
         {
-            if (transition.Condition()) return transition;
+            if (_currentTransitions[i].Condition()) return _currentTransitions[i];
         }
 
         if (_currentState is DecorateState decorate)
         {
             if (_transitions.TryGetValue(decorate.BaseState.GetType(), out var baseTransitions))
             {
-                foreach (var transition in baseTransitions)
+                for (var i = 0; i < baseTransitions.Count; i++)
                 {
-                    if (transition.Condition()) return transition;
+                    if (baseTransitions[i].Condition()) return baseTransitions[i];
                 }
             }
         }
@@ -104,8 +96,8 @@ public class StateMachine
     }
     private class Transition
     {
-        public Func<bool> Condition { get; }
-        public State To { get; }
+        public readonly Func<bool> Condition;
+        public readonly State To;
 
         public Transition(State to, Func<bool> condition)
         {

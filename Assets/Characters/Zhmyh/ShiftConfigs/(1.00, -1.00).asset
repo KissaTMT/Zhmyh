@@ -219,14 +219,12 @@ MonoBehaviour:
       Scale: {x: 1, y: 1, z: 1}
       Angle: 0
   _shiftVisualData:
-  - Key: Head
-    Value: {fileID: 21300000, guid: 9869630a92e6e2e4ea4f81850c3e52f6, type: 3}
   - Key: Face
     Value: {fileID: 21300000, guid: 6406201dc54da5d4f9a762dc229ba064, type: 3}
   - Key: Right hear
     Value: {fileID: 21300000, guid: 848125d9d3e99a5448498280f113ebf1, type: 3}
   - Key: Left hear
-    Value: {fileID: 21300000, guid: 0d5443597384fa641aa69a08ad7fff0d, type: 3}
+    Value: {fileID: 21300000, guid: b1b38558a94b4b5408bc66533d1ab8cf, type: 3}
   - Key: Left eye
     Value: {fileID: 21300000, guid: 9b5434f25133c094780121ab8c10b12a, type: 3}
   - Key: Right eye
@@ -238,7 +236,7 @@ MonoBehaviour:
   - Key: Back hair
     Value: {fileID: 21300000, guid: 61a74049217e3dd41bba872019269a4b, type: 3}
   - Key: Front Hair
-    Value: {fileID: 21300000, guid: 8e4adcca4852a2749aff06d971906b5a, type: 3}
+    Value: {fileID: 21300000, guid: 42d8bd0985e48504c83038a752ce6e0f, type: 3}
   - Key: Body
     Value: {fileID: 21300000, guid: 26b2307a14816b14785a8d82802ae70b, type: 3}
   - Key: tie
@@ -250,7 +248,7 @@ MonoBehaviour:
   - Key: Handle bow
     Value: {fileID: 21300000, guid: 2c87790d4ab82d04fa2ba1b6691ebb25, type: 3}
   - Key: tail
-    Value: {fileID: 21300000, guid: c9299136b57905146b77fe7b4ed285ec, type: 3}
+    Value: {fileID: 21300000, guid: 700904ec1e45d2643a735512afaed065, type: 3}
   - Key: Left leg
     Value: {fileID: 21300000, guid: 09fe0b1214174674aa2df0ee7fc51256, type: 3}
   - Key: Right leg

@@ -1,27 +1,37 @@
-using NaughtyAttributes;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
-using UnityEngine;
-using static UnityEngine.Rendering.STP;
-
 #if UNITY_EDITOR
-public class ShiftBuilder : MonoBehaviour
+using System.Linq;
+using UnityEngine;
+public class ShiftBuilder
 {
-    [SerializeField] private Vector2 _direction;
-    [SerializeField] private ShiftConfig _preview;
+    private Transform _root;
+    private Vector2 _direction;
 
-    [Button("Build Config")]
-    private void BuildConfig()
+    public void SetRoot(Transform root)
     {
-        var children = GetComponentsInChildren<Transform>().ToList();
+        if(root == null)
+        {
+            Debug.LogWarning("Root is null");
+            return;
+        }
+        _root = root;
+    }
+    public ShiftConfig BuildConfig()
+    {
+        if (_root == null)
+        {
+            Debug.LogWarning("Root is null");
+            return null;
+        }
+        var children = _root.GetComponentsInChildren<Transform>().ToList();
 
-        if (children == null || children.Count == 0) return;
-        var assetPath = $"Assets/Characters/{transform.parent.name}/ShiftConfigs/{_direction}.asset";
+        if (children == null || children.Count == 0)
+        {
+            Debug.LogWarning($"Warning! Children is {children}, children count: {children.Count}");
+            return null;
+        }
         var config = ScriptableObject.CreateInstance<ShiftConfig>();
 
-        children.Remove(transform);
+        children.Remove(_root);
 
         config.Direction = _direction;
         for (var i = 0; i < children.Count; i++)
@@ -34,16 +44,22 @@ public class ShiftBuilder : MonoBehaviour
             if (child.TryGetComponent(out SpriteRenderer renderer)) config.ShiftVisualData[child.name] = renderer.sprite;
         }
         config.Serialize();
-        if(AssetDatabase.LoadAssetAtPath<ShiftConfig>(assetPath)) AssetDatabase.DeleteAsset(assetPath);
-        AssetDatabase.CreateAsset(config, assetPath);
-        AssetDatabase.SaveAssets();
-        _preview = config;
+        return config;
     }
-    [Button("Preview Config")]
-    private void PrewiewConfig()
+    public void PrewiewConfig(ShiftConfig config)
     {
-        _preview.Deserialize();
-        new Shifter(transform, new ShiftConfig[] { _preview }).SetPrimeShift();
+        if(config == null)
+        {
+            Debug.LogWarning("Config is null");
+            return;
+        }
+        if (_root == null)
+        {
+            Debug.LogWarning("Root is null");
+            return;
+        }
+        config.Deserialize();
+        new Shifter(_root, new ShiftConfig[] { config }).SetPrimeShift();
     }
 }
 #endif
