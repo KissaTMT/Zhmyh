@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Cursor : MonoBehaviour
 {
-    public const float SENSIVITY = 100f;
+    public const float SENSIVITY = 80f;
     public Vector2 ScreenPosition => _cashedPosition;
 
     [SerializeField] private float _rotationSpeed;
@@ -31,14 +31,15 @@ public class Cursor : MonoBehaviour
         _cashedPosition = new Vector2(Screen.width / 2, Screen.height / 2);
         SetAim(false);
 
-        _input.Aiming += SetDelta;
-        _input.SetAim += SetAim;
+        _input.InitAiming += SetAim;
     }
     public void Tick()
     {
         if (_locked) return;
 
         _rectTransform.Rotate(0, 0, -_rotationSpeed * Time.deltaTime);
+
+        _delta = _input.GetAiming();
 
         if (_delta == Vector2.zero) return;
 
@@ -53,12 +54,7 @@ public class Cursor : MonoBehaviour
     }
     private void OnDisable()
     {
-        _input.Aiming -= SetDelta;
-        _input.SetAim -= SetAim;
-    }
-    private void SetDelta(Vector2 delta)
-    {
-        _delta = delta;
+        _input.InitAiming -= SetAim;
     }
     private Vector2 CalculateAuchorPosition()
     {

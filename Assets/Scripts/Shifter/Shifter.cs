@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Shifter
 {
-    public static readonly Vector2[] directions = { Vector2.right, Vector2.left, new Vector2(1, 1), new Vector2(-1, -1), new Vector2(1, -1), new Vector2(-1, 1) };
+    public static readonly Vector2[] directions = { Vector2.right, Vector2.left, Vector2.up, Vector2.down, new Vector2(1, 1), new Vector2(-1, -1), new Vector2(1, -1), new Vector2(-1, 1) };
     public IReadOnlyDictionary<string, ShiftNode> ShiftNodes => _shiftNodes;
     public Vector2 CurrentDirection => _currentDirection;
     public Transform Root => _root;
@@ -43,17 +43,16 @@ public class Shifter
 
         var closestDirection = GetClosestDirection(direction.normalized);
 
-        if (closestDirection == _currentDirection) return;
+        if ((closestDirection - _currentDirection).sqrMagnitude < 0.1f) return;
 
         foreach (var key in _shiftNodes.Keys)
         {
             var node = _shiftNodes[key];
             if (node.Enabled) node.Shift(closestDirection);
         }
+        Debug.Log($"shift {closestDirection}");
 
         OnShift?.Invoke(closestDirection);
-
-        if (direction == Vector2.zero) return;
 
         _currentDirection = closestDirection;
     }

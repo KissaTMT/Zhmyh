@@ -33,7 +33,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Pull",
+                    "name": "Pulling",
                     "type": "Button",
                     "id": "b73d0c62-708c-46a4-a754-3ce335e675a3",
                     "expectedControlType": "",
@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SetAim",
+                    "name": "InitAiming",
                     "type": "Button",
                     "id": "5deac793-c821-46cb-a4fa-2811601ca700",
                     "expectedControlType": "",
@@ -169,7 +169,7 @@
                     "interactions": "Hold",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Pull",
+                    "action": "Pulling",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -180,7 +180,7 @@
                     "interactions": "Hold",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Pull",
+                    "action": "Pulling",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -191,7 +191,7 @@
                     "interactions": "Hold",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "SetAim",
+                    "action": "InitAiming",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -202,7 +202,7 @@
                     "interactions": "Hold",
                     "processors": "",
                     "groups": ";Keyboard",
-                    "action": "SetAim",
+                    "action": "InitAiming",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

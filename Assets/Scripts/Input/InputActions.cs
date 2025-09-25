@@ -119,7 +119,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Pull"",
+                    ""name"": ""Pulling"",
                     ""type"": ""Button"",
                     ""id"": ""b73d0c62-708c-46a4-a754-3ce335e675a3"",
                     ""expectedControlType"": """",
@@ -128,7 +128,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SetAim"",
+                    ""name"": ""InitAiming"",
                     ""type"": ""Button"",
                     ""id"": ""5deac793-c821-46cb-a4fa-2811601ca700"",
                     ""expectedControlType"": """",
@@ -255,7 +255,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Pull"",
+                    ""action"": ""Pulling"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -266,7 +266,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Pull"",
+                    ""action"": ""Pulling"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -277,7 +277,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""SetAim"",
+                    ""action"": ""InitAiming"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -288,7 +288,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
-                    ""action"": ""SetAim"",
+                    ""action"": ""InitAiming"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -330,8 +330,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_Direction = m_Gameplay.FindAction("Direction", throwIfNotFound: true);
         m_Gameplay_Space = m_Gameplay.FindAction("Space", throwIfNotFound: true);
         m_Gameplay_Aiming = m_Gameplay.FindAction("Aiming", throwIfNotFound: true);
-        m_Gameplay_Pull = m_Gameplay.FindAction("Pull", throwIfNotFound: true);
-        m_Gameplay_SetAim = m_Gameplay.FindAction("SetAim", throwIfNotFound: true);
+        m_Gameplay_Pulling = m_Gameplay.FindAction("Pulling", throwIfNotFound: true);
+        m_Gameplay_InitAiming = m_Gameplay.FindAction("InitAiming", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -415,8 +415,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Direction;
     private readonly InputAction m_Gameplay_Space;
     private readonly InputAction m_Gameplay_Aiming;
-    private readonly InputAction m_Gameplay_Pull;
-    private readonly InputAction m_Gameplay_SetAim;
+    private readonly InputAction m_Gameplay_Pulling;
+    private readonly InputAction m_Gameplay_InitAiming;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -441,13 +441,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Aiming => m_Wrapper.m_Gameplay_Aiming;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Pull".
+        /// Provides access to the underlying input action "Gameplay/Pulling".
         /// </summary>
-        public InputAction @Pull => m_Wrapper.m_Gameplay_Pull;
+        public InputAction @Pulling => m_Wrapper.m_Gameplay_Pulling;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/SetAim".
+        /// Provides access to the underlying input action "Gameplay/InitAiming".
         /// </summary>
-        public InputAction @SetAim => m_Wrapper.m_Gameplay_SetAim;
+        public InputAction @InitAiming => m_Wrapper.m_Gameplay_InitAiming;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -483,12 +483,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Aiming.started += instance.OnAiming;
             @Aiming.performed += instance.OnAiming;
             @Aiming.canceled += instance.OnAiming;
-            @Pull.started += instance.OnPull;
-            @Pull.performed += instance.OnPull;
-            @Pull.canceled += instance.OnPull;
-            @SetAim.started += instance.OnSetAim;
-            @SetAim.performed += instance.OnSetAim;
-            @SetAim.canceled += instance.OnSetAim;
+            @Pulling.started += instance.OnPulling;
+            @Pulling.performed += instance.OnPulling;
+            @Pulling.canceled += instance.OnPulling;
+            @InitAiming.started += instance.OnInitAiming;
+            @InitAiming.performed += instance.OnInitAiming;
+            @InitAiming.canceled += instance.OnInitAiming;
         }
 
         /// <summary>
@@ -509,12 +509,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Aiming.started -= instance.OnAiming;
             @Aiming.performed -= instance.OnAiming;
             @Aiming.canceled -= instance.OnAiming;
-            @Pull.started -= instance.OnPull;
-            @Pull.performed -= instance.OnPull;
-            @Pull.canceled -= instance.OnPull;
-            @SetAim.started -= instance.OnSetAim;
-            @SetAim.performed -= instance.OnSetAim;
-            @SetAim.canceled -= instance.OnSetAim;
+            @Pulling.started -= instance.OnPulling;
+            @Pulling.performed -= instance.OnPulling;
+            @Pulling.canceled -= instance.OnPulling;
+            @InitAiming.started -= instance.OnInitAiming;
+            @InitAiming.performed -= instance.OnInitAiming;
+            @InitAiming.canceled -= instance.OnInitAiming;
         }
 
         /// <summary>
@@ -603,18 +603,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAiming(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Pull" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Pulling" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPull(InputAction.CallbackContext context);
+        void OnPulling(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "SetAim" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "InitAiming" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSetAim(InputAction.CallbackContext context);
+        void OnInitAiming(InputAction.CallbackContext context);
     }
 }

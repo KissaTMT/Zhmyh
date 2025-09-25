@@ -15,6 +15,8 @@ public class PlayerUnitBrian : MonoBehaviour, IBrian
     private IInput _input;
     private Vector2 _inputDirection;
     private Vector2 _cashedAimPosition;
+    private Vector2 _cashedScreenPoint;
+
 
     [Inject]
     public void Construct(IInput input, Cursor cursor)
@@ -22,10 +24,9 @@ public class PlayerUnitBrian : MonoBehaviour, IBrian
         _input = input;
         _cursor = cursor;
 
-        _input.Direction += SetDirection;
         _input.Space += Space;
-        _input.SetPull += SetPull;
-        _input.SetAim += SetAim;
+        _input.Pulling += SetPull;
+        _input.InitAiming += SetAim;
     }
     public void Init()
     {
@@ -33,22 +34,21 @@ public class PlayerUnitBrian : MonoBehaviour, IBrian
         _cursor.Init(_input);
         _cameraMain = Camera.main;
         _cameraTransform = _cameraMain.GetComponent<Transform>();
-        _cashedAimPosition = new Vector2(Screen.width / 2, Screen.height / 2);
     }
     private void OnDisable()
     {
-        _input.Direction -= SetDirection;
         _input.Space -= Space;
-        _input.SetPull -= SetPull;
-        _input.SetAim -= SetAim;
+        _input.Pulling -= SetPull;
+        _input.InitAiming -= SetAim;
     }
 
     private void SetAim(bool isAiming) => _unit.SetAim(isAiming);
     private void SetPull(bool isPull) => _unit.Pull(isPull);
-    private void SetDirection(Vector2 delta) => _inputDirection = delta;
     private void Space() => _unit.Dash();
     private Vector3 CalculateMovementDirection()
     {
+        _inputDirection = _input.GetDirection();
+
         var angle = _cameraTransform.eulerAngles.y * Mathf.Deg2Rad;
 
         var cos = Mathf.Cos(angle);
@@ -63,9 +63,8 @@ public class PlayerUnitBrian : MonoBehaviour, IBrian
     {
         _cashedAimPosition = _cursor.ScreenPosition;
 
-        var screenPoint = _cameraMain.WorldToScreenPoint(_unit.Transform.position);
-        var delta = _cashedAimPosition - (Vector2)screenPoint;
-        return delta;
+        _cashedScreenPoint = _cameraMain.WorldToScreenPoint(_unit.Transform.position);
+        return _cashedAimPosition - _cashedScreenPoint;
     }
     private void Update()
     {

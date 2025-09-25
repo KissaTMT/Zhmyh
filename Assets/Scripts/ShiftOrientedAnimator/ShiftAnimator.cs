@@ -61,10 +61,18 @@ public class ShiftAnimator : IDisposable
         _animationProgress = (_animationProgress + Time.deltaTime * _animations[_currentAnimation].PlaybackSpeed) % 1;
         nodes.Where(node => node.Enabled).ToList().ForEach(node => node.Animate(_animationProgress,_currentDirection));
     }
-    public void SetDirection(Vector2 direction)
+    public void SetDirection(Vector3 direction)
     {
-        if(direction == Vector2.zero) return;
-        _currentDirection = Shifter.GetClosestDirection(direction);
+        if(direction == Vector3.zero) return;
+        var rotation = _shifter.Root.localEulerAngles.y * Mathf.Deg2Rad;
+
+        var cos = Mathf.Cos(rotation);
+        var sin = Mathf.Sin(rotation);
+
+        var x = direction.x * cos - direction.z * sin;
+        var y = direction.x * sin + direction.z * cos;
+
+        _currentDirection = Shifter.GetClosestDirection(new Vector2(x, y));
     }
     public void SetAnimation(string name)
     {
@@ -81,4 +89,5 @@ public class ShiftAnimator : IDisposable
     {
         if (_nodes.TryGetValue(Shifter.GetPath(node), out var animationNode)) animationNode.Enabled = false;
     }
+
 }

@@ -58,7 +58,7 @@ public class Zhmyh : Unit
 
         _sm = new StateMachine();
 
-        _idleState = new ZhmyhIdleState(_shiftAnimator);
+        _idleState = new ZhmyhIdleState(_shifter,_shiftAnimator);
         _movementState = new ZhmyhMovementState(transform, _shiftAnimator, _shifter, _movementSpeed);
         _climbState = new ZhmyhClimbState(_body, _shiftAnimator, _shifter, _climbSpeed);
         _aimingState = new ZhmyhAimingState(this, transform, _rightHand, _leftHand, _bow, _shifter);
@@ -68,7 +68,7 @@ public class Zhmyh : Unit
         _sm.AddTransition(_movementState, _idleState, () => _movementDirection.sqrMagnitude < 0.01f);
         _sm.AddAnyTransition(_climbState, () => _isClimbing == true);
         _sm.AddTransition(_climbState, _idleState, () => _isClimbing == false);
-        _sm.AddTransition(_idleState, _aimingState, () => _isAiming == true);
+        _sm.AddTransition(_idleState, _aimingState, () => _isAiming == true, () => { });
         _sm.AddTransition(_movementState, _aimingState, () => _isAiming == true, _movementState.Move);
         _sm.AddTransition(_aimingState, _movementState, () => _isAiming == false && _movementDirection.sqrMagnitude > 0.01f);
         _sm.AddTransition(_aimingState, _idleState, () => _isAiming == false && _movementDirection.sqrMagnitude < 0.01f);
@@ -86,8 +86,7 @@ public class Zhmyh : Unit
 
     private void HealthHandle(float health)
     {
-        Debug.Log($"{this} {health}");
-        if (health == 0) Debug.Log($"{this} is fucking dead");
+
     }
 
     public override void Tick()
@@ -101,6 +100,7 @@ public class Zhmyh : Unit
         if(_movementDirection == input) return;
         _movementDirection = input;
 
+        _idleState.SetDirection(_movementDirection);
         _movementState.SetDirection(_movementDirection);
         _climbState.SetDirection(_movementDirection);
         _dashState.SetDirection(_movementDirection);

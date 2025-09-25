@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags: []
   layers:
   - Default
@@ -38,15 +38,17 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: UI
+    uniqueID: 1011701313
+    locked: 0
   - name: Water
     uniqueID: 734501303
     locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: UI
-    uniqueID: 1011701313
-    locked: 0
   - name: Overlapping light
     uniqueID: 3852808893
     locked: 0
+  m_RenderingLayers:
+  - Default

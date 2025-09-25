@@ -23,8 +23,7 @@ public class CameraControllerMono : MonoBehaviour
         _player = player;
         _input = input;
 
-        _input.Aiming += SetDelta;
-        _input.SetAim += SetLock;
+        _input.InitAiming += SetLock;
     }
 
     private void Awake()
@@ -38,10 +37,8 @@ public class CameraControllerMono : MonoBehaviour
     }
     private void OnDisable()
     {
-        _input.Aiming -= SetDelta;
-        _input.SetAim -= SetLock;
+        _input.InitAiming -= SetLock;
     }
-    private void SetDelta(Vector2 delta) => _delta = delta;
     private void SetLock(bool locked)
     {
         _locked = locked;
@@ -74,6 +71,7 @@ public class CameraControllerMono : MonoBehaviour
     //}
     private void LateUpdate()
     {
+        _delta = _input.GetAiming();
         if (_locked || _delta == Vector2.zero) return;
         Rotate(_delta.x);
     }
