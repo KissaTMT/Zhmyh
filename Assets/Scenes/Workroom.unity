@@ -178,11 +178,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4771331841776109521, guid: 334ef682774979d41b8cd138d14c86bd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5390751634335189511, guid: 334ef682774979d41b8cd138d14c86bd, type: 3}
       propertyPath: _movementSpeed
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185915829403730746, guid: 334ef682774979d41b8cd138d14c86bd, type: 3}
+      propertyPath: m_Height
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8939994548786194394, guid: 334ef682774979d41b8cd138d14c86bd, type: 3}
       propertyPath: m_LocalRotation.w

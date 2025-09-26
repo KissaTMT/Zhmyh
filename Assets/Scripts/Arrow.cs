@@ -1,33 +1,48 @@
 ﻿using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
+    [SerializeField] private LayerMask _layerMask;
     [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private float _speed;
+    private Collider[] _buffer;
     private Transform _transform;
-    private Vector3 _target;
+    private Vector3 _destination;
+    private Vector3 _source;
+    private Vector3 _delta;
+    
 
-    public void Init(Vector3 target)
+    public void Init(Vector3 destination)
     {
         _transform = GetComponent<Transform>();
-        _target = target;
+        _source = _transform.position;
+        _destination = destination;
+        _delta = (_destination - _source).normalized;
+        _buffer = new Collider[4];
         StartCoroutine(DestroyRoutine());
     }
     private void Update()
     {
-        _transform.position = Vector3.MoveTowards(_transform.position, _target, _speed * Time.deltaTime);
+        _transform.position = Vector3.MoveTowards(_transform.position, _destination, _speed * Time.deltaTime);
+        if(Time.frameCount % 6 == 0) CheckCollisions();
     }
-    private void OnTriggerEnter(Collider other)
+    private void CheckCollisions()
     {
-        var unit = other.GetComponentInParent<Zhmyh>();
-        if (unit)
+        var hitCount = Physics.OverlapSphereNonAlloc(_transform.position, 0.2f, _buffer, _layerMask);
+
+        for (int i = 0; i < hitCount; i++)
         {
-            unit.Health.Decrement();
-            Instantiate(_particleSystem, _transform.position, Quaternion.identity);
+            var unit = _buffer[i].transform.GetComponentInParent<Zhmyh>();
+            if (unit != null)
+            {
+                var point = _buffer[i].bounds.center - _delta * _buffer[i].bounds.size.x * 0.75f;
+                unit.Health.Decrement();
+                Instantiate(_particleSystem, point, Quaternion.identity);
+                Destroy(gameObject);
+                break;
+            }
         }
-        Destroy(gameObject);
     }
     private IEnumerator DestroyRoutine()
     {

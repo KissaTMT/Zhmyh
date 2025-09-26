@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3779659124126430429}
   - component: {fileID: 8319093147674023733}
   - component: {fileID: 1690754141569720372}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,8 +110,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 12
-  m_Height: 1
+  m_Radius: 16
+  m_Height: 0
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &160373858336845700
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 4813183242077031810}
   - component: {fileID: 734586837919648027}
   - component: {fileID: 5159097531730103786}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Right leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,10 +221,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3
-  m_Height: 1
+  m_Radius: 4
+  m_Height: 0
   m_Direction: 1
-  m_Center: {x: 0.000030517578, y: 0.000015258789, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &370823162271633528
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +235,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1459837598135857368}
   - component: {fileID: 6789621600696999078}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Right hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,8 +277,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4
-  m_Height: 1
+  m_Radius: 6
+  m_Height: 0
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &572573767946886527
@@ -466,7 +466,7 @@ GameObject:
   - component: {fileID: 8473482840564540994}
   - component: {fileID: 7844797621830383765}
   - component: {fileID: 4603048185862365228}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Left leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -562,10 +562,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3
-  m_Height: 1
+  m_Radius: 4
+  m_Height: 0
   m_Direction: 1
-  m_Center: {x: 0, y: 0.000015258789, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2585578718056998120
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,7 +577,7 @@ GameObject:
   - component: {fileID: 2030328887986073123}
   - component: {fileID: 8953788070614673931}
   - component: {fileID: 5509728107423026666}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Right hear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -673,10 +673,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 12
-  m_Height: 1
+  m_Radius: 16
+  m_Height: 0
   m_Direction: 1
-  m_Center: {x: 0, y: 0.000015258789, z: -0.000061035156}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2612265163744919898
 GameObject:
   m_ObjectHideFlags: 0
@@ -1843,7 +1843,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3482263887965403985}
   - component: {fileID: 866735869363918800}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Left hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1885,8 +1885,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4
-  m_Height: 1
+  m_Radius: 6
+  m_Height: 0
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7150156220939065563
@@ -2167,7 +2167,7 @@ GameObject:
   - component: {fileID: 3113980708861197803}
   - component: {fileID: 5363761880244749585}
   - component: {fileID: 5754696471153749179}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Left hear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2263,10 +2263,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 10
-  m_Height: 1
+  m_Radius: 14
+  m_Height: 0
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: -0.000061035156}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7664080542102244691
 GameObject:
   m_ObjectHideFlags: 0
@@ -2451,7 +2451,7 @@ GameObject:
   m_Component:
   - component: {fileID: 316650229565425156}
   - component: {fileID: 7185915829403730746}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2499,8 +2499,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 24
-  m_Height: 1
+  m_Radius: 28
+  m_Height: 0
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8500860325922938117

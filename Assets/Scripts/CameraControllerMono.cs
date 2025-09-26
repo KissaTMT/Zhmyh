@@ -1,14 +1,16 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using Zenject;
 
 public class CameraControllerMono : MonoBehaviour
 {
-    private const float SENSIVITY = 10;
+    private const float SENSITIVITY = 10;
+    private const float ROTATION_DURATION = 0.3f;
+
     public Transform Transform => _cinemachineCamera.transform;
     private CinemachineCamera _cinemachineCamera;
     private CinemachineFollow _cinemachineFollow;
-    private PlayerUnitBrian _player;
     private Zhmyh _unit;
     private IInput _input;
 
@@ -20,34 +22,47 @@ public class CameraControllerMono : MonoBehaviour
     [Inject]
     public void Construct(IInput input, PlayerUnitBrian player)
     {
-        _player = player;
+        _unit = player.Unit as Zhmyh;
         _input = input;
-
-        _input.InitAiming += SetLock;
+        _input.InitAiming += SetAimming;
     }
 
     private void Awake()
     {
         _cinemachineCamera = GetComponent<CinemachineCamera>();
         _cinemachineFollow = GetComponent<CinemachineFollow>();
-        _cinemachineCamera.Follow = _player.Transform;
-        _unit = _player.Unit as Zhmyh;
-
+        _cinemachineCamera.Follow = _unit.Transform;
         _mainOffset = _cinemachineFollow.FollowOffset;
     }
+
     private void OnDisable()
     {
-        _input.InitAiming -= SetLock;
+        _input.InitAiming -= SetAimming;
     }
-    private void SetLock(bool locked)
+
+    private void SetAimming(bool aim)
     {
-        _locked = locked;
-        //if(_locked) _rotateRoutine = StartCoroutine(RotateToRoutine());
-        //else StopCoroutine(_rotateRoutine);
+        if (aim)
+        {
+            _locked = true;
+            if (_rotateRoutine != null) StopCoroutine(_rotateRoutine);
+            _rotateRoutine = StartCoroutine(RotateToRoutine());
+        }
+        else
+        {
+            if (_rotateRoutine != null) StopCoroutine(_rotateRoutine);
+            _locked = false;
+        }
     }
+
     private void Rotate(float delta)
     {
-        _cinemachineCamera.transform.RotateAround(_player.Transform.position, Vector3.up, delta * SENSIVITY * Time.deltaTime);
+        _cinemachineCamera.transform.RotateAround(_unit.Transform.position, Vector3.up, delta * SENSITIVITY * Time.deltaTime);
+        UpdateFollowOffset();
+    }
+
+    private void UpdateFollowOffset()
+    {
         var angle = _cinemachineCamera.transform.eulerAngles.y * Mathf.Deg2Rad;
         var cos = Mathf.Cos(angle);
         var sin = Mathf.Sin(angle);
@@ -55,20 +70,55 @@ public class CameraControllerMono : MonoBehaviour
             cos * _mainOffset.x + sin * _mainOffset.z,
             _mainOffset.y,
             -sin * _mainOffset.x + cos * _mainOffset.z);
-        
     }
-    //private IEnumerator RotateToRoutine()
-    //{
-    //    var angle = 0f;
-    //    while (Mathf.Abs(_cinemachineCamera.transform.eulerAngles.y - angle) > 2f)
-    //    {
-    //        Rotate(20);
-    //        yield return null;
-    //    }
-    //    _cinemachineCamera.transform.eulerAngles = new Vector3(_cinemachineCamera.transform.eulerAngles.x, 
-    //        angle, 
-    //        _cinemachineCamera.transform.eulerAngles.z);
-    //}
+
+    private IEnumerator RotateToRoutine()
+    {
+        _locked = true;
+
+        var cameraForward = _cinemachineCamera.transform.forward;
+        cameraForward.y = 0;
+        cameraForward.Normalize();
+
+        var unitForward = _unit.NotZeroMovementDirection;
+        unitForward.y = 0;
+        unitForward.Normalize();
+
+        var dot = Vector3.Dot(cameraForward, unitForward);
+
+        dot = Mathf.Clamp(dot, -1f, 1f);
+
+        var angleBetween = Mathf.Acos(dot) * Mathf.Rad2Deg;
+
+        var cross = Vector3.Cross(cameraForward, unitForward);
+        var direction = Mathf.Sign(cross.y);
+
+        var targetAngle = _cinemachineCamera.transform.eulerAngles.y + angleBetween * direction;
+
+        var startAngle = _cinemachineCamera.transform.eulerAngles.y;
+        var elapsedTime = 0f;
+
+        while (elapsedTime < ROTATION_DURATION)
+        {
+            elapsedTime += Time.deltaTime;
+            var t = elapsedTime / ROTATION_DURATION;
+
+            var currentAngle = Mathf.LerpAngle(startAngle, targetAngle, t);
+
+            _cinemachineCamera.transform.rotation = Quaternion.Euler(
+                _cinemachineCamera.transform.eulerAngles.x,
+                currentAngle,
+                _cinemachineCamera.transform.eulerAngles.z);
+
+            UpdateFollowOffset();
+            yield return null;
+        }
+        _cinemachineCamera.transform.rotation = Quaternion.Euler(30f, targetAngle, 0f);
+        UpdateFollowOffset();
+
+        _locked = false;
+    }
+
     private void LateUpdate()
     {
         _delta = _input.GetAiming();
@@ -76,4 +126,3 @@ public class CameraControllerMono : MonoBehaviour
         Rotate(_delta.x);
     }
 }
-

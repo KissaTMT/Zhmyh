@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,7 +5,10 @@ public class Zhmyh : Unit
 {
     public State CurrentState => _sm.CurrentState;
     public Health Health => _health;
-    public Vector2 LookDirection => _lookDirection;
+    public Vector2 CurrentShiftDirection => _shifter.CurrentDirection;
+    public Transform Root => _root;
+    public Vector2 NotZeroLookDirection {get;private set;}
+    public Vector3 NotZeroMovementDirection { get;private set;}
 
     [SerializeField] private float _maxHealth;
     [SerializeField] private float _movementSpeed;
@@ -26,10 +28,11 @@ public class Zhmyh : Unit
     private ShiftAnimator _shiftAnimator;
     private StateMachine _sm;
 
+    private Transform _root;
     private Health _health;
 
     private Vector3 _movementDirection = Vector3.zero;
-    private Vector2 _lookDirection = Vector3.zero;
+    private Vector2 _lookDirection = Vector2.zero;
 
     private bool _isClimbing = false;
     private bool _isAiming = false;
@@ -52,7 +55,9 @@ public class Zhmyh : Unit
             _shiftAnimations[i].Deserialize();
         }
 
-        _shifter = new Shifter(transform.GetChild(0), _shiftConfigs).SetPrimeShift();
+        _root = transform.GetChild(0);
+
+        _shifter = new Shifter(_root, _shiftConfigs).SetPrimeShift();
         _shiftAnimator = new ShiftAnimator(_shifter, _shiftAnimations);
         _shiftAnimator.SetDirection(new Vector2(1, -1));
 
@@ -81,12 +86,15 @@ public class Zhmyh : Unit
         _health = new Health(_maxHealth);
         _health.Current.OnChanged += HealthHandle;
 
+        NotZeroMovementDirection = _shifter.CurrentDirection;
+        NotZeroLookDirection = _shifter.CurrentDirection;
+
         return this;
     }
 
     private void HealthHandle(float health)
     {
-
+        Debug.Log(health);
     }
 
     public override void Tick()
@@ -105,12 +113,20 @@ public class Zhmyh : Unit
         _climbState.SetDirection(_movementDirection);
         _dashState.SetDirection(_movementDirection);
         _shiftAnimator.SetDirection(_movementDirection);
+
+        if (_movementDirection == Vector3.zero) return;
+
+        NotZeroMovementDirection = _movementDirection;
     }
     public void SetLookDirection(Vector2 input)
     {
         if(_lookDirection == input) return;
         _lookDirection = input;
-        _aimingState.SetLookDirection(_lookDirection);
+        _aimingState.SetLookDirection(input);
+
+        if (_lookDirection == Vector2.zero) return;
+
+        NotZeroLookDirection = _lookDirection;
     }
     public void Dash()
     {

@@ -34,7 +34,7 @@ public class Shifter
     }
     public Shifter SetPrimeShift()
     {
-        Shift(new Vector2(1, -1));
+        Shift(Vector2.down);
         return this;
     }
     public void Shift(Vector2 direction)
@@ -50,7 +50,6 @@ public class Shifter
             var node = _shiftNodes[key];
             if (node.Enabled) node.Shift(closestDirection);
         }
-        Debug.Log($"shift {closestDirection}");
 
         OnShift?.Invoke(closestDirection);
 

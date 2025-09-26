@@ -109,13 +109,16 @@ public class ZhmyhAimingState : DecorateState
         if (_tension < 1) _tension += 2 * Time.deltaTime;
         _rightHand.localPosition = new Vector2(Mathf.Lerp(_handPrimeLocalPosition.x, _handPrimeLocalPosition.x - 27, _tension), _rightHand.localPosition.y);
         _shootTarget = CalculateShootTarget();
-        Debug.DrawLine(_bow.ShootPoint, _shootTarget);
         _bow.Pull();
     }
     private Vector3 CalculateShootTarget()
     {
         var ray = Camera.main.ScreenPointToRay(_lookDirection + (Vector2)Camera.main.WorldToScreenPoint(_transform.position));
-        return Physics.Raycast(ray, out var hit) ? hit.point : ray.GetPoint(10);
+        var point = Vector3.zero;
+        if (Physics.Raycast(ray, out var hit)) point = hit.point;
+        else point = ray.GetPoint(10);
+        Debug.DrawLine(_bow.ShootPoint, point);
+        return point;
     }
     
     private void RotateToDirection()
