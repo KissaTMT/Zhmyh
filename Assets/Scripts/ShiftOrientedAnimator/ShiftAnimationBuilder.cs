@@ -33,7 +33,7 @@ public class ShiftAnimationBuilder
             Debug.LogWarning("Node is null");
             return;
         }
-        _node = new ShiftAnimationNode(node);
+        _node = new ShiftAnimationNode(new ShiftNode(node));
     }
     public void SetAnimation(ShiftAnimation animation)
     {

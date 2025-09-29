@@ -84,17 +84,11 @@ public class Zhmyh : Unit
         _sm.SetState(_idleState);
 
         _health = new Health(_maxHealth);
-        _health.Current.OnChanged += HealthHandle;
 
         NotZeroMovementDirection = _shifter.CurrentDirection;
         NotZeroLookDirection = _shifter.CurrentDirection;
 
         return this;
-    }
-
-    private void HealthHandle(float health)
-    {
-        Debug.Log(health);
     }
 
     public override void Tick()
@@ -128,6 +122,10 @@ public class Zhmyh : Unit
 
         NotZeroLookDirection = _lookDirection;
     }
+    public void SetShootDirection(Vector3 input)
+    {
+        _aimingState.SetShootDirection(input);
+    }
     public void Dash()
     {
         if (CurrentState is ZhmyhDashState dashState && dashState.Progress < 1f) return;
@@ -142,11 +140,6 @@ public class Zhmyh : Unit
     {
         if (CurrentState is ZhmyhAimingState == false) return;
         _aimingState.SetPull(isPull);
-        if(isPull == false) Release();
-    }
-    public void Release()
-    {
-        _aimingState.Release();
     }
     private void OnDisable()
     {

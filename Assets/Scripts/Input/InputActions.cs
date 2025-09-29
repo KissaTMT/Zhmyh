@@ -101,15 +101,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Space"",
-                    ""type"": ""Button"",
-                    ""id"": ""80a5f007-4e65-4918-970e-eedd2c20d147"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Aiming"",
                     ""type"": ""Value"",
                     ""id"": ""cf4271fd-b952-4811-88e5-f4d66d2bcefe"",
@@ -117,6 +108,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Space"",
+                    ""type"": ""Button"",
+                    ""id"": ""80a5f007-4e65-4918-970e-eedd2c20d147"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Pulling"",
@@ -208,7 +208,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""214740cc-260b-4f16-91e8-7dbca58cf552"",
                     ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Space"",
@@ -242,7 +242,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""id"": ""25c00e47-eca0-4e4a-84ec-ab0996d4e6f4"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2,StickDeadzone,ScaleVector2(x=10,y=10)"",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Aiming"",
                     ""isComposite"": false,
@@ -328,8 +328,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Direction = m_Gameplay.FindAction("Direction", throwIfNotFound: true);
-        m_Gameplay_Space = m_Gameplay.FindAction("Space", throwIfNotFound: true);
         m_Gameplay_Aiming = m_Gameplay.FindAction("Aiming", throwIfNotFound: true);
+        m_Gameplay_Space = m_Gameplay.FindAction("Space", throwIfNotFound: true);
         m_Gameplay_Pulling = m_Gameplay.FindAction("Pulling", throwIfNotFound: true);
         m_Gameplay_InitAiming = m_Gameplay.FindAction("InitAiming", throwIfNotFound: true);
     }
@@ -413,8 +413,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_Direction;
-    private readonly InputAction m_Gameplay_Space;
     private readonly InputAction m_Gameplay_Aiming;
+    private readonly InputAction m_Gameplay_Space;
     private readonly InputAction m_Gameplay_Pulling;
     private readonly InputAction m_Gameplay_InitAiming;
     /// <summary>
@@ -433,13 +433,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Direction => m_Wrapper.m_Gameplay_Direction;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Space".
-        /// </summary>
-        public InputAction @Space => m_Wrapper.m_Gameplay_Space;
-        /// <summary>
         /// Provides access to the underlying input action "Gameplay/Aiming".
         /// </summary>
         public InputAction @Aiming => m_Wrapper.m_Gameplay_Aiming;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/Space".
+        /// </summary>
+        public InputAction @Space => m_Wrapper.m_Gameplay_Space;
         /// <summary>
         /// Provides access to the underlying input action "Gameplay/Pulling".
         /// </summary>
@@ -477,12 +477,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Direction.started += instance.OnDirection;
             @Direction.performed += instance.OnDirection;
             @Direction.canceled += instance.OnDirection;
-            @Space.started += instance.OnSpace;
-            @Space.performed += instance.OnSpace;
-            @Space.canceled += instance.OnSpace;
             @Aiming.started += instance.OnAiming;
             @Aiming.performed += instance.OnAiming;
             @Aiming.canceled += instance.OnAiming;
+            @Space.started += instance.OnSpace;
+            @Space.performed += instance.OnSpace;
+            @Space.canceled += instance.OnSpace;
             @Pulling.started += instance.OnPulling;
             @Pulling.performed += instance.OnPulling;
             @Pulling.canceled += instance.OnPulling;
@@ -503,12 +503,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Direction.started -= instance.OnDirection;
             @Direction.performed -= instance.OnDirection;
             @Direction.canceled -= instance.OnDirection;
-            @Space.started -= instance.OnSpace;
-            @Space.performed -= instance.OnSpace;
-            @Space.canceled -= instance.OnSpace;
             @Aiming.started -= instance.OnAiming;
             @Aiming.performed -= instance.OnAiming;
             @Aiming.canceled -= instance.OnAiming;
+            @Space.started -= instance.OnSpace;
+            @Space.performed -= instance.OnSpace;
+            @Space.canceled -= instance.OnSpace;
             @Pulling.started -= instance.OnPulling;
             @Pulling.performed -= instance.OnPulling;
             @Pulling.canceled -= instance.OnPulling;
@@ -589,19 +589,19 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDirection(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Space" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSpace(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "Aiming" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAiming(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Space" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSpace(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Pulling" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

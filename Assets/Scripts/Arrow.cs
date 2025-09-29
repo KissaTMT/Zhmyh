@@ -17,6 +17,7 @@ public class Arrow : MonoBehaviour
     {
         _transform = GetComponent<Transform>();
         _source = _transform.position;
+        _source.y = destination.y;
         _destination = destination;
         _delta = (_destination - _source).normalized;
         _buffer = new Collider[4];
@@ -24,12 +25,12 @@ public class Arrow : MonoBehaviour
     }
     private void Update()
     {
-        _transform.position = Vector3.MoveTowards(_transform.position, _destination, _speed * Time.deltaTime);
-        if(Time.frameCount % 6 == 0) CheckCollisions();
+        _transform.position += _delta * _speed * Time.deltaTime;
+        if(Time.frameCount % 8 == 0) CheckCollisions();
     }
     private void CheckCollisions()
     {
-        var hitCount = Physics.OverlapSphereNonAlloc(_transform.position, 0.2f, _buffer, _layerMask);
+        var hitCount = Physics.OverlapSphereNonAlloc(_transform.position, 0.5f, _buffer, _layerMask);
 
         for (int i = 0; i < hitCount; i++)
         {
@@ -46,7 +47,7 @@ public class Arrow : MonoBehaviour
     }
     private IEnumerator DestroyRoutine()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
         Destroy(gameObject);
     }
 }

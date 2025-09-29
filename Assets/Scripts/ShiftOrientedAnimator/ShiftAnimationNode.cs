@@ -11,13 +11,15 @@ public class ShiftAnimationNode
     public IReadOnlyDictionary<string, List<ShiftAnimationData>> Animations => _animations;
     public Transform Transform => _transform;
     private Dictionary<string, List<ShiftAnimationData>> _animations;
+    private ShiftNode _shiftNode;
     private Transform _transform;
 
     private string _currentAnimation;
-    public ShiftAnimationNode(Transform transform)
+    public ShiftAnimationNode(ShiftNode node)
     {
         Enabled = true;
-        _transform = transform;
+        _shiftNode = node;
+        _transform = node.Transform;
         _animations = new Dictionary<string, List<ShiftAnimationData>>();
     }
     public void AddClip(string name, List<ShiftAnimationData> clip)
@@ -64,6 +66,7 @@ public class ShiftAnimationNode
             return new Vector2(m[0, 0] * v.x + m[0, 1] * v.y, m[1, 0] * v.x + m[1, 1] * v.y);
         }
         else if (_transform.name == "Right hand" || _transform.name == "Left hand") return new Vector2(direction.x <= 0 ? v.x : v.x, v.y);
+        else if (_transform.name == "tie") return (Vector2)_shiftNode.CurrentView.Position + v;
         else return v;
     }
     private Vector3 GetPosition(Vector2 pos) => new Vector3(pos.x,pos.y, _transform.localPosition.z);

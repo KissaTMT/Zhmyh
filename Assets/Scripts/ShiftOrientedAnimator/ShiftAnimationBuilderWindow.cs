@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class ShiftAnimationBuilderWindow : EditorWindow
 {
     private ReactiveProperty<ShiftAnimation> Animation = new();
     private ReactiveProperty<Transform> SelectedNode = new();
+    private ReactiveProperty<ShiftConfig> ShiftConfig = new();
 
     private ShiftAnimationBuilder _builder = new();
     private Vector2 _direction = new (1, -1);
@@ -21,11 +23,14 @@ public class ShiftAnimationBuilderWindow : EditorWindow
     {
         Animation.OnChanged += OnAnimationChanged;
         SelectedNode.OnChanged += OnNodeChanged;
+        ShiftConfig.OnChanged += OnShiftConfigChanged;
     }
+
     private void OnDisable()
     {
         Animation.OnChanged -= OnAnimationChanged;
         SelectedNode.OnChanged -= OnNodeChanged;
+        ShiftConfig.OnChanged -= OnShiftConfigChanged;
     }
 
     private void OnGUI()
@@ -34,9 +39,14 @@ public class ShiftAnimationBuilderWindow : EditorWindow
         EditorGUILayout.Space();
 
         Animation.Value = (ShiftAnimation)EditorGUILayout.ObjectField("Animation Asset", Animation.Value, typeof(ShiftAnimation), false);
+
         EditorGUILayout.Space();
 
         SelectedNode.Value = (Transform)EditorGUILayout.ObjectField("Node", SelectedNode.Value, typeof(Transform), true);
+
+        EditorGUILayout.Space();
+
+        ShiftConfig.Value = (ShiftConfig)EditorGUILayout.ObjectField("ShiftConfig Asset", ShiftConfig.Value, typeof(ShiftConfig), false);
 
         EditorGUILayout.Space();
 
@@ -114,6 +124,10 @@ public class ShiftAnimationBuilderWindow : EditorWindow
     private void OnNodeChanged(Transform transform)
     {
         _builder.SetNode(transform);
+    }
+    private void OnShiftConfigChanged(ShiftConfig config)
+    {
+        
     }
 
     private void Play()

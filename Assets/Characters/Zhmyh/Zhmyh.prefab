@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3779659124126430429}
   - component: {fileID: 8319093147674023733}
-  - component: {fileID: 1690754141569720372}
+  - component: {fileID: 7362566550338884378}
   m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
@@ -91,8 +91,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!136 &1690754141569720372
-CapsuleCollider:
+--- !u!135 &7362566550338884378
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -109,10 +109,8 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 16
-  m_Height: 0
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &160373858336845700
 GameObject:
@@ -124,7 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4813183242077031810}
   - component: {fileID: 734586837919648027}
-  - component: {fileID: 5159097531730103786}
+  - component: {fileID: 8056212684686489893}
   m_Layer: 3
   m_Name: Right leg
   m_TagString: Untagged
@@ -202,8 +200,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!136 &5159097531730103786
-CapsuleCollider:
+--- !u!135 &8056212684686489893
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -220,10 +218,8 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 4
-  m_Height: 0
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &370823162271633528
 GameObject:
@@ -234,7 +230,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1459837598135857368}
-  - component: {fileID: 6789621600696999078}
+  - component: {fileID: 6214905374651227732}
   m_Layer: 3
   m_Name: Right hand
   m_TagString: Untagged
@@ -251,15 +247,15 @@ Transform:
   m_GameObject: {fileID: 370823162271633528}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 5, z: -0.5}
+  m_LocalPosition: {x: -1.3, y: 6, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6937144301145527062}
   m_Father: {fileID: 8939994548786194394}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &6789621600696999078
-CapsuleCollider:
+--- !u!135 &6214905374651227732
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -276,10 +272,8 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 6
-  m_Height: 0
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &572573767946886527
 GameObject:
@@ -465,7 +459,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8473482840564540994}
   - component: {fileID: 7844797621830383765}
-  - component: {fileID: 4603048185862365228}
+  - component: {fileID: 364732347108250642}
   m_Layer: 3
   m_Name: Left leg
   m_TagString: Untagged
@@ -543,8 +537,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!136 &4603048185862365228
-CapsuleCollider:
+--- !u!135 &364732347108250642
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -561,10 +555,8 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 4
-  m_Height: 0
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2585578718056998120
 GameObject:
@@ -576,7 +568,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2030328887986073123}
   - component: {fileID: 8953788070614673931}
-  - component: {fileID: 5509728107423026666}
+  - component: {fileID: 3400204152583152851}
   m_Layer: 3
   m_Name: Right hear
   m_TagString: Untagged
@@ -654,8 +646,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!136 &5509728107423026666
-CapsuleCollider:
+--- !u!135 &3400204152583152851
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -672,10 +664,8 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 16
-  m_Height: 0
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2612265163744919898
 GameObject:
@@ -1842,7 +1832,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3482263887965403985}
-  - component: {fileID: 866735869363918800}
+  - component: {fileID: 1054727177971246194}
   m_Layer: 3
   m_Name: Left hand
   m_TagString: Untagged
@@ -1866,8 +1856,8 @@ Transform:
   - {fileID: 6713598432065140729}
   m_Father: {fileID: 8939994548786194394}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &866735869363918800
-CapsuleCollider:
+--- !u!135 &1054727177971246194
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1884,10 +1874,8 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 6
-  m_Height: 0
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7150156220939065563
 GameObject:
@@ -2166,7 +2154,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3113980708861197803}
   - component: {fileID: 5363761880244749585}
-  - component: {fileID: 5754696471153749179}
+  - component: {fileID: 5709221443274813621}
   m_Layer: 3
   m_Name: Left hear
   m_TagString: Untagged
@@ -2244,8 +2232,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!136 &5754696471153749179
-CapsuleCollider:
+--- !u!135 &5709221443274813621
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2262,10 +2250,8 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 14
-  m_Height: 0
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7664080542102244691
 GameObject:
@@ -2450,7 +2436,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 316650229565425156}
-  - component: {fileID: 7185915829403730746}
+  - component: {fileID: 3422562968103558642}
   m_Layer: 3
   m_Name: Head
   m_TagString: Untagged
@@ -2480,8 +2466,8 @@ Transform:
   - {fileID: 4959025898292570002}
   m_Father: {fileID: 8939994548786194394}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1}
---- !u!136 &7185915829403730746
-CapsuleCollider:
+--- !u!135 &3422562968103558642
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2498,10 +2484,8 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 28
-  m_Height: 0
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8500860325922938117
 GameObject:

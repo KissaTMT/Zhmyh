@@ -14,7 +14,7 @@ public class ZhmyhAimingState : DecorateState
     private Transform _aim;
     private Transform _body;
     private Vector2 _handPrimeLocalPosition;
-    private Vector3 _shootTarget;
+    private Vector3 _shootDirection;
     private Vector2 _lookDirection;
     private Coroutine _release;
     private float _tension;
@@ -80,9 +80,15 @@ public class ZhmyhAimingState : DecorateState
     {
         _lookDirection = delta;
     }
+    public void SetShootDirection(Vector3 shootDirection)
+    {
+        _shootDirection = shootDirection;
+    }
     public void SetPull(bool isPull)
     {
         _isPull = isPull;
+        if (_isPull) Pull();
+        else Release();
     }
     public void Aiming()
     {
@@ -92,7 +98,7 @@ public class ZhmyhAimingState : DecorateState
     public void Release()
     {
         _release = _context.StartCoroutine(ReleaseRoutine(4));
-        _bow.Release(_shootTarget);
+        _bow.Release(_shootDirection);
     }
     public void Shift() => _shifter.Shift(_lookDirection);
     public override string ToString() => $"{base.ToString()} + {BaseState}";
@@ -108,17 +114,7 @@ public class ZhmyhAimingState : DecorateState
         if (_release != null) return;
         if (_tension < 1) _tension += 2 * Time.deltaTime;
         _rightHand.localPosition = new Vector2(Mathf.Lerp(_handPrimeLocalPosition.x, _handPrimeLocalPosition.x - 27, _tension), _rightHand.localPosition.y);
-        _shootTarget = CalculateShootTarget();
         _bow.Pull();
-    }
-    private Vector3 CalculateShootTarget()
-    {
-        var ray = Camera.main.ScreenPointToRay(_lookDirection + (Vector2)Camera.main.WorldToScreenPoint(_transform.position));
-        var point = Vector3.zero;
-        if (Physics.Raycast(ray, out var hit)) point = hit.point;
-        else point = ray.GetPoint(10);
-        Debug.DrawLine(_bow.ShootPoint, point);
-        return point;
     }
     
     private void RotateToDirection()

@@ -36,7 +36,7 @@ public class ShiftAnimator : IDisposable
             {
                 if (!_nodes.ContainsKey(nodeNames[j]))
                 {
-                    var animationNode = new ShiftAnimationNode(_shifter.ShiftNodes[nodeNames[j]].Transform);
+                    var animationNode = new ShiftAnimationNode(_shifter.ShiftNodes[nodeNames[j]]);
                     _nodes.Add(nodeNames[j], animationNode);
                 }
                 _nodesByAnimation[anim.name].Add(_nodes[nodeNames[j]]);

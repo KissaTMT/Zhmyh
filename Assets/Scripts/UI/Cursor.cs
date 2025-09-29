@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Cursor : MonoBehaviour
 {
-    public const float SENSITIVITY = 80f;
+    public const float SENSITIVITY = 128f;
     public Vector2 ScreenPosition => _cashedPosition;
 
     [SerializeField] private float _rotationSpeed;
@@ -78,7 +78,7 @@ public class Cursor : MonoBehaviour
 
         if (!_locked && _delta != Vector2.zero)
         {
-            _cashedPosition.x += 0.2f * _delta.x * Time.deltaTime * SENSITIVITY;
+            _cashedPosition.x += _delta.x * Time.deltaTime * SENSITIVITY;
             _cashedPosition.y += _delta.y * Time.deltaTime * SENSITIVITY;
 
             _cashedPosition.x = Mathf.Clamp(_cashedPosition.x, 0, Screen.width);

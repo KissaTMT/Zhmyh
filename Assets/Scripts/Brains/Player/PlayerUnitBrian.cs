@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Zenject;
 
@@ -66,10 +65,19 @@ public class PlayerUnitBrian : MonoBehaviour, IBrian
         _cashedScreenPoint = _cameraMain.WorldToScreenPoint(_unit.Transform.position);
         return _cashedAimPosition - _cashedScreenPoint;
     }
+    private Vector3 CalculateShootTarget()
+    {
+        var ray = Camera.main.ScreenPointToRay(_cursor.ScreenPosition);
+        var point = Vector3.zero;
+        if (Physics.Raycast(ray, out var hit)) point = hit.point;
+        else point = ray.GetPoint(10);
+        return point;
+    }
     private void Update()
     {
         _unit.SetLookDirection(CalculateLookDirection());
         _unit.SetMovementDirection(CalculateMovementDirection());
+        if(Time.frameCount % 32 == 0)_unit.SetShootDirection(CalculateShootTarget());
         _unit.Tick();
         _cursor.Tick();
     }

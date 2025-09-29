@@ -139,7 +139,7 @@ MonoBehaviour:
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.25
-      PositionKey: {x: -15, y: 6.7}
+      PositionKey: {x: -15, y: 9}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.5
@@ -147,7 +147,7 @@ MonoBehaviour:
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.75
-      PositionKey: {x: -1.3, y: 4.8}
+      PositionKey: {x: -1.3, y: 9}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 1
@@ -161,7 +161,7 @@ MonoBehaviour:
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.25
-      PositionKey: {x: 20.7, y: 8.3}
+      PositionKey: {x: 20.7, y: 9}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.5
@@ -169,10 +169,11 @@ MonoBehaviour:
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.75
-      PositionKey: {x: 9.7, y: 7.5}
+      PositionKey: {x: 9.7, y: 9}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 1
       PositionKey: {x: 15, y: 5}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
+  offset: []

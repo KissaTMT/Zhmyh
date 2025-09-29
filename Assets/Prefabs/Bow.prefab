@@ -150,7 +150,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cfa6ffc54e0f51445a0c7b34df4251ff, type: 2}
+  - {fileID: 2100000, guid: 7d055bfc39b059d47bdcfc6368957ad8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -172,7 +172,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: ea0cd21ed41890c4b9ff49fc7c70d3c0, type: 3}
-  m_Color: {r: 1, g: 0.69726807, b: 0.60188675, a: 1}
+  m_Color: {r: 1, g: 0.64248985, b: 0.5264151, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -312,7 +312,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cfa6ffc54e0f51445a0c7b34df4251ff, type: 2}
+  - {fileID: 2100000, guid: 7d055bfc39b059d47bdcfc6368957ad8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -334,7 +334,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: bcdb6aae1d63f0e4ea217fad1a67eb02, type: 3}
-  m_Color: {r: 1, g: 0.69726807, b: 0.60188675, a: 1}
+  m_Color: {r: 1, g: 0.69491655, b: 0.5943396, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -419,7 +419,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cfa6ffc54e0f51445a0c7b34df4251ff, type: 2}
+  - {fileID: 2100000, guid: 7d055bfc39b059d47bdcfc6368957ad8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -441,7 +441,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: 2c87790d4ab82d04fa2ba1b6691ebb25, type: 3}
-  m_Color: {r: 1, g: 0.69726807, b: 0.60188675, a: 1}
+  m_Color: {r: 1, g: 0.64248985, b: 0.5264151, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -4,6 +4,7 @@
     {
         _MainTex ("Sprite Texture", 2D) = "white" {}
         _Cutoff("Alpha Cutout", Range(0.0, 1.0)) = 0.5
+        _FogIntensity("Fog Intensity", float) = 0.5
     }
 
     SubShader
@@ -47,6 +48,7 @@
                 float4 positionHCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float2 rotatedUV : TEXCOORD1;
+                half fogFactor : TEXCOORD3;
 
                 UNITY_VERTEX_INPUT_INSTANCE_ID
                 UNITY_VERTEX_OUTPUT_STEREO
@@ -57,6 +59,7 @@
             CBUFFER_START(UnityPerMaterial)
                 float4 _MainTex_ST;
                 float _Cutoff;
+                float _FogIntensity;
             CBUFFER_END
 
             Varyings vert (Attributes IN)
@@ -85,6 +88,8 @@
                 OUT.positionHCS = TransformWorldToHClip(worldPos.xyz);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
                 OUT.rotatedUV = mul(rotationMatrix, centeredUV) + 0.5;
+
+                OUT.fogFactor = ComputeFogFactor(OUT.positionHCS.z);
                 
                 return OUT;
             }
@@ -102,8 +107,11 @@
                 float3 lighting = mainLight.color.rgb * NdotL;
                 clip(texColor.a - _Cutoff);
                 float shade = max(IN.rotatedUV.y*1.5,0.2);
-            
-                return float4(texColor.rgb * lighting * shade, 1);
+
+                float3 finalColor = texColor.rgb * lighting * shade;
+                
+                finalColor = MixFog(finalColor, IN.fogFactor * _FogIntensity);
+                return float4(finalColor, 1);
             }
             ENDHLSL
         }
