@@ -88,7 +88,7 @@ Shader "Custom/URP/Pupil"
                 UNITY_TRANSFER_INSTANCE_ID(IN, OUT);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
 
-                OUT.positionHCS = TransformWorldToHClip(mul(GetObjectToWorldMatrix(), IN.positionOS).xyz);
+                OUT.positionHCS = TransformObjectToHClip(IN.positionOS);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
                 return OUT;
             }

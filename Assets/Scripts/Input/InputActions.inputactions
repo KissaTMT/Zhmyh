@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "InputActions",
     "maps": [
         {
@@ -42,7 +43,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "InitAiming",
+                    "name": "CameraReset",
                     "type": "Button",
                     "id": "5deac793-c821-46cb-a4fa-2811601ca700",
                     "expectedControlType": "",
@@ -156,7 +157,7 @@
                     "id": "25c00e47-eca0-4e4a-84ec-ab0996d4e6f4",
                     "path": "<Mouse>/delta",
                     "interactions": "",
-                    "processors": "NormalizeVector2,StickDeadzone,ScaleVector2(x=10,y=10)",
+                    "processors": "",
                     "groups": "Keyboard",
                     "action": "Aiming",
                     "isComposite": false,
@@ -188,10 +189,10 @@
                     "name": "",
                     "id": "6c023720-e728-44af-ae58-9c5ce9985dd3",
                     "path": "<Gamepad>/leftTrigger",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "InitAiming",
+                    "action": "CameraReset",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -199,10 +200,10 @@
                     "name": "",
                     "id": "5b26ba22-b79f-4d95-82b7-3f92b75d928c",
                     "path": "<Mouse>/rightButton",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard",
-                    "action": "InitAiming",
+                    "action": "CameraReset",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

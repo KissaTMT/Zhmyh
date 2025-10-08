@@ -15,9 +15,11 @@ public class Shifter
     public event Action<Transform> OnDetached;
 
     private Dictionary<string, ShiftNode> _shiftNodes;
+    private List<string> _keys;
 
     private Transform _root;
     private Vector2 _currentDirection;
+    private Vector2 _cashedDirection;
     public Shifter(Transform root, ShiftConfig[] configs)
     {
         _root = root;
@@ -26,10 +28,14 @@ public class Shifter
         transformNodes.Remove(root);
 
         _shiftNodes = new Dictionary<string, ShiftNode>();
+        _keys = new List<string>();
         for(var i = 0; i < transformNodes.Count; i++)
         {
             var node = transformNodes[i];
-            _shiftNodes[GetPath(node)] = node.TryGetComponent(out SpriteRenderer renderer) ? new ShiftVisualNode(renderer, configs) : new ShiftNode(node, configs);
+            var path = GetPath(node);
+            if (configs[0].ShiftTransformData.ContainsKey(path) == false) continue;
+            _shiftNodes[path] = node.TryGetComponent(out SpriteRenderer renderer) ? new ShiftVisualNode(renderer, configs) : new ShiftNode(node, configs);
+            _keys.Add(path);
         }   
     }
     public Shifter SetPrimeShift()
@@ -41,13 +47,17 @@ public class Shifter
     { 
         if(direction == Vector2.zero) return;
 
+        if ((_cashedDirection - direction).sqrMagnitude < 0.01f) return;
+
+        _cashedDirection = direction;
+
         var closestDirection = GetClosestDirection(direction.normalized);
 
-        if ((closestDirection - _currentDirection).sqrMagnitude < 0.1f) return;
+        if (closestDirection == _currentDirection) return;
 
-        foreach (var key in _shiftNodes.Keys)
+        for (var i = 0; i < _keys.Count; i++)
         {
-            var node = _shiftNodes[key];
+            var node = _shiftNodes[_keys[i]];
             if (node.Enabled) node.Shift(closestDirection);
         }
 
@@ -95,7 +105,23 @@ public class Shifter
         }
         return result.ToString();
     }
-    public static Vector2 GetClosestDirection(Vector2 direction, Vector2[] except = null)
+    public static Vector2 GetClosestDirection(Vector2 direction)
+    {
+        var result = directions[0];
+        var min = 100f;
+        for (var i = 0; i < directions.Length; i++)
+        {
+            var sqrMagnitude = (direction - directions[i]).sqrMagnitude;
+            if (sqrMagnitude < min)
+            {
+                result = directions[i];
+                min = sqrMagnitude;
+            }
+        }
+        return result;
+
+    }
+    public static Vector2 GetClosestDirection(Vector2 direction, Vector2[] except)
     {
         if (except != null) return directions.Except(except).OrderBy(i => Vector2.Distance(direction, i)).First();
         else return directions.OrderBy(i => Vector2.Distance(direction, i)).First();

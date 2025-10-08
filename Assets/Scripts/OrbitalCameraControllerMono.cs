@@ -1,23 +1,28 @@
+using System;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using Zenject;
 
-public class CameraControllerMono : MonoBehaviour
+public class OrbitalCameraControllerMono : MonoBehaviour
 {
     private const float SENSITIVITY = 10f;
     private const float ROTATION_DURATION = 0.3f;
 
-    public Transform Transform => _cinemachineCamera.transform;
+    public Transform Transform => _transform;
 
     private CinemachineCamera _cinemachineCamera;
     private CinemachineOrbitalFollow _orbitalFollow;
+    private CinemachineRotationComposer _rotationComposer;
 
     private Zhmyh _unit;
     private IInput _input;
+    private Transform _transform;
 
     private bool _locked;
+    private float _sensitivity;
     private Vector2 _delta;
+    private Vector3 _rotationOffset;
     private Coroutine _rotateRoutine;
 
     [Inject]
@@ -25,21 +30,29 @@ public class CameraControllerMono : MonoBehaviour
     {
         _unit = player.Unit as Zhmyh;
         _input = input;
-        _input.InitAiming += SetAimming;
+        _input.CameraReset += SetCameraDirectionToLookDirectionOfUnit;
+        _input.Pulling += SetCameraToAimMode;
     }
-
     private void Awake()
     {
         _cinemachineCamera = GetComponent<CinemachineCamera>();
         _orbitalFollow = GetComponent<CinemachineOrbitalFollow>();
+        _rotationComposer = GetComponent<CinemachineRotationComposer>();
+
+        _transform = GetComponent<Transform>();
 
         _cinemachineCamera.Follow = _unit.Transform;
         _cinemachineCamera.LookAt = _unit.Transform;
+        _rotationOffset = _rotationComposer.TargetOffset;
+
+        _sensitivity = SENSITIVITY;
     }
 
     private void OnDisable()
     {
-        _input.InitAiming -= SetAimming;
+        _input.CameraReset -= SetCameraDirectionToLookDirectionOfUnit;
+        _input.Pulling -= SetCameraToAimMode;
+        _rotationComposer.TargetOffset = _rotationOffset;
     }
     private void LateUpdate()
     {
@@ -48,31 +61,34 @@ public class CameraControllerMono : MonoBehaviour
 
         ApplyInput(_delta);
     }
-    private void SetAimming(bool aim)
+    private void SetCameraDirectionToLookDirectionOfUnit()
     {
-        if (aim)
-        {
-            _locked = true;
-            if (_rotateRoutine != null) StopCoroutine(_rotateRoutine);
-            _rotateRoutine = StartCoroutine(RotateToRoutine());
-        }
-        else
-        {
-            if (_rotateRoutine != null) StopCoroutine(_rotateRoutine);
-            _locked = false;
-        }
+        if (_rotateRoutine == null) _rotateRoutine = StartCoroutine(SetCameraDirectionToLookDirectionOfUnitRoutine());
     }
+    private void SetCameraToAimMode(bool aim) => _sensitivity = aim ? SENSITIVITY / 2 : SENSITIVITY;
 
     private void ApplyInput(Vector2 delta)
     {
-        var horizontal = _orbitalFollow.HorizontalAxis.Value + delta.x * SENSITIVITY * Time.deltaTime;
+        var horizontal = _orbitalFollow.HorizontalAxis.Value + delta.x * _sensitivity * Time.deltaTime;
         _orbitalFollow.HorizontalAxis.Value = _orbitalFollow.HorizontalAxis.ClampValue(horizontal);
 
-        var vertical = _orbitalFollow.VerticalAxis.Value - delta.y * SENSITIVITY * Time.deltaTime;
+        var vertical = _orbitalFollow.VerticalAxis.Value - delta.y * _sensitivity * Time.deltaTime;
         _orbitalFollow.VerticalAxis.Value = _orbitalFollow.VerticalAxis.ClampValue(vertical);
+
+        UpdateRotationOffset();
+    }
+    private void UpdateRotationOffset()
+    {
+        var angle = _orbitalFollow.HorizontalAxis.Value * Mathf.Deg2Rad;
+        var sin = Mathf.Sin(angle);
+        var cos = Mathf.Cos(angle);
+        _rotationComposer.TargetOffset = new Vector3(
+            cos * _rotationOffset.x + sin * _rotationOffset.z,
+            _rotationOffset.y,
+            -sin * _rotationOffset.x + cos * _rotationOffset.z);
     }
 
-    private IEnumerator RotateToRoutine()
+    private IEnumerator SetCameraDirectionToLookDirectionOfUnitRoutine()
     {
         _locked = true;
 
@@ -86,10 +102,13 @@ public class CameraControllerMono : MonoBehaviour
             var t = elapsedTime / ROTATION_DURATION;
             var currentAngle = Mathf.LerpAngle(startAngle, targetAngle, t);
             _orbitalFollow.HorizontalAxis.Value = currentAngle;
+            UpdateRotationOffset();
             yield return null;
         }
 
         _orbitalFollow.HorizontalAxis.Value = targetAngle;
+        UpdateRotationOffset();
+        _rotateRoutine = null;
         _locked = false;
     }
 

@@ -5,7 +5,7 @@ using Zenject;
 public class GameplayInstaller : MonoInstaller
 {
     public PlayerUnitBrian Player { get; private set; }
-    [SerializeField] private Zhmyh _zhmyh;
+    [SerializeField] private Unit _zhmyh;
     [SerializeField] private Cursor _cursor;
     public override void InstallBindings()
     {

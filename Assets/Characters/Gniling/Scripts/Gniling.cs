@@ -68,7 +68,7 @@ public class Gniling : Unit
         if (delta.magnitude > 25) delta.Normalize();
         else delta = Vector2.zero;
         SetDirection(delta);
-        _shiftAnimator.Update();
+        _shiftAnimator.Tick();
         _shiftAnimator.SetDirection(_currentDirection);
         if (delta != Vector2.zero) Move();
         else _shiftAnimator.SetAnimation("idle");

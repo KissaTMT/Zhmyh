@@ -197,7 +197,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      eyelash_0: -1167709665193204380
+      eyelash_1: -3195715844029870739
+      eyelash_2: 4016053783514181190
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

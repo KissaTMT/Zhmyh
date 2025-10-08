@@ -26,7 +26,7 @@ public class StateMachine
         {
             var baseState = decorate1.BaseState;
 
-            if (_transitions.TryGetValue(baseState.GetType(), out var baseTransitions) && baseTransitions.Exists(i => i.To == state))
+            if (_transitions.TryGetValue(baseState.GetType(), out var baseTransitions) && IsExistTransitionToState(baseTransitions, state))
             {
                 baseState.Exit();
                 decorate1.SetBaseState(state);
@@ -93,6 +93,14 @@ public class StateMachine
         }
 
         return null;
+    }
+    private bool IsExistTransitionToState(List<Transition> transitions, State state)
+    {
+        for(var i=0;i<transitions.Count;i++)
+        {
+            if(transitions[i].To == state) return true;
+        }
+        return false;
     }
     private class Transition
     {

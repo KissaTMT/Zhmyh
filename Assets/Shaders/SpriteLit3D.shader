@@ -4,7 +4,7 @@
     {
         _MainTex ("Sprite Texture", 2D) = "white" {}
         _Cutoff("Alpha Cutout", Range(0.0, 1.0)) = 0.5
-        _FogIntensity("Fog Intensity", float) = 0.5
+        _FogIntensity("Fog Intensity", float) = 0.8
     }
 
     SubShader
@@ -28,10 +28,10 @@
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fog
-            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS
-            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHTS_VERTEX
-            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            //#pragma multi_compile _ _ADDITIONAL_LIGHTS
+            //#pragma multi_compile_fragment _ _ADDITIONAL_LIGHTS_VERTEX
+            //#pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -47,8 +47,7 @@
             {
                 float4 positionHCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
-                float2 rotatedUV : TEXCOORD1;
-                half fogFactor : TEXCOORD3;
+                half fogFactor : TEXCOORD1;
 
                 UNITY_VERTEX_INPUT_INSTANCE_ID
                 UNITY_VERTEX_OUTPUT_STEREO
@@ -59,7 +58,7 @@
             CBUFFER_START(UnityPerMaterial)
                 float4 _MainTex_ST;
                 float _Cutoff;
-                float _FogIntensity;
+                half _FogIntensity;
             CBUFFER_END
 
             Varyings vert (Attributes IN)
@@ -69,25 +68,9 @@
                 UNITY_SETUP_INSTANCE_ID(IN);
                 UNITY_TRANSFER_INSTANCE_ID(IN, OUT);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
-
-                float4x4 objectToWorld = GetObjectToWorldMatrix();
-
-                float4 worldPos = mul(objectToWorld, IN.positionOS);
                 
-                float2x2 rotationMatrix = float2x2(
-                    objectToWorld[0].x, objectToWorld[0].y,
-                    objectToWorld[1].x, objectToWorld[1].y
-                );
-                
-                float2 right = normalize(rotationMatrix[0]);
-                float2 up = normalize(rotationMatrix[1]);
-                rotationMatrix = float2x2(right, up);
-                
-                float2 centeredUV = IN.uv - 0.5;
-
-                OUT.positionHCS = TransformWorldToHClip(worldPos.xyz);
+                OUT.positionHCS = TransformObjectToHClip(IN.positionOS);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
-                OUT.rotatedUV = mul(rotationMatrix, centeredUV) + 0.5;
 
                 OUT.fogFactor = ComputeFogFactor(OUT.positionHCS.z);
                 
@@ -106,12 +89,9 @@
                 float NdotL = max(0, dot(lightNormals, mainLight.direction));
                 float3 lighting = mainLight.color.rgb * NdotL;
                 clip(texColor.a - _Cutoff);
-                float shade = max(IN.rotatedUV.y*1.5,0.2);
-
-                float3 finalColor = texColor.rgb * lighting * shade;
+                float shade = max(IN.uv.y*1.5,0.2);
                 
-                finalColor = MixFog(finalColor, IN.fogFactor * _FogIntensity);
-                return float4(finalColor, 1);
+                return float4(MixFog(texColor.rgb * lighting * shade, IN.fogFactor * _FogIntensity), 1);
             }
             ENDHLSL
         }

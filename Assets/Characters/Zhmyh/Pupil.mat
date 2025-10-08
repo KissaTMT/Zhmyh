@@ -29,12 +29,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BlobSize: 0.19
+    - _BlobSize: 0.24
     - _GradientShift: 0
     - _ShineSize: 0.1
     - _ShineWarpAmount: 0.03
     - _WarpAmount: 0.05
-    - _WarpSpeed: 1
+    - _WarpSpeed: 2
     - _WaveFreq: 4
     - _WaveSpeed: 1.5
     - _WaveStrength: 0.1
@@ -44,7 +44,7 @@ Material:
     - _Blob2Pos: {r: 0.65, g: 0.65, b: 0, a: 0}
     - _GradientColor: {r: 0.3529412, g: 0.73333335, b: 0.9960785, a: 1}
     - _GradientColor1: {r: 0.7660377, g: 0, b: 0.03647821, a: 1}
-    - _GradientColor2: {r: 0.49411765, g: 0, b: 0.023529412, a: 1}
+    - _GradientColor2: {r: 0.3132075, g: 0, b: 0.014914735, a: 1}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
     - _Shine1Pos: {r: 0.25, g: 0.3, b: 0, a: 0}
     - _Shine2Pos: {r: 0.89, g: 0.7, b: 0, a: 0}

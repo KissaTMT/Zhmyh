@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bow : MonoBehaviour
@@ -9,12 +8,12 @@ public class Bow : MonoBehaviour
     public float Tension => _tension;
     [SerializeField] private Arrow _arrow;
     [SerializeField] private Transform _shootPoint;
-    [SerializeField] private Transform _topPart;
-    [SerializeField] private Transform _bottomPart;
+    [SerializeField] private Transform[] _topParts;
+    [SerializeField] private Transform[] _bottomParts;
     [SerializeField] private Transform _handlePart;
 
-    private float _topPartPrimeAngle;
-    private float _bottomPartPrimeAngle;
+    private float[] _topPartPrimeAngles;
+    private float[] _bottomPartPrimeAngles;
 
     private float _tension;
     private Coroutine _release;
@@ -22,41 +21,55 @@ public class Bow : MonoBehaviour
 
     private void Awake()
     {
-        _topPartPrimeAngle = _topPart.localRotation.eulerAngles.z;
-        _bottomPartPrimeAngle = _bottomPart.localRotation.eulerAngles.z;
+        _topPartPrimeAngles = new float[_topParts.Length];
+        _bottomPartPrimeAngles = new float[_bottomParts.Length];
+
+        for(var i = 0; i < _topParts.Length; i++)
+        {
+            _topPartPrimeAngles[i] = _topParts[i].transform.localEulerAngles.z;
+            _bottomPartPrimeAngles[i] = _bottomParts[i].transform.localEulerAngles.z;
+        }
+
         _transform = GetComponent<Transform>();
     }
     public void Pull()
     {
-        if (_release != null)
+        if (_release != null) return;
+
+        _tension = Mathf.Clamp01(_tension + 2 * Time.deltaTime);
+
+        for (var i = 0; i < _topParts.Length; i++)
         {
-            StopCoroutine(_release);
-            _release = null;
+            _topParts[i].localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(_topPartPrimeAngles[i], _topPartPrimeAngles[i] + 32, _tension));
+            _bottomParts[i].localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(_bottomPartPrimeAngles[i], _bottomPartPrimeAngles[i] - 32, _tension));
         }
-        if (_tension < 1) _tension += 2 * Time.deltaTime;
-        _topPart.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(_topPartPrimeAngle, _topPartPrimeAngle + 32, _tension));
-        _bottomPart.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(_bottomPartPrimeAngle, _bottomPartPrimeAngle - 32, _tension));
     }
     public void Release(Vector3 direction)
     {
-        _release = StartCoroutine(ReleaseRoutine(10*_tension));
-        if (_tension < 0.9f) return;
-        var arrow = Instantiate(_arrow, _shootPoint.position, Quaternion.identity).GetComponent<Arrow>();
-        arrow.Init(direction);
+        Cancel(1 + 10 * _tension);
+        if (_tension > 0.25f) Instantiate(_arrow, _shootPoint.position, Quaternion.identity).GetComponent<Arrow>().Init(direction, _tension);
+        _tension = 0;
     }
-    public void Cancel()
+    public void Cancel(float speed = 3)
     {
-        _release = StartCoroutine(ReleaseRoutine(3));
+        _release = StartCoroutine(ReleaseRoutine(speed));
     }
     private IEnumerator ReleaseRoutine(float speed)
     {
-        for(var i = 0f; i < 1f; i += speed * Time.deltaTime)
+        for(var t = 0f; t < 1f; t += speed * Time.deltaTime)
         {
-            _topPart.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(_topPart.localRotation.eulerAngles.z, _topPartPrimeAngle, i));
-            _bottomPart.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(_bottomPart.localRotation.eulerAngles.z, _bottomPartPrimeAngle, i));
+            for (var i = 0; i < _topParts.Length; i++)
+            {
+                _topParts[i].localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(_topParts[i].localEulerAngles.z, _topPartPrimeAngles[i], t));
+                _bottomParts[i].localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(_bottomParts[i].localEulerAngles.z, _bottomPartPrimeAngles[i], t));
+            }
             yield return null;
         }
-        _tension = 0;
+        for (var i = 0; i < _topParts.Length; i++)
+        {
+            _topParts[i].localRotation = Quaternion.Euler(0, 0, _topPartPrimeAngles[i]);
+            _bottomParts[i].localRotation = Quaternion.Euler(0, 0, _bottomPartPrimeAngles[i]);
+        }
         _release = null;
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 public interface IInput
 {
     public event Action Space;
-    public event Action<bool> InitAiming;
+    public event Action CameraReset;
     public event Action<bool> Pulling;
 
     public Vector2 GetDirection();

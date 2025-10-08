@@ -1,3 +1,4 @@
+using System.Drawing;
 using UnityEngine;
 using Zenject;
 
@@ -12,9 +13,6 @@ public class PlayerUnitBrian : MonoBehaviour, IBrian
     private Transform _cameraTransform;
 
     private IInput _input;
-    private Vector2 _inputDirection;
-    private Vector2 _cashedAimPosition;
-    private Vector2 _cashedScreenPoint;
 
 
     [Inject]
@@ -25,11 +23,10 @@ public class PlayerUnitBrian : MonoBehaviour, IBrian
 
         _input.Space += Space;
         _input.Pulling += SetPull;
-        _input.InitAiming += SetAim;
     }
     public void Init()
     {
-        _unit = (Zhmyh)GetComponent<Zhmyh>().Init();
+        _unit = GetComponent<Zhmyh>().Init() as Zhmyh;
         _cursor.Init(_input);
         _cameraMain = Camera.main;
         _cameraTransform = _cameraMain.GetComponent<Transform>();
@@ -38,46 +35,40 @@ public class PlayerUnitBrian : MonoBehaviour, IBrian
     {
         _input.Space -= Space;
         _input.Pulling -= SetPull;
-        _input.InitAiming -= SetAim;
     }
-
-    private void SetAim(bool isAiming) => _unit.SetAim(isAiming);
     private void SetPull(bool isPull) => _unit.Pull(isPull);
-    private void Space() => _unit.Dash();
+    private void Space()
+    {
+        _unit.Dash();
+        _unit.Climb();
+    }
     private Vector3 CalculateMovementDirection()
     {
-        _inputDirection = _input.GetDirection();
+        var input = _input.GetDirection();
 
         var angle = _cameraTransform.eulerAngles.y * Mathf.Deg2Rad;
 
         var cos = Mathf.Cos(angle);
         var sin = Mathf.Sin(angle);
 
-        var x = _inputDirection.x * cos + _inputDirection.y * sin;
-        var z = -_inputDirection.x * sin + _inputDirection.y * cos;
+        var x = input.x * cos + input.y * sin;
+        var z = -input.x * sin + input.y * cos;
 
         return new Vector3(x, 0f, z);
     }
     private Vector2 CalculateLookDirection()
     {
-        _cashedAimPosition = _cursor.ScreenPosition;
-
-        _cashedScreenPoint = _cameraMain.WorldToScreenPoint(_unit.Transform.position);
-        return _cashedAimPosition - _cashedScreenPoint;
+        return _cursor.ScreenPosition - (Vector2)_cameraMain.WorldToScreenPoint(_unit.Transform.position);
     }
-    private Vector3 CalculateShootTarget()
+    private Vector3 CalculateShootDirection()
     {
-        var ray = Camera.main.ScreenPointToRay(_cursor.ScreenPosition);
-        var point = Vector3.zero;
-        if (Physics.Raycast(ray, out var hit)) point = hit.point;
-        else point = ray.GetPoint(10);
-        return point;
+        return Quaternion.AngleAxis(-7, _cameraTransform.right) * _cameraTransform.forward;
     }
     private void Update()
     {
         _unit.SetLookDirection(CalculateLookDirection());
         _unit.SetMovementDirection(CalculateMovementDirection());
-        if(Time.frameCount % 32 == 0)_unit.SetShootDirection(CalculateShootTarget());
+        _unit.SetShootDirection(CalculateShootDirection());
         _unit.Tick();
         _cursor.Tick();
     }

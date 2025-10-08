@@ -95,45 +95,9 @@ MonoBehaviour:
   - Key: Bow/Body
     Value:
       Name: Bow/Body
-      Position: {x: 0, y: 5, z: -0.25}
-      Scale: {x: 1, y: 1, z: 1}
+      Position: {x: 0, y: 5, z: -4}
+      Scale: {x: 8, y: 8, z: 8}
       Angle: 315
-  - Key: Shoot point/Bow/Body
-    Value:
-      Name: Shoot point/Bow/Body
-      Position: {x: 0, y: 0, z: 0}
-      Scale: {x: 1, y: 1, z: 1}
-      Angle: 0
-  - Key: Top bow part/Bow/Body
-    Value:
-      Name: Top bow part/Bow/Body
-      Position: {x: -6.6, y: 24.1, z: 0}
-      Scale: {x: 8, y: 8, z: 1}
-      Angle: 6.9999976
-  - Key: top bone/Top bow part/Bow/Body
-    Value:
-      Name: top bone/Top bow part/Bow/Body
-      Position: {x: 0.559509, y: -2.2519531, z: 0}
-      Scale: {x: 1, y: 1, z: 0}
-      Angle: 95.57105
-  - Key: Bottom bow part/Bow/Body
-    Value:
-      Name: Bottom bow part/Bow/Body
-      Position: {x: -7.4, y: -19.9, z: 0}
-      Scale: {x: 8, y: 8, z: 1}
-      Angle: 353
-  - Key: bottom bone/Bottom bow part/Bow/Body
-    Value:
-      Name: bottom bone/Bottom bow part/Bow/Body
-      Position: {x: 0.71111727, y: 1.774363, z: 0}
-      Scale: {x: 1, y: 1, z: 0}
-      Angle: 243.49673
-  - Key: Handle bow/Bow/Body
-    Value:
-      Name: Handle bow/Bow/Body
-      Position: {x: 0.03, y: 0.03, z: 0}
-      Scale: {x: 8, y: 8, z: 1}
-      Angle: 0
   - Key: Left leg
     Value:
       Name: Left leg
@@ -243,12 +207,6 @@ MonoBehaviour:
     Value: {fileID: 21300000, guid: 5fdb130e960283b47a3d2df195c6d9f9, type: 3}
   - Key: tail
     Value: {fileID: 21300000, guid: 700904ec1e45d2643a735512afaed065, type: 3}
-  - Key: Top bow part
-    Value: {fileID: 21300000, guid: bcdb6aae1d63f0e4ea217fad1a67eb02, type: 3}
-  - Key: Bottom bow part
-    Value: {fileID: 21300000, guid: ea0cd21ed41890c4b9ff49fc7c70d3c0, type: 3}
-  - Key: Handle bow
-    Value: {fileID: 21300000, guid: 2c87790d4ab82d04fa2ba1b6691ebb25, type: 3}
   - Key: Left leg
     Value: {fileID: 21300000, guid: 5b6dd58ba5e9f5d479f30b73000d162c, type: 3}
   - Key: Right leg

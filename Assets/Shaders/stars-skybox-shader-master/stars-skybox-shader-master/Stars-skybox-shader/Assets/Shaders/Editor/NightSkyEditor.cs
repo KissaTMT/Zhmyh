@@ -29,9 +29,9 @@ public class NightSkyEditor : ShaderGUI
 		this.properties = properties;
 		while(HasNextProperty)
 		{
-			if ((ActualProperty.flags & MaterialProperty.PropFlags.HideInInspector) == 0)
+			if ((ActualProperty.propertyFlags & UnityEngine.Rendering.ShaderPropertyFlags.HideInInspector) == 0)
 			{
-				if (ActualProperty.type == MaterialProperty.PropType.Texture)
+				if (ActualProperty.propertyType == UnityEngine.Rendering.ShaderPropertyType.Texture)
 				{
 					materialEditor.TexturePropertySingleLine(new GUIContent(ActualProperty.name), ActualProperty);
 				}

@@ -13,11 +13,10 @@ public class ZhmyhAimingState : DecorateState
 
     private Transform _aim;
     private Transform _body;
-    private Vector2 _handPrimeLocalPosition;
+    private Vector3 _handPrimeLocalPosition;
     private Vector3 _shootDirection;
     private Vector2 _lookDirection;
     private Coroutine _release;
-    private float _tension;
     private bool _isPull;
     public ZhmyhAimingState(MonoBehaviour context,Transform transform, Transform rightHand, Transform leftHand, Bow bow, Shifter shifter)
     {
@@ -44,32 +43,12 @@ public class ZhmyhAimingState : DecorateState
     }
     public override void OnEnter()
     {
-        _aim.gameObject.SetActive(true);
-
-        _shifter.Detach(_bow.Transform);
-        _shifter.Detach(_rightHand);
-        _shifter.Detach(_leftHand);
-
-        Transform(_rightHand, _aim, Vector3.zero, Vector3.one, Quaternion.identity);
-        Transform(_leftHand, _aim, new Vector3(20, 0), Vector3.one, Quaternion.identity);
-        Transform(_bow.Transform, _leftHand, new Vector3(0, 0, 0.0105f), new Vector3(0.75f,1.25f,1.25f), Quaternion.identity);
-
+        Detach();
     }
+
     public override void OnExit()
     {
-        _rightHand.parent = _shifter.Root;
-        _leftHand.parent = _shifter.Root;
-        _bow.Transform.parent = _body;
-
-        _rightHand.localRotation = Quaternion.identity;
-        _leftHand.localRotation = Quaternion.identity;
-        _bow.Transform.localRotation = Quaternion.identity;
-
-        _shifter.Attach(_bow.Transform);
-        _shifter.Attach(_rightHand);
-        _shifter.Attach(_leftHand);
-
-        _aim.gameObject.SetActive(false);
+        Attach();
     }
     public override void OnTick()
     {
@@ -87,8 +66,7 @@ public class ZhmyhAimingState : DecorateState
     public void SetPull(bool isPull)
     {
         _isPull = isPull;
-        if (_isPull) Pull();
-        else Release();
+        if (!_isPull) Release();
     }
     public void Aiming()
     {
@@ -97,12 +75,40 @@ public class ZhmyhAimingState : DecorateState
     }
     public void Release()
     {
-        _release = _context.StartCoroutine(ReleaseRoutine(4));
+        _release = _context.StartCoroutine(ReleaseRoutine(1 + _bow.Tension * 10));
         _bow.Release(_shootDirection);
     }
     public void Shift() => _shifter.Shift(_lookDirection);
     public override string ToString() => $"{base.ToString()} + {BaseState}";
-    private void Transform(Transform o,Transform parent, Vector3 position, Vector3 scale,Quaternion rotation)
+    private void Detach()
+    {
+        _aim.gameObject.SetActive(true);
+
+        _shifter.Detach(_bow.Transform, false);
+        _shifter.Detach(_rightHand);
+        _shifter.Detach(_leftHand);
+
+        Transform(_rightHand, _aim, Vector3.zero, Vector3.one, Quaternion.identity);
+        Transform(_leftHand, _aim, new Vector3(20, 0), Vector3.one, Quaternion.identity);
+        Transform(_bow.Transform, _leftHand, new Vector3(0, 0, 0.0105f), Vector3.one * _bow.Transform.localScale.x, Quaternion.identity);
+    }
+    private void Attach()
+    {
+        _rightHand.parent = _shifter.Root;
+        _leftHand.parent = _shifter.Root;
+        _bow.Transform.parent = _body;
+
+        _rightHand.localRotation = Quaternion.identity;
+        _leftHand.localRotation = Quaternion.identity;
+        _bow.Transform.localRotation = Quaternion.identity;
+
+        _shifter.Attach(_bow.Transform, false);
+        _shifter.Attach(_rightHand);
+        _shifter.Attach(_leftHand);
+
+        _aim.gameObject.SetActive(false);
+    }
+    private void Transform(Transform o,Transform parent, Vector3 position, Vector3 scale, Quaternion rotation)
     {
         o.parent = parent;
         o.localPosition = position;
@@ -112,9 +118,9 @@ public class ZhmyhAimingState : DecorateState
     private void Pull()
     {
         if (_release != null) return;
-        if (_tension < 1) _tension += 2 * Time.deltaTime;
-        _rightHand.localPosition = new Vector2(Mathf.Lerp(_handPrimeLocalPosition.x, _handPrimeLocalPosition.x - 27, _tension), _rightHand.localPosition.y);
+        
         _bow.Pull();
+        _rightHand.localPosition = new Vector2(Mathf.Lerp(_handPrimeLocalPosition.x, _handPrimeLocalPosition.x - 27, _bow.Tension), _rightHand.localPosition.y);
     }
     
     private void RotateToDirection()
@@ -132,7 +138,7 @@ public class ZhmyhAimingState : DecorateState
             _rightHand.localPosition = Vector2.Lerp(_rightHand.localPosition, _handPrimeLocalPosition, i);
             yield return null;
         }
-        _tension = 0;
+        _rightHand.localPosition = _handPrimeLocalPosition;
         _release = null;
     }
 }

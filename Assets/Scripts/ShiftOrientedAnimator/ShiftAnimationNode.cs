@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [Serializable]
 public class ShiftAnimationNode
 {
+    //private static float[,] identityMatrix = new float[2, 2] { { 1, 0 }, { 0, 1 } };
+    private const string RH = "Right hand";
+    private const string LH = "Left hand";
+    private const string RL = "Right leg";
+    private const string LL = "Left leg";
+    private const string T = "tie";
     public bool Enabled { get; set; }
     public IReadOnlyDictionary<string, List<ShiftAnimationData>> Animations => _animations;
     public Transform Transform => _transform;
@@ -14,13 +18,16 @@ public class ShiftAnimationNode
     private ShiftNode _shiftNode;
     private Transform _transform;
 
+    private string _name;
     private string _currentAnimation;
     public ShiftAnimationNode(ShiftNode node)
     {
         Enabled = true;
         _shiftNode = node;
         _transform = node.Transform;
+        _name = _transform.name;
         _animations = new Dictionary<string, List<ShiftAnimationData>>();
+
     }
     public void AddClip(string name, List<ShiftAnimationData> clip)
     {
@@ -37,7 +44,7 @@ public class ShiftAnimationNode
 
         var clip = _animations[_currentAnimation];
 
-        int nextIndex = clip.FindIndex(d => d.TimeKey >= progress);
+        int nextIndex = FindIndex(clip, progress);
 
         var previousIndex = nextIndex - 1;
         var previous = clip[previousIndex];
@@ -45,29 +52,46 @@ public class ShiftAnimationNode
 
         var t = Mathf.Clamp01((progress - previous.TimeKey) / (next.TimeKey - previous.TimeKey));
 
+
         _transform.localPosition = Vector3.Lerp(GetPosition(GetOffset(previous.PositionKey, direction)),
-            GetPosition(GetOffset(next.PositionKey, direction)),t);
-        _transform.localEulerAngles = new Vector3(0, 0, 
+            GetPosition(GetOffset(next.PositionKey, direction)), t);
+
+        _transform.localEulerAngles = new Vector3(0, 0,
             Mathf.LerpAngle(Mathf.Sign(direction.x) * previous.AngleKey, Mathf.Sign(direction.x) * next.AngleKey, t));
+
         //_transform.localScale = Vector2.Lerp(prevData.ScaleKey, nextData.ScaleKey, t);
     }
     public void SetAnimationData(float timeKey, Vector2 direction)
     {
         var clip = _animations[_currentAnimation];
-        _transform.localPosition = GetPosition(GetOffset(clip[clip.FindIndex(d => d.TimeKey >= timeKey)].PositionKey,direction));
-        _transform.localEulerAngles = new Vector3(0, 0, Mathf.Sign(direction.x) * clip[clip.FindIndex(d => d.TimeKey >= timeKey)].AngleKey);
+        _transform.localPosition = GetPosition(GetOffset(clip[FindIndex(clip,timeKey)].PositionKey, direction));
+        _transform.localEulerAngles = new Vector3(0, 0, Mathf.Sign(direction.x) * clip[FindIndex(clip, timeKey)].AngleKey);
         //_transform.localScale = clip[clip.FindIndex(d => d.TimeKey >= timeKey)].ScaleKey;
     }
     private Vector2 GetOffset(Vector2 v, Vector2 direction)
     {
-        if (_transform.name == "Right leg" || _transform.name == "Left leg")
-        {
-            var m = new float[2, 2] { { direction.x, 0 }, { 0, 1 } };
-            return new Vector2(m[0, 0] * v.x + m[0, 1] * v.y, m[1, 0] * v.x + m[1, 1] * v.y);
-        }
-        else if (_transform.name == "Right hand" || _transform.name == "Left hand") return new Vector2(direction.x <= 0 ? v.x : v.x, v.y);
-        else if (_transform.name == "tie") return (Vector2)_shiftNode.CurrentView.Position + v;
-        else return v;
+        var result = v;
+
+        if (_name == RL || _name == LL) result = new Vector2(direction.x > 0 ? v.x : -v.x, v.y);
+        else if (_name == RH || _name == LH) result = new Vector2(direction.x >= 0 ? v.x  : v.x - 10, v.y);
+        else if (_name == T) result = (Vector2)_shiftNode.CurrentView.Position + v;
+
+        return result;
     }
-    private Vector3 GetPosition(Vector2 pos) => new Vector3(pos.x,pos.y, _transform.localPosition.z);
+    private int FindIndex(List<ShiftAnimationData> clip, float progress)
+    {
+        var result = -1;
+
+        for (var i = 0; i < clip.Count; i++)
+        {
+            if (clip[i].TimeKey >= progress)
+            {
+                result = i;
+                break;
+            }
+        }
+
+        return result;
+    }
+    private Vector3 GetPosition(Vector2 pos) => new Vector3(pos.x, pos.y, _transform.localPosition.z);
 }

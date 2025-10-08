@@ -48,6 +48,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8606584672838143034}
+  - component: {fileID: 3445848243012945126}
   m_Layer: 0
   m_Name: root
   m_TagString: Untagged
@@ -64,7 +65,7 @@ Transform:
   m_GameObject: {fileID: 3419337213125690137}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 75, z: 0}
+  m_LocalPosition: {x: 0, y: 76, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -73,6 +74,29 @@ Transform:
   - {fileID: 1295629707395717422}
   m_Father: {fileID: 7059119799257388848}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &3445848243012945126
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3419337213125690137}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 8
+  m_Height: 48
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7059119799257388849
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,7 +106,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7059119799257388848}
-  m_Layer: 6
+  - component: {fileID: 3990595532979068369}
+  m_Layer: 0
   m_Name: Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,6 +130,19 @@ Transform:
   - {fileID: 8606584672838143034}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3990595532979068369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7059119799257388849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7b41122d57df3e45b31997aecc88590, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scaleRange: {x: 0.75, y: 4}
 --- !u!1001 &1746368164453270938
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -253,6 +291,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Trunk
       objectReference: {fileID: 0}
+    - target: {fileID: 460766574496267849, guid: cf1e071e05efdad4283dad493d153965, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 882731133245426656, guid: cf1e071e05efdad4283dad493d153965, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936732285236552999, guid: cf1e071e05efdad4283dad493d153965, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911759569712607362, guid: cf1e071e05efdad4283dad493d153965, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4291651741523339506, guid: cf1e071e05efdad4283dad493d153965, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -291,6 +345,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4291651741523339506, guid: cf1e071e05efdad4283dad493d153965, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5152172163186443238, guid: cf1e071e05efdad4283dad493d153965, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6012906381925597727, guid: cf1e071e05efdad4283dad493d153965, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7654155456368157772, guid: cf1e071e05efdad4283dad493d153965, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8013318434019461825, guid: cf1e071e05efdad4283dad493d153965, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8350217590671713713, guid: cf1e071e05efdad4283dad493d153965, type: 3}
+      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

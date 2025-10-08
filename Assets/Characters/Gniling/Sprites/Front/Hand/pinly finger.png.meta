@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      pinly finger_0: -6480919483178107893
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

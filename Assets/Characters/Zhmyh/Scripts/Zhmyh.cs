@@ -7,8 +7,8 @@ public class Zhmyh : Unit
     public Health Health => _health;
     public Vector2 CurrentShiftDirection => _shifter.CurrentDirection;
     public Transform Root => _root;
-    public Vector2 NotZeroLookDirection {get;private set;}
-    public Vector3 NotZeroMovementDirection { get;private set;}
+    public Bow Bow => _bow;
+    public Vector3 NotZeroMovementDirection {  get; private set; }
 
     [SerializeField] private float _maxHealth;
     [SerializeField] private float _movementSpeed;
@@ -54,48 +54,25 @@ public class Zhmyh : Unit
         {
             _shiftAnimations[i].Deserialize();
         }
-
+        
         _root = transform.GetChild(0);
 
         _shifter = new Shifter(_root, _shiftConfigs).SetPrimeShift();
-        _shiftAnimator = new ShiftAnimator(_shifter, _shiftAnimations);
+        _shiftAnimator = new ShiftAnimator(_shifter, _shiftAnimations, _movementSpeed / 60);
         _shiftAnimator.SetDirection(new Vector2(1, -1));
 
-        _sm = new StateMachine();
-
-        _idleState = new ZhmyhIdleState(_shifter,_shiftAnimator);
-        _movementState = new ZhmyhMovementState(transform, _shiftAnimator, _shifter, _movementSpeed);
-        _climbState = new ZhmyhClimbState(_body, _shiftAnimator, _shifter, _climbSpeed);
-        _aimingState = new ZhmyhAimingState(this, transform, _rightHand, _leftHand, _bow, _shifter);
-        _dashState = new ZhmyhDashState(transform, _dashHeightCurve, _dashDistance,_dashDuration);
-
-        _sm.AddTransition(_idleState, _movementState, () => _movementDirection.sqrMagnitude > 0.01f);
-        _sm.AddTransition(_movementState, _idleState, () => _movementDirection.sqrMagnitude < 0.01f);
-        _sm.AddAnyTransition(_climbState, () => _isClimbing == true);
-        _sm.AddTransition(_climbState, _idleState, () => _isClimbing == false);
-        _sm.AddTransition(_idleState, _aimingState, () => _isAiming == true, () => { });
-        _sm.AddTransition(_movementState, _aimingState, () => _isAiming == true, _movementState.Move);
-        _sm.AddTransition(_aimingState, _movementState, () => _isAiming == false && _movementDirection.sqrMagnitude > 0.01f);
-        _sm.AddTransition(_aimingState, _idleState, () => _isAiming == false && _movementDirection.sqrMagnitude < 0.01f);
-        _sm.AddTransition(_movementState, _dashState, () => _isDashing == true);
-        _sm.AddTransition(_dashState, _movementState, () => _dashState.Progress == 1 && _movementDirection.sqrMagnitude > 0.01f);
-        _sm.AddTransition(_dashState, _idleState, () => _dashState.Progress == 1 && _movementDirection.sqrMagnitude < 0.01f);
-
-        _sm.SetState(_idleState);
+        StateMachineInit();
 
         _health = new Health(_maxHealth);
 
         NotZeroMovementDirection = _shifter.CurrentDirection;
-        NotZeroLookDirection = _shifter.CurrentDirection;
-
         return this;
     }
 
     public override void Tick()
     {
         _sm.Tick();
-        _shiftAnimator.Update();
-        _dashState.SetLookDirection(_shifter.CurrentDirection);
+        _shiftAnimator.Tick();
     }
     public void SetMovementDirection(Vector3 input)
     {
@@ -108,6 +85,8 @@ public class Zhmyh : Unit
         _dashState.SetDirection(_movementDirection);
         _shiftAnimator.SetDirection(_movementDirection);
 
+        _dashState.SetLookDirection(_shifter.CurrentDirection);
+
         if (_movementDirection == Vector3.zero) return;
 
         NotZeroMovementDirection = _movementDirection;
@@ -119,8 +98,6 @@ public class Zhmyh : Unit
         _aimingState.SetLookDirection(input);
 
         if (_lookDirection == Vector2.zero) return;
-
-        NotZeroLookDirection = _lookDirection;
     }
     public void SetShootDirection(Vector3 input)
     {
@@ -132,14 +109,57 @@ public class Zhmyh : Unit
         _isDashing = true;
         StartCoroutine(ResetRoutine());
     }
+    public void Climb()
+    {
+        if (_isClimbing) _isClimbing = false;
+        else if (_climbState.ClimbController.IsClimb()) _isClimbing = true;
+    }
     public void SetAim(bool isAiming)
     {
         _isAiming = isAiming;
     }
     public void Pull(bool isPull)
     {
-        if (CurrentState is ZhmyhAimingState == false) return;
+        if (CurrentState is ZhmyhAimingState == false) SetAim(isPull);
         _aimingState.SetPull(isPull);
+        if (!isPull) SetAim(false);
+    }
+    private void StateMachineInit()
+    {
+        _sm = new StateMachine();
+
+        _idleState = new ZhmyhIdleState(_shifter, _shiftAnimator);
+        _movementState = new ZhmyhMovementState(transform, _shiftAnimator, _shifter, _movementSpeed);
+        _climbState = new ZhmyhClimbState(transform, _shiftAnimator, _shifter, _climbSpeed);
+        _aimingState = new ZhmyhAimingState(this, transform, _rightHand, _leftHand, _bow, _shifter);
+        _dashState = new ZhmyhDashState(transform, _dashHeightCurve, _dashDistance, _dashDuration);
+
+        _sm.AddTransition(_idleState, _movementState, IdleToMovement);
+        _sm.AddTransition(_movementState, _idleState, MovementToIdle);
+        _sm.AddAnyTransition(_climbState, ToClimb);
+        _sm.AddTransition(_climbState, _idleState, ClimbToIdle);
+        _sm.AddTransition(_idleState, _aimingState, ToAim, Empty);
+        _sm.AddTransition(_movementState, _aimingState, ToAim, _movementState.Move);
+        _sm.AddTransition(_aimingState, _movementState, AimToMovement);
+        _sm.AddTransition(_aimingState, _idleState, AimToIdle);
+        _sm.AddTransition(_movementState, _dashState, MovementToDash);
+        _sm.AddTransition(_dashState, _movementState, DashToMovement);
+        _sm.AddTransition(_dashState, _idleState, DashToIdle);
+
+        _sm.SetState(_idleState);
+
+        bool IdleToMovement() => _movementDirection.sqrMagnitude > 0.01f;
+        bool MovementToIdle() => !IdleToMovement();
+        bool ToClimb() => _isClimbing == true;
+        bool ClimbToIdle() => !ToClimb();
+        bool ToAim() => _isAiming == true;
+        bool AimToIdle() => !ToAim() && MovementToIdle();
+        bool AimToMovement() => !ToAim() && IdleToMovement();
+        bool MovementToDash() => _isDashing == true;
+        bool DashTo() => _dashState.Progress == 1;
+        bool DashToMovement() => DashTo() && IdleToMovement();
+        bool DashToIdle() => DashTo() && !IdleToMovement();
+        void Empty() { }
     }
     private void OnDisable()
     {

@@ -101,12 +101,12 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MoonBloomParams: {r: 5.5588665, g: -2, b: 0.99, a: 11.6}
-    - _MoonTint: {r: 0.8254717, g: 0.9563679, b: 1, a: 1}
+    - _MoonTint: {r: 0.7377358, g: 1, b: 0.9974232, a: 1}
     - _NoiseMaskParams: {r: 0.33, g: 6, b: 0.628, a: 2.11}
     - _NoiseMaskParams2: {r: 0.08747184, g: -0.018151425, b: 0.51, a: 2.49}
     - _NoiseParams: {r: 0.81, g: 6, b: 0.432, a: 2.08}
     - _SkyColor: {r: 0, g: 0.029966714, b: 0.05660379, a: 1}
-    - _SkyFogColor: {r: 0, g: 0.36865026, b: 0.3735848, a: 1}
+    - _SkyFogColor: {r: 0, g: 0.25305223, b: 0.37254903, a: 1}
     - _StarSizeRange: {r: 0.4, g: 0.7216699, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -9,16 +9,16 @@ public class ZhmyhClimbState : State
     private ShiftAnimator _shiftAnimator;
     public ZhmyhClimbState(Transform transform, ShiftAnimator shiftAnimator,Shifter shifter, float climbForce)
     {
-        _climbController = new SurfaceClimber(transform.parent.parent, transform, climbForce);
+        _climbController = new SurfaceClimber(transform, climbForce);
         _shiftAnimator = shiftAnimator;
     }
-    public void SetDirection(Vector2 direction)
+    public void SetDirection(Vector3 direction)
     {
         _direction = direction;
     }
     public override void OnEnter()
     {
-        Ticker = OnTick;
+
     }
     public override void OnTick()
     {

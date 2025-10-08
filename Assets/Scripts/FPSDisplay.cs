@@ -1,11 +1,10 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class FPSDisplay : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _fpsText; // Ссылка на UI Text
-    [SerializeField] private float _updateInterval = 0.5f; // Частота обновления (в секундах)
+    [SerializeField] private TextMeshProUGUI _fpsText;
+    [SerializeField] private float _updateInterval = 0.5f;
 
     private float _accum = 0f;
     private int _frames = 0;
@@ -32,7 +31,7 @@ public class FPSDisplay : MonoBehaviour
         if (_timeLeft <= 0f)
         {
             float fps = _accum / _frames;
-            _fpsText.text = $"FPS: {fps:F1}"; // Форматирование до 1 знака после запятой
+            _fpsText.text = $"FPS: {fps:F1}";
 
             _timeLeft = _updateInterval;
             _accum = 0f;

@@ -14,7 +14,8 @@ public class ShiftAnimator : IDisposable
 
     private Vector2 _currentDirection;
     private bool _isActive = true;
-    public ShiftAnimator(Shifter shifter, ShiftAnimation[] animations)
+    private float _speedModifier;
+    public ShiftAnimator(Shifter shifter, ShiftAnimation[] animations, float speedModifier = 1)
     {
         _shifter = shifter;
         _nodesByAnimation = new Dictionary<string, List<ShiftAnimationNode>>();
@@ -44,6 +45,8 @@ public class ShiftAnimator : IDisposable
             }
         }
 
+        _speedModifier = speedModifier;
+
         _shifter.OnAttached += Attach;
         _shifter.OnDetached += Dettach;
     }
@@ -54,12 +57,19 @@ public class ShiftAnimator : IDisposable
     }
     public void Enable() => _isActive = true;
     public void Disable() => _isActive = false;
-    public void Update()
+    public void Tick()
     {
         if (!_isActive) return;
+
         var nodes = _nodesByAnimation[_currentAnimation];
-        _animationProgress = (_animationProgress + Time.deltaTime * _animations[_currentAnimation].PlaybackSpeed) % 1;
-        nodes.Where(node => node.Enabled).ToList().ForEach(node => node.Animate(_animationProgress,_currentDirection));
+
+        _animationProgress = (_animationProgress + Time.deltaTime * _animations[_currentAnimation].PlaybackSpeed * _speedModifier) % 1;
+
+        var count = nodes.Count;
+        for (var i = 0; i < count; i++)
+        {
+            if (nodes[i].Enabled) nodes[i].Animate(_animationProgress, _currentDirection);
+        }
     }
     public void SetDirection(Vector3 direction)
     {
@@ -79,7 +89,10 @@ public class ShiftAnimator : IDisposable
         if (!_isActive) return;
         _currentAnimation = name;
         var nodes = _nodesByAnimation[name];
-        nodes.ForEach(node => node.SetAnimation(name));
+        for (var i = 0; i < nodes.Count; i++)
+        {
+            nodes[i].SetAnimation(_currentAnimation);
+        }
     }
     public void Attach(Transform node)
     {

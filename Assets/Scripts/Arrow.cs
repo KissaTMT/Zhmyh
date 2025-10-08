@@ -1,46 +1,55 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class Arrow : MonoBehaviour
 {
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private ParticleSystem _particleSystem;
-    [SerializeField] private float _speed;
-    private Collider[] _buffer;
-    private Transform _transform;
-    private Vector3 _destination;
-    private Vector3 _source;
-    private Vector3 _delta;
-    
+    [SerializeField] private float _speed = 1024;
+    [SerializeField] private float _gravityScale = 256;
 
-    public void Init(Vector3 destination)
+    private Transform _transform;
+    private Collider[] _buffer = new Collider[4];
+    
+    private Vector3 _velocity;
+    
+    public void Init(Vector3 direction, float impulseForce = 1)
     {
         _transform = GetComponent<Transform>();
-        _source = _transform.position;
-        _source.y = destination.y;
-        _destination = destination;
-        _delta = (_destination - _source).normalized;
-        _buffer = new Collider[4];
+        _velocity = direction * _speed * impulseForce;
+
         StartCoroutine(DestroyRoutine());
     }
     private void Update()
     {
-        _transform.position += _delta * _speed * Time.deltaTime;
-        if(Time.frameCount % 8 == 0) CheckCollisions();
+        Flihgt();
+        CheckCollisions();
+    }
+    private void Flihgt()
+    {
+        _velocity += _gravityScale * Vector3.down * Time.deltaTime;
+        _transform.position += _velocity * Time.deltaTime;
     }
     private void CheckCollisions()
     {
-        var hitCount = Physics.OverlapSphereNonAlloc(_transform.position, 0.5f, _buffer, _layerMask);
+        var hitCount = Physics.OverlapSphereNonAlloc(_transform.position, 0.6f, _buffer, _layerMask);
 
         for (int i = 0; i < hitCount; i++)
         {
             var unit = _buffer[i].transform.GetComponentInParent<Zhmyh>();
             if (unit != null)
             {
-                var point = _buffer[i].bounds.center - _delta * _buffer[i].bounds.size.x * 0.75f;
+                Profiler.BeginSample("hit");
+                var point = Physics.ClosestPoint(_transform.position, _buffer[i], _buffer[i].transform.position, Quaternion.identity) - _velocity.normalized * _buffer[i].bounds.size.x * 0.5f;
                 unit.Health.Decrement();
-                Instantiate(_particleSystem, point, Quaternion.identity);
+                Profiler.EndSample();
+                Profiler.BeginSample("inst pert");
+                var blood = Instantiate(_particleSystem, point, Quaternion.identity);
+                Profiler.EndSample();
+                Profiler.BeginSample("desrt");
                 Destroy(gameObject);
+                Profiler.EndSample();
                 break;
             }
         }
