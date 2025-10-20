@@ -19,129 +19,129 @@ MonoBehaviour:
   - Key: Head
     Value:
     - TimeKey: 0
-      PositionKey: {x: 0, y: 10.94}
+      PositionKey: {x: -0.5, y: 21.6}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.5
-      PositionKey: {x: 0, y: 10.94}
+      PositionKey: {x: -0.4, y: 21.6}
       ScaleKey: {x: 1, y: 1}
-      AngleKey: 2.9999971
+      AngleKey: 3
     - TimeKey: 1
-      PositionKey: {x: 0, y: 10.94}
+      PositionKey: {x: -0.5, y: 21.6}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
   - Key: Right leg
     Value:
     - TimeKey: 0
-      PositionKey: {x: -0.25, y: -7.6}
+      PositionKey: {x: -0.25, y: -14}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.1666667
-      PositionKey: {x: -1.84, y: -7.36}
+      PositionKey: {x: -1.84, y: -14.72}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.3333334
-      PositionKey: {x: -2.79, y: -5.61}
+      PositionKey: {x: -2.79, y: -11.22}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.5000001
-      PositionKey: {x: -2.31, y: -4.03}
+      PositionKey: {x: -2.31, y: -8.06}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.8333335
-      PositionKey: {x: 2.38, y: -5.56}
+      PositionKey: {x: 2.38, y: -11}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 1
-      PositionKey: {x: -0.25, y: -7.6}
+      PositionKey: {x: -0.25, y: -14}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
   - Key: Left leg
     Value:
     - TimeKey: 0
-      PositionKey: {x: 5.37, y: -6.59}
+      PositionKey: {x: 5.37, y: -11}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.1666667
-      PositionKey: {x: 6.4, y: -5.4}
+      PositionKey: {x: 6.4, y: -10.8}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.3333334
-      PositionKey: {x: 7.6, y: -6}
+      PositionKey: {x: 7.6, y: -12}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.5000001
-      PositionKey: {x: 8.2, y: -7.4}
+      PositionKey: {x: 8.2, y: -14.8}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.6666668
-      PositionKey: {x: 5.5, y: -7.3}
+      PositionKey: {x: 5.5, y: -14.6}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.8333335
-      PositionKey: {x: 3.9, y: -6.8}
+      PositionKey: {x: 3.9, y: -12}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 1
-      PositionKey: {x: 5.37, y: -6.59}
+      PositionKey: {x: 5.37, y: -11}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
   - Key: Right hand
     Value:
     - TimeKey: 0
-      PositionKey: {x: -5.09, y: 1.5}
+      PositionKey: {x: -5.09, y: 3}
       ScaleKey: {x: -1, y: 1}
-      AngleKey: -127.369995
+      AngleKey: -65
     - TimeKey: 0.25
-      PositionKey: {x: -8.1, y: 2}
+      PositionKey: {x: -12, y: 5}
       ScaleKey: {x: -1, y: 1}
-      AngleKey: -127.369995
+      AngleKey: -65
     - TimeKey: 0.5
-      PositionKey: {x: -5.09, y: 1.5}
+      PositionKey: {x: -5.09, y: 3}
       ScaleKey: {x: -1, y: 1}
-      AngleKey: -127.369995
+      AngleKey: -65
     - TimeKey: 0.75
-      PositionKey: {x: 1.8, y: 2.6}
+      PositionKey: {x: 1, y: 5}
       ScaleKey: {x: -1, y: 1}
-      AngleKey: -127.369995
+      AngleKey: -65
     - TimeKey: 1
-      PositionKey: {x: -5.09, y: 1.5}
+      PositionKey: {x: -5.09, y: 3}
       ScaleKey: {x: -1, y: 1}
-      AngleKey: -127.369995
+      AngleKey: -65
   - Key: Left hand
     Value:
     - TimeKey: 0
-      PositionKey: {x: 6.35, y: 1.5}
+      PositionKey: {x: 7, y: 3}
       ScaleKey: {x: 1, y: 1}
-      AngleKey: -112.16997
+      AngleKey: 0
     - TimeKey: 0.25
-      PositionKey: {x: 9.2, y: 2}
-      ScaleKey: {x: 1, y: 1}
-      AngleKey: -112.16997
-    - TimeKey: 0.5
-      PositionKey: {x: 6.35, y: 1.5}
-      ScaleKey: {x: 1, y: 1}
-      AngleKey: -112.16997
-    - TimeKey: 0.75
-      PositionKey: {x: 4.8, y: 3}
-      ScaleKey: {x: 1, y: 1}
-      AngleKey: -112.16997
-    - TimeKey: 1
-      PositionKey: {x: 6.35, y: 1.5}
-      ScaleKey: {x: 1, y: 1}
-      AngleKey: -112.16997
-  - Key: Body
-    Value:
-    - TimeKey: 0
-      PositionKey: {x: 0.22, y: 0}
+      PositionKey: {x: 14, y: 5}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
     - TimeKey: 0.5
-      PositionKey: {x: 0.22, y: 0.5}
+      PositionKey: {x: 7, y: 3}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.75
+      PositionKey: {x: 0, y: 5}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 1
+      PositionKey: {x: 7, y: 3}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+  - Key: Body
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: 0, y: 0}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.5
+      PositionKey: {x: 0, y: 0.5}
       ScaleKey: {x: 1, y: 1}
       AngleKey: -2
     - TimeKey: 1
-      PositionKey: {x: 0.22, y: 0}
+      PositionKey: {x: 0, y: 0}
       ScaleKey: {x: 1, y: 1}
       AngleKey: 0
   - Key: Tail/Body
@@ -149,13 +149,13 @@ MonoBehaviour:
     - TimeKey: 0
       PositionKey: {x: -8.499999, y: 2.1599998}
       ScaleKey: {x: 1, y: 1}
-      AngleKey: -16.320007
+      AngleKey: -16
     - TimeKey: 0.5
       PositionKey: {x: -6.7, y: 2.9}
       ScaleKey: {x: 1, y: 1}
-      AngleKey: -27.119995
+      AngleKey: -22
     - TimeKey: 1
       PositionKey: {x: -8.499999, y: 2.1599998}
       ScaleKey: {x: 1, y: 1}
-      AngleKey: -16.320007
+      AngleKey: -16
   offset: []

@@ -1,30 +1,23 @@
 using UnityEngine;
-using Zenject;
 
 public class Gniling : Unit
 {
     [SerializeField] private float _speed;
     [SerializeField] private ShiftConfig[] _shiftConfigs;
     [SerializeField] private ShiftAnimation[] _shiftAnimations;
-    private Transform _target;
 
-    private IMover _movement;
     private Shifter _shifter;
     private ShiftAnimator _shiftAnimator;
     private StateMachine _sm;
 
-    private Vector2 _currentDirection;
-    private Vector2 _facingDirection;
+    private Vector3 _movementDirection;
+    private Vector3 _lookDirection;
 
-    [Inject]
-    public void Construct(PlayerUnitBrian player)
-    {
-        _target = player.Transform;
-    }
+    private GnilingIdleState _idleState;
+    private GnilingMovementState _movementState;
 
-    public override Unit Init()
+    protected override void OnInit()
     {
-        base.Init();
         for (var i = 0; i < _shiftConfigs.Length; i++)
         {
             _shiftConfigs[i].Deserialize();
@@ -33,44 +26,54 @@ public class Gniling : Unit
         {
             _shiftAnimations[i].Deserialize();
         }
-        transform = GetComponent<Transform>();
-        _movement = new DirectionalNotPhysicalMover(transform, _speed);
         _shifter = new Shifter(transform.GetChild(0), _shiftConfigs).SetPrimeShift();
         _shiftAnimator = new ShiftAnimator(_shifter,_shiftAnimations);
 
-        _shiftAnimator.SetAnimation("idle");
-        return this;
+        _lookDirection = _shifter.CurrentDirection;
+
+
+        SetupStateMachine();
     }
-    public void SetDirection(Vector2 input)
+    public void SetMovementDirection(Vector3 input)
     {
-        _currentDirection = input;
-        _facingDirection = input;
-    }
-    public void Move()
-    {
-        _shiftAnimator.SetAnimation("walk");
-        _movement.Move(new Vector3(_currentDirection.x,0,_currentDirection.y));
-        _shifter.Shift(_facingDirection);
-    }
-    private void Awake()
-    {
-        Init();
-    }
-    private void Update()
-    {
-        Tick();
+        _movementDirection = input;
+        _idleState.SetDirection(_movementDirection);
+        _movementState.SetDirection(_movementDirection);
     }
 
     public override void Tick()
     {
-        var delta = new Vector2(_target.position.x - transform.position.x, _target.position.z - transform.position.z);
-        delta = Vector2.zero;
-        if (delta.magnitude > 25) delta.Normalize();
-        else delta = Vector2.zero;
-        SetDirection(delta);
+        _sm.Tick();
         _shiftAnimator.Tick();
-        _shiftAnimator.SetDirection(_currentDirection);
-        if (delta != Vector2.zero) Move();
-        else _shiftAnimator.SetAnimation("idle");
+    }
+
+    protected override void SetupProperties()
+    {
+        //throw new System.NotImplementedException();
+    }
+
+    public void SetLookDirection(Vector2 input)
+    {
+        _lookDirection = input;
+    }
+
+    public void SetShootDirection(Vector3 input)
+    {
+        _lookDirection = input;
+    }
+    private void SetupStateMachine()
+    {
+        _sm = new StateMachine();
+
+        _idleState = new GnilingIdleState(_shifter, _shiftAnimator);
+        _movementState = new GnilingMovementState(transform, _shiftAnimator, _shifter, _speed);
+
+        _sm.AddTransition(_idleState, _movementState,IdleToMovement);
+        _sm.AddTransition(_movementState, _idleState, MovementToIdle);
+
+
+        bool IdleToMovement() => _movementDirection.sqrMagnitude > 0.01f;
+        bool MovementToIdle() => !IdleToMovement();
+        _sm.SetState(_idleState);
     }
 }

@@ -49,7 +49,10 @@ Properties
 }
 
 SubShader {
-    Tags { "Queue"="Background" "RenderType"="Background" "PreviewType"="Skybox" }
+    Tags 
+	{ 
+		"RenderPipeline" = "UniversalPipeline" "Queue"="Background" "RenderType"="Background" "PreviewType"="Skybox" 
+	}
     Cull Off ZWrite Off
 
     Pass {
@@ -64,20 +67,20 @@ SubShader {
 
 		#include "Includes/Utils.cginc"
 
-        struct vertexData
+        struct Attributes
         {
             float4 vertex : POSITION;
         };
 
-        struct fragmentData
+        struct Varyings
         {
             float4  clipPos : SV_POSITION;
             float3  worldPos : TEXCOORD0;
         };
 
-        fragmentData vert (vertexData vd)
+        Varyings vert (Attributes vd)
         {
-            fragmentData fd;
+            Varyings fd;
             fd.clipPos = UnityObjectToClipPos(vd.vertex);
 			fd.worldPos = mul(unity_ObjectToWorld, vd.vertex).xyz;
 
@@ -86,31 +89,33 @@ SubShader {
 
 		#define PI 3.141592653589793238462
 
-		float4 _Color;
-		float4 _SkyColor;
-		
-		float2 _StarSizeRange;
-		float _Density;
-		float _Layers;
-		float _DensityMod;
-		float _BrightnessMod;
-		float _Brightness;
-		float _Seed;
+		CBUFFER_START(UnityPerMaterial)
+			float4 _Color;
+			float4 _SkyColor;
+			
+			float2 _StarSizeRange;
+			float _Density;
+			float _Layers;
+			float _DensityMod;
+			float _BrightnessMod;
+			float _Brightness;
+			float _Seed;
 
-		#if defined(ENABLE_BACKGROUND_NOISE)
-			float4 _SkyFogColor;
-			float _NoiseDensity;
-			float4 _NoiseParams;
-			float4 _NoiseMaskParams;
-			float4 _NoiseMaskParams2;
-		#endif
+			#if defined(ENABLE_BACKGROUND_NOISE)
+				float4 _SkyFogColor;
+				float _NoiseDensity;
+				float4 _NoiseParams;
+				float4 _NoiseMaskParams;
+				float4 _NoiseMaskParams2;
+			#endif
 
-		#if defined(ENABLE_MOON)
-			float _MoonSize;
-			float4 _MoonTint;
-			float4 _MoonBloomParams;
-			sampler2D _MoonTex;
-		#endif
+			#if defined(ENABLE_MOON)
+				float _MoonSize;
+				float4 _MoonTint;
+				float4 _MoonBloomParams;
+				sampler2D _MoonTex;
+			#endif
+		CBUFFER_END
 
 		float stars(float3 rayDir, float sphereRadius, float sizeMod)
 		{
@@ -144,15 +149,14 @@ SubShader {
 			return lerp(_StarSizeRange.y, _StarSizeRange.x, smoothstep(1.0, _Layers, i));
 		}
 
-        half4 frag (fragmentData fd) : SV_Target
+        half4 frag (Varyings fd) : SV_Target
         {
 			float3 rayDir = normalize(fd.worldPos - _WorldSpaceCameraPos);
 
 			float star = stars(rayDir, _Density * pow(_DensityMod, 1), starModFromI(1)) * (1.0 / pow(_BrightnessMod, 1));
-			for(float i = 2.0; i <= _Layers; i += 1.0)
-			{
-				star += stars(rayDir, _Density * pow(_DensityMod, i), starModFromI(i)) * (1.0 / pow(_BrightnessMod, i));
-			}
+			star += stars(rayDir, _Density * pow(_DensityMod, 2), starModFromI(2)) * (1.0 / pow(_BrightnessMod, 2));
+			star += stars(rayDir, _Density * pow(_DensityMod, 3), starModFromI(3)) * (1.0 / pow(_BrightnessMod, 3));
+
 			half4 skyColor = _SkyColor;
 
 			#if defined(ENABLE_BACKGROUND_NOISE)
@@ -177,10 +181,7 @@ SubShader {
 				float4 moonCol = float4(0,0,0,0);
 				float moonBloom = pow(smoothstep(_MoonBloomParams.x, _MoonBloomParams.y, length(moonUV.xy - 0.5)), _MoonBloomParams.w) * _MoonBloomParams.z * (dot(rayDir, lightDir) * 0.5 + 0.5);
 
-				if (moonUV.x > 0.0 && moonUV.x < 1.0 && moonUV.y > 0.0 && moonUV.y < 1.0 && moonUV.z > 0.0)
-				{
-					moonCol = tex2D(_MoonTex, moonUV.xy) * _MoonTint;
-				}
+				moonCol = tex2D(_MoonTex, moonUV.xy) * _MoonTint;
 
 				sky = lerp(sky, moonCol, moonCol.a) + moonBloom * _MoonTint;
 			#endif

@@ -1,4 +1,6 @@
-﻿public class Health
+﻿using R3;
+
+public class Health
 {
     public ReactiveProperty<float> Current = new();
     public ReactiveProperty<float> Max = new();

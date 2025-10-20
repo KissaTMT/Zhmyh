@@ -1,4 +1,4 @@
-using System.Drawing;
+using R3;
 using UnityEngine;
 using Zenject;
 
@@ -13,7 +13,7 @@ public class PlayerUnitBrian : MonoBehaviour, IBrian
     private Transform _cameraTransform;
 
     private IInput _input;
-
+    private bool _isPull; 
 
     [Inject]
     public void Construct(IInput input, Cursor cursor)
@@ -26,7 +26,7 @@ public class PlayerUnitBrian : MonoBehaviour, IBrian
     }
     public void Init()
     {
-        _unit = GetComponent<Zhmyh>().Init() as Zhmyh;
+        _unit = GetComponent<Unit>().Init() as Zhmyh;
         _cursor.Init(_input);
         _cameraMain = Camera.main;
         _cameraTransform = _cameraMain.GetComponent<Transform>();
@@ -36,7 +36,11 @@ public class PlayerUnitBrian : MonoBehaviour, IBrian
         _input.Space -= Space;
         _input.Pulling -= SetPull;
     }
-    private void SetPull(bool isPull) => _unit.Pull(isPull);
+    private void SetPull(bool isPull)
+    {
+        _unit.Pull(isPull);
+        _isPull = isPull;
+    }
     private void Space()
     {
         _unit.Dash();
@@ -58,17 +62,18 @@ public class PlayerUnitBrian : MonoBehaviour, IBrian
     }
     private Vector2 CalculateLookDirection()
     {
-        return _cursor.ScreenPosition - (Vector2)_cameraMain.WorldToScreenPoint(_unit.Transform.position);
+        return _cursor.ScreenPosition - (Vector2)_cameraMain.WorldToScreenPoint(Transform.position);
     }
     private Vector3 CalculateShootDirection()
     {
-        return Quaternion.AngleAxis(-7, _cameraTransform.right) * _cameraTransform.forward;
+        var ray = _cameraMain.ScreenPointToRay(_cursor.ScreenPosition);
+        return Physics.Raycast(ray, out var hitInfo, 1024) ? hitInfo.point : ray.origin + ray.direction * 1024;
     }
     private void Update()
     {
         _unit.SetLookDirection(CalculateLookDirection());
         _unit.SetMovementDirection(CalculateMovementDirection());
-        _unit.SetShootDirection(CalculateShootDirection());
+        if(_isPull) _unit.SetShootDirection(CalculateShootDirection());
         _unit.Tick();
         _cursor.Tick();
     }

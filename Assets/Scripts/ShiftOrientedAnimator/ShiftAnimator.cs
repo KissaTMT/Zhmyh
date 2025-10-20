@@ -47,11 +47,14 @@ public class ShiftAnimator : IDisposable
 
         _speedModifier = speedModifier;
 
+
+        _shifter.OnShift += OnShiftHandle;
         _shifter.OnAttached += Attach;
         _shifter.OnDetached += Dettach;
     }
     public void Dispose()
     {
+        _shifter.OnShift -= OnShiftHandle;
         _shifter.OnAttached -= Attach;
         _shifter.OnDetached -= Dettach;
     }
@@ -71,19 +74,7 @@ public class ShiftAnimator : IDisposable
             if (nodes[i].Enabled) nodes[i].Animate(_animationProgress, _currentDirection);
         }
     }
-    public void SetDirection(Vector3 direction)
-    {
-        if(direction == Vector3.zero) return;
-        var rotation = _shifter.Root.localEulerAngles.y * Mathf.Deg2Rad;
-
-        var cos = Mathf.Cos(rotation);
-        var sin = Mathf.Sin(rotation);
-
-        var x = direction.x * cos - direction.z * sin;
-        var y = direction.x * sin + direction.z * cos;
-
-        _currentDirection = Shifter.GetClosestDirection(new Vector2(x, y));
-    }
+    public void OnShiftHandle(Vector2 direction) => _currentDirection = direction;
     public void SetAnimation(string name)
     {
         if (!_isActive) return;

@@ -15,7 +15,7 @@ public class ZhmyhAimingState : DecorateState
     private Transform _body;
     private Vector3 _handPrimeLocalPosition;
     private Vector3 _shootDirection;
-    private Vector2 _lookDirection;
+    private Vector3 _lookDirection;
     private Coroutine _release;
     private bool _isPull;
     public ZhmyhAimingState(MonoBehaviour context,Transform transform, Transform rightHand, Transform leftHand, Bow bow, Shifter shifter)
@@ -55,7 +55,7 @@ public class ZhmyhAimingState : DecorateState
         Aiming();
         Shift();
     }
-    public void SetLookDirection(Vector2 delta)
+    public void SetLookDirection(Vector3 delta)
     {
         _lookDirection = delta;
     }
@@ -127,8 +127,9 @@ public class ZhmyhAimingState : DecorateState
     {
         var rotation = _shifter.Root.localEulerAngles.y * Mathf.Deg2Rad;
 
-        var angle = Mathf.Atan2(_lookDirection.y, _lookDirection.x) * Mathf.Rad2Deg;
-        _aim.localRotation = Quaternion.Euler(-_shifter.Root.localEulerAngles.x + 90, 0, angle);
+        var z = Mathf.Atan2(_lookDirection.y, _lookDirection.x) * Mathf.Rad2Deg;
+        _aim.localRotation = Quaternion.Euler(-_shifter.Root.localEulerAngles.x + 90, 0, z);
+
     }
    
     private IEnumerator ReleaseRoutine(float speed)

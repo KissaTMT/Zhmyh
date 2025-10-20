@@ -15,6 +15,11 @@ public class ShiftBuilder
         }
         _root = root;
     }
+    public void SetDirection(Vector2 direction)
+    {
+        if (direction == Vector2.zero) return;
+        _direction = direction;
+    }
     public ShiftConfig BuildConfig()
     {
         if (_root == null)
@@ -40,7 +45,7 @@ public class ShiftBuilder
             config.ShiftTransformData[Shifter.GetPath(child)] = new ShiftTransformData(Shifter.GetPath(child),
                 child.localPosition, 
                 child.localScale, 
-                child.localEulerAngles.z);
+                child.localEulerAngles.z > 180 ?  child.localEulerAngles.z - 360 : child.localEulerAngles.z);
             if (child.TryGetComponent(out SpriteRenderer renderer)) config.ShiftVisualData[child.name] = renderer.sprite;
         }
         config.Serialize();

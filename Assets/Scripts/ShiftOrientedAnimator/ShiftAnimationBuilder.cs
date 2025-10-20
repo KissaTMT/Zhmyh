@@ -26,14 +26,14 @@ public class ShiftAnimationBuilder
     {
         _isPlaying = false;
     }
-    public void SetNode(Transform node)
+    public void SetNode(Transform node, ShiftConfig[] configs = null)
     {
         if(node == null)
         {
             Debug.LogWarning("Node is null");
             return;
         }
-        _node = new ShiftAnimationNode(new ShiftNode(node));
+        _node = new ShiftAnimationNode(new ShiftNode(node, configs));
     }
     public void SetAnimation(ShiftAnimation animation)
     {

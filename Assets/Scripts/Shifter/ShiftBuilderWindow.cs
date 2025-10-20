@@ -1,5 +1,7 @@
 #if UNITY_EDITOR
 
+using R3;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,6 +10,7 @@ public class ShiftBuilderWindow : EditorWindow
     private ReactiveProperty<Transform> Root = new();
     private Vector2 _direction;
     private ShiftConfig _preview;
+    private CompositeDisposable _disposables = new();
 
     private ShiftBuilder _builder = new();
 
@@ -18,11 +21,11 @@ public class ShiftBuilderWindow : EditorWindow
     }
     private void OnEnable()
     {
-        Root.OnChanged += OnRootChanged;
+        Root.Subscribe(OnRootChanged).AddTo(_disposables);
     }
     private void OnDisable()
     {
-        Root.OnChanged -= OnRootChanged;
+        _disposables.Dispose();
     }
     private void OnGUI()
     {
@@ -66,7 +69,8 @@ public class ShiftBuilderWindow : EditorWindow
 
     private void Build()
     {
-        var assetPath = $"Assets/Characters/{Root.Value.parent.name}/ShiftConfigs/{_direction}.asset";
+        var assetPath = $"Assets/Characters/{Root.Value.parent.name}/ShiftConfigs/{_direction} {Root.Value.parent.name}.asset";
+        _builder.SetDirection(_direction);
         var config = _builder.BuildConfig();
         if (config == null) return;
         if (AssetDatabase.LoadAssetAtPath<ShiftConfig>(assetPath)) AssetDatabase.DeleteAsset(assetPath);

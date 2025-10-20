@@ -1,11 +1,10 @@
+using R3;
 using System.Collections;
 using UnityEngine;
 
 public class Zhmyh : Unit
 {
     public State CurrentState => _sm.CurrentState;
-    public Health Health => _health;
-    public Vector2 CurrentShiftDirection => _shifter.CurrentDirection;
     public Transform Root => _root;
     public Bow Bow => _bow;
     public Vector3 NotZeroMovementDirection {  get; private set; }
@@ -20,7 +19,6 @@ public class Zhmyh : Unit
     [SerializeField] private ShiftAnimation[] _shiftAnimations;
 
     [SerializeField] private Bow _bow;
-    [SerializeField] private Transform _body;
     [SerializeField] private Transform _rightHand;
     [SerializeField] private Transform _leftHand;
 
@@ -29,10 +27,9 @@ public class Zhmyh : Unit
     private StateMachine _sm;
 
     private Transform _root;
-    private Health _health;
 
     private Vector3 _movementDirection = Vector3.zero;
-    private Vector2 _lookDirection = Vector2.zero;
+    private Vector3 _lookDirection = Vector3.zero;
 
     private bool _isClimbing = false;
     private bool _isAiming = false;
@@ -43,9 +40,8 @@ public class Zhmyh : Unit
     private ZhmyhClimbState _climbState;
     private ZhmyhAimingState _aimingState;
     private ZhmyhDashState _dashState;
-    public override Unit Init()
+    protected override void OnInit()
     {
-        base.Init();
         for (var i = 0; i < _shiftConfigs.Length; i++)
         {
             _shiftConfigs[i].Deserialize();
@@ -58,15 +54,13 @@ public class Zhmyh : Unit
         _root = transform.GetChild(0);
 
         _shifter = new Shifter(_root, _shiftConfigs).SetPrimeShift();
-        _shiftAnimator = new ShiftAnimator(_shifter, _shiftAnimations, _movementSpeed / 60);
-        _shiftAnimator.SetDirection(new Vector2(1, -1));
+        _shiftAnimator = new ShiftAnimator(_shifter, _shiftAnimations);
 
-        StateMachineInit();
+        SetupStateMachine();
 
-        _health = new Health(_maxHealth);
+        health = new Health(_maxHealth);
 
-        NotZeroMovementDirection = _shifter.CurrentDirection;
-        return this;
+        NotZeroMovementDirection = new Vector3(_shifter.CurrentDirection.x, 0, _shifter.CurrentDirection.y);
     }
 
     public override void Tick()
@@ -81,9 +75,8 @@ public class Zhmyh : Unit
 
         _idleState.SetDirection(_movementDirection);
         _movementState.SetDirection(_movementDirection);
-        _climbState.SetDirection(_movementDirection);
+        _climbState.SetDirection(new Vector2(_movementDirection.x, _movementDirection.z));
         _dashState.SetDirection(_movementDirection);
-        _shiftAnimator.SetDirection(_movementDirection);
 
         _dashState.SetLookDirection(_shifter.CurrentDirection);
 
@@ -91,13 +84,12 @@ public class Zhmyh : Unit
 
         NotZeroMovementDirection = _movementDirection;
     }
-    public void SetLookDirection(Vector2 input)
+    public void SetLookDirection(Vector3 input)
     {
         if(_lookDirection == input) return;
         _lookDirection = input;
         _aimingState.SetLookDirection(input);
 
-        if (_lookDirection == Vector2.zero) return;
     }
     public void SetShootDirection(Vector3 input)
     {
@@ -124,7 +116,7 @@ public class Zhmyh : Unit
         _aimingState.SetPull(isPull);
         if (!isPull) SetAim(false);
     }
-    private void StateMachineInit()
+    private void SetupStateMachine()
     {
         _sm = new StateMachine();
 
@@ -169,5 +161,15 @@ public class Zhmyh : Unit
     {
         yield return new WaitForSeconds(_dashDuration);
         _isDashing = false;
+    }
+    protected override void SetupProperties()
+    {
+        properties.Add("Move X", new ReactiveProperty<float>());
+        properties.Add("Move Y", new ReactiveProperty<float>());
+        properties.Add("Look X", new ReactiveProperty<float>());
+        properties.Add("Look Y", new ReactiveProperty<float>());
+        properties.Add("Aim X", new ReactiveProperty<float>());
+        properties.Add("Aim Y", new ReactiveProperty<float>());
+        properties.Add("Aim Z", new ReactiveProperty<float>());
     }
 }

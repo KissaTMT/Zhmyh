@@ -14,6 +14,7 @@ public class OrbitalCameraControllerMono : MonoBehaviour
     private CinemachineCamera _cinemachineCamera;
     private CinemachineOrbitalFollow _orbitalFollow;
     private CinemachineRotationComposer _rotationComposer;
+    private CinemachineCameraOffset _cameraOffset;
 
     private Zhmyh _unit;
     private IInput _input;
@@ -38,6 +39,7 @@ public class OrbitalCameraControllerMono : MonoBehaviour
         _cinemachineCamera = GetComponent<CinemachineCamera>();
         _orbitalFollow = GetComponent<CinemachineOrbitalFollow>();
         _rotationComposer = GetComponent<CinemachineRotationComposer>();
+        _cameraOffset = GetComponent<CinemachineCameraOffset>();
 
         _transform = GetComponent<Transform>();
 
@@ -65,7 +67,11 @@ public class OrbitalCameraControllerMono : MonoBehaviour
     {
         if (_rotateRoutine == null) _rotateRoutine = StartCoroutine(SetCameraDirectionToLookDirectionOfUnitRoutine());
     }
-    private void SetCameraToAimMode(bool aim) => _sensitivity = aim ? SENSITIVITY / 2 : SENSITIVITY;
+    private void SetCameraToAimMode(bool aim)
+    {
+        StartCoroutine(SetCameraAimOffset(aim ? new Vector3(0, 4, 64) : Vector3.zero));
+        _sensitivity = aim ? SENSITIVITY / 2 : SENSITIVITY;
+    }
 
     private void ApplyInput(Vector2 delta)
     {
@@ -87,7 +93,16 @@ public class OrbitalCameraControllerMono : MonoBehaviour
             _rotationOffset.y,
             -sin * _rotationOffset.x + cos * _rotationOffset.z);
     }
-
+    private IEnumerator SetCameraAimOffset(Vector3 offset)
+    {
+        var startOffset = _cameraOffset.Offset;
+        for(var t = 0f; t < 1f; t += 4 * Time.deltaTime)
+        {
+            _cameraOffset.Offset = Vector3.Lerp(startOffset, offset, t);
+            yield return null;
+        }
+        _cameraOffset.Offset = offset;
+    }
     private IEnumerator SetCameraDirectionToLookDirectionOfUnitRoutine()
     {
         _locked = true;
@@ -117,16 +132,16 @@ public class OrbitalCameraControllerMono : MonoBehaviour
         var cameraForward = _cinemachineCamera.transform.forward;
         cameraForward.y = 0;
         cameraForward.Normalize();
-
+        
         var unitForward = _unit.NotZeroMovementDirection;
         unitForward.y = 0;
         unitForward.Normalize();
-
+        
         var dot = Mathf.Clamp(Vector3.Dot(cameraForward, unitForward), -1f, 1f);
         var angleBetween = Mathf.Acos(dot) * Mathf.Rad2Deg;
         var cross = Vector3.Cross(cameraForward, unitForward);
         var direction = Mathf.Sign(cross.y);
-
+        
         return _orbitalFollow.HorizontalAxis.Value + angleBetween * direction;
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,7 +44,8 @@ public class Cursor : MonoBehaviour
         UpdateCursorPosition(Vector2.zero);
 
         var color = _image.color;
-        _image.color = new Color(color.r, color.g, color.b, 0);
+        color.a = 0;
+        _image.color = color;
         _isAim = false;
     }
 
@@ -53,12 +55,6 @@ public class Cursor : MonoBehaviour
         if (!_isAim) return;
 
         _rectTransform.Rotate(0, 0, -_rotationSpeed * Time.deltaTime);
-
-        _delta = _input.GetAiming();
-
-        if(_delta == Vector2.zero) return;
-
-        //UpdateCursorPosition(_delta);
     }
 
     private void SetAim(bool isAim)
@@ -66,12 +62,22 @@ public class Cursor : MonoBehaviour
         if (!_isInitialized) return;
         if(_isAim == isAim) return;
 
-        var color = _image.color;
-        _image.color = new Color(color.r, color.g, color.b, isAim ? 1 : 0);
+        StartCoroutine(SetAlphaRoutine(isAim ? 1 : 0));
         _isAim = isAim;
 
         _cashedPosition = new Vector2(Screen.width / 2f, Screen.height / 2f);
         UpdateCursorPosition(Vector2.zero);
+    }
+    private IEnumerator SetAlphaRoutine(float alpha)
+    {
+        var color = _image.color;
+        var startAlpha = color.a;
+        for (var t = 0f; t < 1f; t += 4 * Time.deltaTime)
+        {
+            _image.color = new Color(color.r, color.g, color.b, Mathf.Lerp(startAlpha, alpha, t));
+            yield return null;
+        }
+        _image.color = new Color(color.r, color.g, color.b, alpha);
     }
 
     private void UpdateCursorPosition(Vector2 delta)

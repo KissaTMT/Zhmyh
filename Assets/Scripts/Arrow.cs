@@ -1,62 +1,70 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.Profiling;
+﻿using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
+    public float Speed => _speed;
+    public float GravityScale => _gravityScale;
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private ParticleSystem _particleSystem;
-    [SerializeField] private float _speed = 1024;
+    [SerializeField] private float _speed = 2048;
     [SerializeField] private float _gravityScale = 256;
+    [SerializeField] private float _radiusOverlapSphere = 0.5f;
+    [SerializeField] private float _radiusSphereCast = 0.1f;
 
     private Transform _transform;
-    private Collider[] _buffer = new Collider[4];
-    
-    private Vector3 _velocity;
-    
+    private Collider[] _buffer = new Collider[1];
+
+    private Vector3 _currentVelocity;
+    private Vector3 _previousPosition;
+
+    private float _flightTime;
     public void Init(Vector3 direction, float impulseForce = 1)
     {
         _transform = GetComponent<Transform>();
-        _velocity = direction * _speed * impulseForce;
+        _previousPosition = _transform.position;
 
-        StartCoroutine(DestroyRoutine());
+        _currentVelocity = direction * _speed * impulseForce;
     }
-    private void Update()
+
+    private void FixedUpdate()
     {
-        Flihgt();
+        _previousPosition = transform.position;
+        Flight();
         CheckCollisions();
     }
-    private void Flihgt()
+
+    private void Flight()
     {
-        _velocity += _gravityScale * Vector3.down * Time.deltaTime;
-        _transform.position += _velocity * Time.deltaTime;
+        _flightTime += Time.deltaTime;
+        _currentVelocity += Vector3.down * 0.1f * _gravityScale * _flightTime * _flightTime;
+        _transform.position += _currentVelocity * Time.deltaTime;
     }
     private void CheckCollisions()
     {
-        var hitCount = Physics.OverlapSphereNonAlloc(_transform.position, 0.6f, _buffer, _layerMask);
+        var delta = _transform.position - _previousPosition;
+        var distance = delta.magnitude;
 
-        for (int i = 0; i < hitCount; i++)
+        if (distance > float.Epsilon * 100 &&
+            Physics.SphereCast(_transform.position, _radiusSphereCast, delta.normalized, out var hitInfo, distance, _layerMask))
         {
-            var unit = _buffer[i].transform.GetComponentInParent<Zhmyh>();
-            if (unit != null)
-            {
-                Profiler.BeginSample("hit");
-                var point = Physics.ClosestPoint(_transform.position, _buffer[i], _buffer[i].transform.position, Quaternion.identity) - _velocity.normalized * _buffer[i].bounds.size.x * 0.5f;
-                unit.Health.Decrement();
-                Profiler.EndSample();
-                Profiler.BeginSample("inst pert");
-                var blood = Instantiate(_particleSystem, point, Quaternion.identity);
-                Profiler.EndSample();
-                Profiler.BeginSample("desrt");
-                Destroy(gameObject);
-                Profiler.EndSample();
-                break;
-            }
+            HitHandle(hitInfo.collider);
+            return;
         }
+
+        if (Physics.OverlapSphereNonAlloc(_transform.position, _radiusOverlapSphere, _buffer, _layerMask) > 0) HitHandle(_buffer[0]);
     }
-    private IEnumerator DestroyRoutine()
+    private void HitHandle(Collider hit)
     {
-        yield return new WaitForSeconds(2);
+        var unit = hit.transform.GetComponentInParent<Unit>();
+
+        if (unit != null)
+        {
+            var point = Physics.ClosestPoint(_transform.position, hit, hit.transform.position, Quaternion.identity)
+                - _currentVelocity.normalized * hit.bounds.size.x;
+            unit.Health.Decrement();
+            var blood = Instantiate(_particleSystem, point, Quaternion.identity);
+            blood.startSize *= 2;
+        }
         Destroy(gameObject);
     }
 }

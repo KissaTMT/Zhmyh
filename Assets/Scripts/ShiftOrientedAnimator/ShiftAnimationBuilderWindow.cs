@@ -1,8 +1,10 @@
 #if UNITY_EDITOR
 
+using R3;
 using System;
 using UnityEditor;
 using UnityEngine;
+using static UnityEngine.Rendering.STP;
 
 public class ShiftAnimationBuilderWindow : EditorWindow
 {
@@ -14,6 +16,8 @@ public class ShiftAnimationBuilderWindow : EditorWindow
     private Vector2 _direction = new (1, -1);
     private float _timeKey = 0f;
 
+    private CompositeDisposable _disposables = new();
+
     [MenuItem("Tools/Shift Animation Builder")]
     public static void ShowWindow()
     {
@@ -21,16 +25,15 @@ public class ShiftAnimationBuilderWindow : EditorWindow
     }
     private void OnEnable()
     {
-        Animation.OnChanged += OnAnimationChanged;
-        SelectedNode.OnChanged += OnNodeChanged;
-        ShiftConfig.OnChanged += OnShiftConfigChanged;
+        Animation.Subscribe(OnAnimationChanged).AddTo(_disposables);
+        SelectedNode.Subscribe(OnNodeChanged).AddTo(_disposables);
+        ShiftConfig.Subscribe(OnShiftConfigChanged).AddTo(_disposables);
     }
 
     private void OnDisable()
     {
-        Animation.OnChanged -= OnAnimationChanged;
-        SelectedNode.OnChanged -= OnNodeChanged;
-        ShiftConfig.OnChanged -= OnShiftConfigChanged;
+        Stop();
+        _disposables.Dispose();
     }
 
     private void OnGUI()
@@ -54,10 +57,6 @@ public class ShiftAnimationBuilderWindow : EditorWindow
 
         EditorGUILayout.Space();
 
-        _direction = EditorGUILayout.Vector2Field("Direction", _direction);
-
-        EditorGUILayout.Space();
-
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Play"))
         {
@@ -75,39 +74,42 @@ public class ShiftAnimationBuilderWindow : EditorWindow
         GUILayout.EndHorizontal();
 
         EditorGUILayout.Space();
-
-        if (SelectedNode.Value != null)
+        if (ShiftConfig.Value != null)
         {
-            EditorGUILayout.LabelField("Selected Node:", SelectedNode.Value.name);
-            EditorGUILayout.LabelField("Node Path:", Shifter.GetPath(SelectedNode.Value));
+            EditorGUILayout.LabelField("Direction:", ShiftConfig.Value.Direction.ToString());
 
-            if (Animation.Value != null)
+            if (SelectedNode.Value != null)
             {
-                Animation.Value.Deserialize();
-                string nodePath = Shifter.GetPath(SelectedNode.Value);
+                EditorGUILayout.LabelField("Selected Node:", SelectedNode.Value.name);
+                EditorGUILayout.LabelField("Node Path:", Shifter.GetPath(SelectedNode.Value));
 
-                if (Animation.Value.AnimationNodes.ContainsKey(nodePath))
+
+                if (Animation.Value != null)
                 {
-                    EditorGUILayout.Space();
-                    GUILayout.Label("Animation Keys:", EditorStyles.boldLabel);
+                    Animation.Value.Deserialize();
+                    string nodePath = Shifter.GetPath(SelectedNode.Value);
 
-                    var keys = Animation.Value.AnimationNodes[nodePath];
-                    for (int i = 0; i < keys.Count; i++)
+                    if (Animation.Value.AnimationNodes.ContainsKey(nodePath))
                     {
-                        EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField($"Key {i}: Time = {keys[i].TimeKey:F2}");
-                        if (GUILayout.Button("Go", GUILayout.Width(40)))
+                        EditorGUILayout.Space();
+                        GUILayout.Label("Animation Keys:", EditorStyles.boldLabel);
+
+                        var keys = Animation.Value.AnimationNodes[nodePath];
+                        for (int i = 0; i < keys.Count; i++)
                         {
-                            _timeKey = keys[i].TimeKey;
-                            _builder.SetAnimationData(_timeKey, _direction);
+                            EditorGUILayout.BeginHorizontal();
+                            EditorGUILayout.LabelField($"Key {i}: Time = {keys[i].TimeKey:F2}");
+                            if (GUILayout.Button("Go", GUILayout.Width(40)))
+                            {
+                                _timeKey = keys[i].TimeKey;
+                                _builder.SetAnimationData(_timeKey, _direction);
+                            }
+                            EditorGUILayout.EndHorizontal();
                         }
-                        EditorGUILayout.EndHorizontal();
                     }
                 }
             }
         }
-
-        EditorGUILayout.EndScrollView();
     }
 
     private void Stop()
@@ -118,16 +120,29 @@ public class ShiftAnimationBuilderWindow : EditorWindow
 
     private void OnAnimationChanged(ShiftAnimation animation)
     {
+        if (animation == null) return;
         _builder.SetAnimation(animation);
     }
 
     private void OnNodeChanged(Transform transform)
     {
-        _builder.SetNode(transform);
+        if (transform == null) return;
+        if (ShiftConfig.Value == null) return;
+        NodeSetup(transform, ShiftConfig.Value);
+        Debug.Log($"node changed {transform} {ShiftConfig.Value}");
     }
     private void OnShiftConfigChanged(ShiftConfig config)
     {
-        
+        if(config == null) return;
+        if (SelectedNode.Value == null) return;
+        NodeSetup(SelectedNode.Value,config);
+        Debug.Log($"config changed {SelectedNode.Value} {config}");
+    }
+    private void NodeSetup(Transform transform, ShiftConfig config)
+    {
+        config.Deserialize();
+        _direction = config.Direction;
+        _builder.SetNode(SelectedNode.Value, new ShiftConfig[] { config });
     }
 
     private void Play()
@@ -155,7 +170,7 @@ public class ShiftAnimationBuilderWindow : EditorWindow
         }
         _timeKey = (_timeKey + Time.deltaTime * Animation.Value.PlaybackSpeed) % 1;
 
-        _builder.Animate(_timeKey,_direction);
+        _builder.Animate(_timeKey, _direction);
         Repaint();
     }
 

@@ -1,3 +1,4 @@
+using R3;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,21 +12,17 @@ public class Healthbar : MonoBehaviour
     [SerializeField] private float _heartNoiseForce;
 
     private Vector3 _heartSize;
-    private Zhmyh _unit;
+    private Unit _unit;
 
     [Inject]
     public void Construct(PlayerUnitBrian player)
     {
-        _unit = ((Zhmyh)(player.Unit));
+        _unit = player.Unit;
         _heartSize = _heart.rectTransform.localScale;
     }
     private void OnEnable()
     {
-        _unit.Health.Current.OnChanged += ChangeBar;
-    }
-    private void OnDisable()
-    {
-        _unit.Health.Current.OnChanged -= ChangeBar;
+        _unit.Health.Current.Subscribe(ChangeBar).AddTo(this);
     }
 
     private void ChangeBar(float value)

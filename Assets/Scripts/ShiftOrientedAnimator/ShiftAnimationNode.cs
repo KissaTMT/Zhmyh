@@ -10,7 +10,8 @@ public class ShiftAnimationNode
     private const string LH = "Left hand";
     private const string RL = "Right leg";
     private const string LL = "Left leg";
-    private const string T = "tie";
+    private const string TIE = "tie";
+    private const string TAIL = "Tail";
     public bool Enabled { get; set; }
     public IReadOnlyDictionary<string, List<ShiftAnimationData>> Animations => _animations;
     public Transform Transform => _transform;
@@ -56,8 +57,10 @@ public class ShiftAnimationNode
         _transform.localPosition = Vector3.Lerp(GetPosition(GetOffset(previous.PositionKey, direction)),
             GetPosition(GetOffset(next.PositionKey, direction)), t);
 
+        var sign = direction.x > 0 ? 1 : -1;
+
         _transform.localEulerAngles = new Vector3(0, 0,
-            Mathf.LerpAngle(Mathf.Sign(direction.x) * previous.AngleKey, Mathf.Sign(direction.x) * next.AngleKey, t));
+            Mathf.LerpAngle(sign * previous.AngleKey, sign * next.AngleKey, t));
 
         //_transform.localScale = Vector2.Lerp(prevData.ScaleKey, nextData.ScaleKey, t);
     }
@@ -65,7 +68,7 @@ public class ShiftAnimationNode
     {
         var clip = _animations[_currentAnimation];
         _transform.localPosition = GetPosition(GetOffset(clip[FindIndex(clip,timeKey)].PositionKey, direction));
-        _transform.localEulerAngles = new Vector3(0, 0, Mathf.Sign(direction.x) * clip[FindIndex(clip, timeKey)].AngleKey);
+        _transform.localEulerAngles = new Vector3(0, 0, direction.x > 0 ? 1 : -1 * clip[FindIndex(clip, timeKey)].AngleKey);
         //_transform.localScale = clip[clip.FindIndex(d => d.TimeKey >= timeKey)].ScaleKey;
     }
     private Vector2 GetOffset(Vector2 v, Vector2 direction)
@@ -73,8 +76,7 @@ public class ShiftAnimationNode
         var result = v;
 
         if (_name == RL || _name == LL) result = new Vector2(direction.x > 0 ? v.x : -v.x, v.y);
-        else if (_name == RH || _name == LH) result = new Vector2(direction.x >= 0 ? v.x  : v.x - 10, v.y);
-        else if (_name == T) result = (Vector2)_shiftNode.CurrentView.Position + v;
+        else if (_name == TIE || _name == TAIL) result = (Vector2)_shiftNode.CurrentView.Position + v;
 
         return result;
     }

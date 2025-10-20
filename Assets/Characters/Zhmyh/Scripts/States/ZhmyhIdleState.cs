@@ -9,11 +9,12 @@ public class ZhmyhIdleState : State
     {
         _shifter = shifter;
         _shiftAnimator = shiftAnimator;
-        _direction = new Vector3(1,0,-1);
+        _direction = _shifter.CurrentDirection;
     }
     public override void OnEnter()
     {
         _shiftAnimator.SetAnimation("idle");
+        _shifter.Reset();
     }
     public override void OnTick()
     {

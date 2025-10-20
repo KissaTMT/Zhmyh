@@ -4,7 +4,7 @@ using UnityEngine;
 public class FPSDisplay : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _fpsText;
-    [SerializeField] private float _updateInterval = 0.5f;
+    [SerializeField] private float _updateInterval = 0.25f;
 
     private float _accum = 0f;
     private int _frames = 0;
@@ -12,6 +12,7 @@ public class FPSDisplay : MonoBehaviour
 
     private void Start()
     {
+        if(Application.isEditor) gameObject.SetActive(false);
         if (_fpsText == null)
         {
             Debug.LogError("FPSDisplay: No Text component assigned!");

@@ -8,6 +8,7 @@ public class Shifter
 {
     public static readonly Vector2[] directions = { Vector2.right, Vector2.left, Vector2.up, Vector2.down, new Vector2(1, 1), new Vector2(-1, -1), new Vector2(1, -1), new Vector2(-1, 1) };
     public IReadOnlyDictionary<string, ShiftNode> ShiftNodes => _shiftNodes;
+    public Vector2 CashedDirection => _cashedDirection;
     public Vector2 CurrentDirection => _currentDirection;
     public Transform Root => _root;
     public event Action<Vector2> OnShift;
@@ -65,6 +66,14 @@ public class Shifter
 
         _currentDirection = closestDirection;
     }
+    public void Reset()
+    {
+        for (var i = 0; i < _keys.Count; i++)
+        {
+            var node = _shiftNodes[_keys[i]];
+            if (node.Enabled) node.Shift(_currentDirection);
+        }
+    }
     public void Attach(Transform node, bool includeChildren = true) => InteractWithNode(node, Attach, includeChildren);
     public void Detach(Transform node, bool includeChildren = true) => InteractWithNode(node, Detach, includeChildren);
 
@@ -78,9 +87,9 @@ public class Shifter
 
         var children = node.GetComponentsInChildren<Transform>();
 
-        foreach (var child in children)
+        for (var i=0; i< children.Length;i++)
         {
-            if (_shiftNodes.TryGetValue(GetPath(child), out var shiftNode)) actionWithNode(shiftNode);
+            if (_shiftNodes.TryGetValue(GetPath(children[i]), out var shiftNode)) actionWithNode(shiftNode);
         }
     }
     private void Attach(ShiftNode node)

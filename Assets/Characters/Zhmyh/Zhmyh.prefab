@@ -683,7 +683,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 18
+  m_Radius: 16
   m_Center: {x: 0, y: 2, z: 0}
 --- !u!1 &2612265163744919898
 GameObject:
@@ -1544,7 +1544,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 10
   _movementSpeed: 60
-  _climbSpeed: 30
+  _climbSpeed: 60
   _dashDistance: 50
   _dashDuration: 0.4
   _dashHeightCurve:
@@ -1591,7 +1591,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 290681d31a872924c98246dab6dbb7db, type: 2}
   - {fileID: 11400000, guid: 9705901e33689094398f81c686b8f38a, type: 2}
   _bow: {fileID: 2329432285860984712}
-  _body: {fileID: 3779659124126430429}
   _rightHand: {fileID: 1459837598135857368}
   _leftHand: {fileID: 3482263887965403985}
 --- !u!54 &8230924965131569084
@@ -1616,11 +1615,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!136 &9163892935894584576
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1638,7 +1637,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 4
   m_Height: 16
@@ -2658,6 +2657,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3779659124126430429}
     m_Modifications:
+    - target: {fileID: 3955602039382925155, guid: 5ee58214458cce04fb5325614171ddc2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8537289599885921680, guid: 5ee58214458cce04fb5325614171ddc2, type: 3}
       propertyPath: m_LocalScale.x
       value: 8
