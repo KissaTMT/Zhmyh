@@ -60,6 +60,14 @@ public class Zhmyh : Unit
 
         health = new Health(_maxHealth);
 
+        health.Current.Subscribe(current =>
+        {
+            if (current == 0)
+            {
+                gameObject.SetActive(false);
+            }
+        }).AddTo(this);
+
         NotZeroMovementDirection = new Vector3(_shifter.CurrentDirection.x, 0, _shifter.CurrentDirection.y);
     }
 

@@ -2679,7 +2679,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59e33eb853a60aa4f91ec3ac507b1041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 60
+  _maxHealth: 20
+  _speed: 40
   _shiftConfigs:
   - {fileID: 11400000, guid: 0bff318720d7a584dad42be42e82fcc7, type: 2}
   - {fileID: 11400000, guid: 7963392087d2c2e4fa8b89942577c1e1, type: 2}
@@ -2690,6 +2691,8 @@ MonoBehaviour:
   _shiftAnimations:
   - {fileID: 11400000, guid: f13e67baf452b5949931df795d4dd326, type: 2}
   - {fileID: 11400000, guid: 81520916bbe26c4488d2d8f5a36f382d, type: 2}
+  _handle: {fileID: 7384187364980733387}
+  _sword: {fileID: 2414915787669352402}
 --- !u!136 &6807595620666520909
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3805,3 +3808,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1013947850862547453, guid: 241dac56df105fa44a4bb4953e7ae278, type: 3}
   m_PrefabInstance: {fileID: 740082144122445116}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2414915787669352402 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -6068937133936823570, guid: 241dac56df105fa44a4bb4953e7ae278, type: 3}
+  m_PrefabInstance: {fileID: 740082144122445116}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30e92693fca21ae4f8ac1b570fdea106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Sword

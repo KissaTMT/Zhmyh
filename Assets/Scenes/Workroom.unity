@@ -134,7 +134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4506219
 Transform:
   m_ObjectHideFlags: 0
@@ -3833,10 +3833,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7380788156601507897, guid: d01314ecc3ed1d141b8756f2fc8e1521, type: 3}
-      propertyPath: _speed
-      value: 60
-      objectReference: {fileID: 0}
     - target: {fileID: 7384187366173562380, guid: d01314ecc3ed1d141b8756f2fc8e1521, type: 3}
       propertyPath: m_Name
       value: Gniling
@@ -3847,7 +3843,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7384187366173562381, guid: d01314ecc3ed1d141b8756f2fc8e1521, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 7384187366173562381, guid: d01314ecc3ed1d141b8756f2fc8e1521, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4836,7 +4832,7 @@ Transform:
   m_GameObject: {fileID: 676175206}
   serializedVersion: 2
   m_LocalRotation: {x: -0.08416795, y: -0.00000001234175, z: -0.0000000010424788, w: 0.9964516}
-  m_LocalPosition: {x: 0, y: 6.565056, z: 332.26834}
+  m_LocalPosition: {x: 250, y: 6.565056, z: 332.26834}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5864,7 +5860,7 @@ GameObject:
   - component: {fileID: 793442965}
   - component: {fileID: 793442964}
   - component: {fileID: 793442963}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10806,7 +10802,7 @@ Transform:
   m_GameObject: {fileID: 1581629866}
   serializedVersion: 2
   m_LocalRotation: {x: -0.08416792, y: -0.000000012341747, z: -0.0000000010424783, w: 0.9964516}
-  m_LocalPosition: {x: 0, y: 6.565056, z: 332.26834}
+  m_LocalPosition: {x: 250, y: 6.565056, z: 332.26834}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -20,13 +20,6 @@ public class ZhmyhAimingState : DecorateState
     private bool _isPull;
     public ZhmyhAimingState(MonoBehaviour context,Transform transform, Transform rightHand, Transform leftHand, Bow bow, Shifter shifter)
     {
-        if (context == null) throw new ArgumentNullException(nameof(context));
-        if (transform == null) throw new ArgumentNullException(nameof(transform));
-        if (rightHand == null) throw new ArgumentNullException(nameof(rightHand));
-        if (leftHand == null) throw new ArgumentNullException(nameof(leftHand));
-        if (bow == null) throw new ArgumentNullException(nameof(bow));
-        if (shifter == null) throw new ArgumentNullException(nameof(shifter));
-
         _context = context;
         _transform = transform;
         _rightHand = rightHand;

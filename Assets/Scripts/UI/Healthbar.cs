@@ -27,8 +27,14 @@ public class Healthbar : MonoBehaviour
 
     private void ChangeBar(float value)
     {
+        if (value == 0) StartCoroutine(QuitRoutine());
         StartCoroutine(GetNoiseToHeartRoutine(value));
         StartCoroutine(ChangeBarRoutine(value));
+    }
+    private IEnumerator QuitRoutine()
+    {
+        yield return new WaitForSeconds(1);
+        Application.Quit();
     }
     private IEnumerator GetNoiseToHeartRoutine(float value)
     {
