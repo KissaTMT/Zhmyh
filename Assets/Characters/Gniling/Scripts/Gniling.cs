@@ -41,11 +41,6 @@ public class Gniling : Unit
 
         _sword.Init(this, _handle);
         health = new Health(_maxHealth);
-        health.Current.Subscribe(current =>
-        {
-            if(current == 0) gameObject.SetActive(false);
-        }).AddTo(this);
-
         SetupStateMachine();
     }
     public void SetMovementDirection(Vector3 input)
