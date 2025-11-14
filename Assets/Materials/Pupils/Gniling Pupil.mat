@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Pupil
+  m_Name: Gniling Pupil
   m_Shader: {fileID: 4800000, guid: c3913ccdda433124591ff8cc14b40d78, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -23,42 +23,26 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _AlphaTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 175fbc3b586604c41808d5a879733c52, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MaskTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: e6915d42189b21f4aad1a3008be26159, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BlobSize: 0.25
-    - _EnableExternalAlpha: 0
-    - _ShineSize: 0.1
-    - _ShineWarpAmount: 0.03
+    - _ShineSize: 0.19
+    - _ShineWarpAmount: 0.01
     - _WarpAmount: 0.05
     - _WarpSpeed: 1
-    - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 0, g: 0, b: 0, a: 1}
     - _Blob1Pos: {r: 0.35, g: 0.35, b: 0, a: 0}
     - _Blob2Pos: {r: 0.65, g: 0.65, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _GradientColor: {r: 0.87843144, g: 0.7294118, b: 0.1764706, a: 1}
-    - _GradientColor1: {r: 0.5245282, g: 0.28732905, b: 0.010886423, a: 1}
-    - _GradientColor2: {r: 0.4716981, g: 0, b: 0.013348966, a: 1}
-    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Shine1Pos: {r: 0.28, g: 0.28, b: 0, a: 0}
-    - _Shine2Pos: {r: 0.7, g: 0.6, b: 0, a: 0}
+    - _GradientColor: {r: 0.90196085, g: 0.40000004, b: 0.9450981, a: 1}
+    - _GradientColor1: {r: 1, g: 0.65471697, b: 0.80127597, a: 1}
+    - _GradientColor2: {r: 1, g: 0, b: 0.787097, a: 1}
+    - _Shine1Pos: {r: 0.42, g: 0.56, b: 0, a: 0}
+    - _Shine2Pos: {r: 0.33, g: 0.19, b: 0, a: 0}
     - _ShineColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

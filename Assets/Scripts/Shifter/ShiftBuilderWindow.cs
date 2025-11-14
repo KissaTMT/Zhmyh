@@ -69,7 +69,7 @@ public class ShiftBuilderWindow : EditorWindow
 
     private void Build()
     {
-        var assetPath = $"Assets/Characters/{Root.Value.parent.name}/ShiftConfigs/{_direction} {Root.Value.parent.name}.asset";
+        var assetPath = $"Assets/Configs/Units/{Root.Value.parent.name}/ShiftConfigs/{_direction} {Root.Value.parent.name}.asset";
         _builder.SetDirection(_direction);
         var config = _builder.BuildConfig();
         if (config == null) return;
