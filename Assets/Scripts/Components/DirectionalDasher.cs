@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DirectionalDasher
+public class DirectionalDasher : IDasher
 {
-    public bool IsDashing => _isDashing;
     private Transform _transform;
 
     private float _distance;
@@ -13,10 +12,8 @@ public class DirectionalDasher
     private Vector3 _targetPosition;
     private float _elapsedTime;
 
-    private bool _isDashing;
-
     public DirectionalDasher(Transform transform) :
-        this (transform,50f,0.4f)
+        this (transform,5f,0.4f)
     { }
     public DirectionalDasher(Transform transform, float distance, float duration)
     {
@@ -28,8 +25,8 @@ public class DirectionalDasher
     {
         _startPosition = _transform.position;
         _targetPosition = _startPosition + direction * _distance;
+        _elapsedTime = 0;
     }
-    public void ResetElapsedTime() => _elapsedTime = 0;
     public float Dash()
     {
         var t = Mathf.Clamp01(_elapsedTime / _duration);

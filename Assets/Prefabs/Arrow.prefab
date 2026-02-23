@@ -28,8 +28,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -49,13 +49,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 9
   _particleSystem: {fileID: 7421602387771268641, guid: f0d42e1912342ad4dbce0fca69f7c404, type: 3}
-  _speed: 2048
-  _gravityScale: 256
-  _radiusOverlapSphere: 0.5
-  _radiusSphereCast: 0.25
+  _speed: 128
+  _gravityScale: 2
+  _radiusOverlapSphere: 0.1
+  _radiusSphereCast: 0.05
 --- !u!96 &8295464050906720197
 TrailRenderer:
-  serializedVersion: 3
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -101,6 +101,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Time: 0.1
   m_PreviewTimeScale: 1
   m_Parameters:
@@ -111,7 +112,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.5
+        value: 0.05
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -168,7 +169,6 @@ TrailRenderer:
     shadowBias: 0.5
     generateLightingData: 0
   m_MinVertexDistance: 0.1
-  m_MaskInteraction: 0
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 0

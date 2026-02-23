@@ -12,20 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf2edee5c58d82540a51f03df9d42094, type: 3}
   m_Name: UniversalRenderPipelineAsset
   m_EditorClassIdentifier: 
-  k_AssetVersion: 12
-  k_AssetPreviousVersion: 12
+  k_AssetVersion: 13
+  k_AssetPreviousVersion: 13
   m_RendererType: 1
   m_RendererData: {fileID: 0}
   m_RendererDataList:
   - {fileID: 11400000, guid: e5fa69de4497a5b40b02edbfe97985d9, type: 2}
   m_DefaultRendererIndex: 0
-  m_RequireDepthTexture: 0
+  m_RequireDepthTexture: 1
   m_RequireOpaqueTexture: 1
   m_OpaqueDownsampling: 0
   m_SupportsTerrainHoles: 1
   m_SupportsHDR: 1
   m_HDRColorBufferPrecision: 1
-  m_MSAA: 8
+  m_MSAA: 1
   m_RenderScale: 1
   m_UpscalingFilter: 1
   m_FsrOverrideSharpness: 0
@@ -128,9 +128,11 @@ MonoBehaviour:
   m_PrefilterSoftShadowsQualityHigh: 1
   m_PrefilterSoftShadows: 0
   m_PrefilterScreenCoord: 1
+  m_PrefilterScreenSpaceIrradiance: 1
   m_PrefilterNativeRenderPass: 1
   m_PrefilterUseLegacyLightmaps: 0
   m_PrefilterBicubicLightmapSampling: 1
+  m_PrefilterReflectionProbeRotation: 1
   m_PrefilterReflectionProbeBlending: 1
   m_PrefilterReflectionProbeBoxProjection: 1
   m_PrefilterReflectionProbeAtlas: 1

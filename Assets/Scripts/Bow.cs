@@ -66,15 +66,15 @@ public class Bow : MonoBehaviour
         var sqrDistanceXZ = new Vector2(delta.x,delta.z).sqrMagnitude;
         var sqrDistanceY = delta.y * delta.y;
 
-        var maxSqrDistanceXZ = 256 * 256;
-        var maxSqrDistanceY = 64 * 64;
+        var maxSqrDistanceXZ = 32 * 32;
+        var maxSqrDistanceY = 2 * 2;
 
         var direction = delta.normalized;
 
-        if (delta.y > 0 && sqrDistanceXZ < maxSqrDistanceXZ && sqrDistanceY < maxSqrDistanceY)
-        {
-            direction.y *= Mathf.Lerp(1, 0.1f, 1 - sqrDistanceXZ / maxSqrDistanceXZ);
-        }
+        //if (delta.y > 0 && sqrDistanceXZ < maxSqrDistanceXZ && sqrDistanceY < maxSqrDistanceY)
+        //{
+        //    direction.y *= Mathf.Lerp(1, 0.1f, 1 - sqrDistanceXZ / maxSqrDistanceXZ);
+        //}
 
         return direction;
     }

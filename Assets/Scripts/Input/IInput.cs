@@ -3,10 +3,11 @@ using UnityEngine;
 
 public interface IInput
 {
-    public event Action Space;
+    public event Action Dash;
+    public event Action Jump;
     public event Action CameraReset;
     public event Action<bool> Pulling;
 
-    public Vector2 GetDirection();
-    public Vector2 GetAiming();
+    public Vector2 GetMove();
+    public Vector2 GetLook();
 }

@@ -10,7 +10,7 @@ public class AIGnillingBrain : MonoBehaviour, IBrian
 
     private bool _enableCasting = false;
     [Inject]
-    public void Construct(PlayerUnitBrian player)
+    public void Construct(PlayerZhmyhBrian player)
     {
         _target = player.Unit;
     }

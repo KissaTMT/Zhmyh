@@ -36,7 +36,7 @@ public class Arrow : MonoBehaviour
     private void Flight()
     {
         _flightTime += Time.deltaTime;
-        _currentVelocity += Vector3.down * 0.1f * _gravityScale * _flightTime * _flightTime;
+        _currentVelocity += Vector3.down * 0.5f * _gravityScale * _flightTime;
         _transform.position += _currentVelocity * Time.deltaTime;
     }
     private void CheckCollisions()

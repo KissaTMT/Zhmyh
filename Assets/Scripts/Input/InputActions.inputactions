@@ -7,7 +7,7 @@
             "id": "764c3913-154a-4b0b-b097-16c4e6104d68",
             "actions": [
                 {
-                    "name": "Direction",
+                    "name": "Move",
                     "type": "Value",
                     "id": "d4bb5c0e-78e8-44ec-9210-62f36f13b90f",
                     "expectedControlType": "Vector2",
@@ -16,7 +16,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Aiming",
+                    "name": "Look",
                     "type": "Value",
                     "id": "cf4271fd-b952-4811-88e5-f4d66d2bcefe",
                     "expectedControlType": "Vector2",
@@ -25,9 +25,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Space",
+                    "name": "Jump",
                     "type": "Button",
                     "id": "80a5f007-4e65-4918-970e-eedd2c20d147",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "843b8f4c-1361-4d05-a193-3caaf479bb93",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -50,6 +59,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "f78a4c0b-d927-4ff0-bc90-c8789297012d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -60,7 +78,7 @@
                     "interactions": "",
                     "processors": "StickDeadzone(min=0.225)",
                     "groups": "Gamepad",
-                    "action": "Direction",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -71,7 +89,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Direction",
+                    "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -82,7 +100,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Direction",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -93,7 +111,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Direction",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -104,7 +122,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Direction",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -115,7 +133,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Direction",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -126,7 +144,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Space",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -137,7 +155,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Space",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -148,7 +166,7 @@
                     "interactions": "",
                     "processors": "StickDeadzone(min=0.15),ScaleVector2(x=10,y=10)",
                     "groups": "Gamepad",
-                    "action": "Aiming",
+                    "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -159,7 +177,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Aiming",
+                    "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -204,6 +222,50 @@
                     "processors": "",
                     "groups": ";Keyboard",
                     "action": "CameraReset",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2e0ace60-4f0c-4003-80d2-7f5b96ceca7c",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d1d58e8a-01ab-45bd-8a0d-c11f123e261d",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d67f5593-7b6e-40df-865a-016ffdb290e4",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9fc85432-edf0-432a-be42-219fe5daac4b",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

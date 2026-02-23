@@ -39,6 +39,7 @@
             struct Attributes
             {
                 float4 positionOS : POSITION;
+                float4 color : COLOR;
                 float2 uv : TEXCOORD0;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
@@ -46,6 +47,7 @@
             struct Varyings
             {
                 float4 positionHCS : SV_POSITION;
+                float4 color : COLOR;
                 float2 uv : TEXCOORD0;
                 half fogFactor : TEXCOORD1;
 
@@ -71,7 +73,7 @@
                 
                 OUT.positionHCS = TransformObjectToHClip(IN.positionOS);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
-
+                OUT.color = IN.color;
                 OUT.fogFactor = ComputeFogFactor(OUT.positionHCS.z);
                 
                 return OUT;
@@ -82,6 +84,8 @@
                 UNITY_SETUP_INSTANCE_ID(IN);
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
                 float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
+
+                texColor *= IN.color;
             
                 Light mainLight = GetMainLight();
             

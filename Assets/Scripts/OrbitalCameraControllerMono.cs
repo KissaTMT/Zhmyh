@@ -27,7 +27,7 @@ public class OrbitalCameraControllerMono : MonoBehaviour
     private Coroutine _rotateRoutine;
 
     [Inject]
-    public void Construct(IInput input, PlayerUnitBrian player)
+    public void Construct(IInput input, PlayerZhmyhBrian player)
     {
         _unit = player.Unit as Zhmyh;
         _input = input;
@@ -58,7 +58,7 @@ public class OrbitalCameraControllerMono : MonoBehaviour
     }
     private void LateUpdate()
     {
-        _delta = _input.GetAiming();
+        _delta = _input.GetLook();
         if (_locked || _delta == Vector2.zero) return;
 
         ApplyInput(_delta);
@@ -69,7 +69,7 @@ public class OrbitalCameraControllerMono : MonoBehaviour
     }
     private void SetCameraToAimMode(bool aim)
     {
-        StartCoroutine(SetCameraAimOffset(aim ? new Vector3(0, 4, 64) : Vector3.zero));
+        StartCoroutine(SetCameraAimOffset(aim ? new Vector3(0, 4/20f, 64/20f) : Vector3.zero));
         _sensitivity = aim ? SENSITIVITY / 2 : SENSITIVITY;
     }
 

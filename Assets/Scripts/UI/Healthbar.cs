@@ -15,7 +15,7 @@ public class Healthbar : MonoBehaviour
     private Unit _unit;
 
     [Inject]
-    public void Construct(PlayerUnitBrian player)
+    public void Construct(PlayerZhmyhBrian player)
     {
         _unit = player.Unit;
         _heartSize = _heart.rectTransform.localScale;

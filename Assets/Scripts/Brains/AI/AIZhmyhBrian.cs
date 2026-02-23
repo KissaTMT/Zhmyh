@@ -7,7 +7,7 @@ public class AIZhmyhBrian : MonoBehaviour, IBrian
     public Zhmyh Unit => _unit;
     private Zhmyh _unit;
 
-    private PlayerUnitBrian _player;
+    private PlayerZhmyhBrian _player;
     private Unit _target;
 
     [SerializeField] private LayerMask _layerMask;
@@ -17,7 +17,7 @@ public class AIZhmyhBrian : MonoBehaviour, IBrian
     private Coroutine _shoot;
 
     [Inject]
-    public void Construct(PlayerUnitBrian player)
+    public void Construct(PlayerZhmyhBrian player)
     {
         _player = player;
     }

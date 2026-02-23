@@ -13,7 +13,7 @@ public class ThirdPersonCameraControllerMono : MonoBehaviour
     private IInput _input;
 
     [Inject]
-    public void Construct(IInput input, PlayerUnitBrian player)
+    public void Construct(IInput input, PlayerZhmyhBrian player)
     {
         _unit = player.Unit as Zhmyh;
         _input = input;

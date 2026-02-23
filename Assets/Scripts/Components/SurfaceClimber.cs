@@ -23,7 +23,7 @@ public class SurfaceClimber
         _transform.position += _direction * _climbForce * Time.deltaTime;
     }
 
-    public bool IsClimb() => Physics.OverlapSphereNonAlloc(_transform.position, 32f, _colliders, LayerMask.GetMask("Climb")) > 0;
+    public bool IsClimb() => Physics.OverlapSphereNonAlloc(_transform.position, 4f, _colliders, LayerMask.GetMask("Climb")) > 0;
     private int GetHits() => Physics.RaycastNonAlloc(_transform.position + Vector3.up * 8, 
         _transform.GetChild(0).forward, 
         _raycastHits, 32, LayerMask.GetMask("Climb"));
