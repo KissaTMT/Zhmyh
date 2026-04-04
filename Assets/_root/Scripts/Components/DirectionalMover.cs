@@ -1,0 +1,18 @@
+using UnityEngine;
+
+public class DirectionalMover : IMover
+{
+    private Transform _transform;
+    private float _speed;
+    public DirectionalMover(Transform transform, float speed)
+    {
+        _transform = transform;
+        _speed = speed;
+    }
+    public Vector3 Move(Vector3 direction)
+    {
+        var delta = direction * _speed * Time.deltaTime;
+        _transform.position += delta;
+        return delta;
+    }
+}

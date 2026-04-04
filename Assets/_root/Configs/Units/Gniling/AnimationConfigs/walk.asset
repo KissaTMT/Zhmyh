@@ -1,0 +1,161 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79362116feeb3ec4183f73afd314d4fc, type: 3}
+  m_Name: walk
+  m_EditorClassIdentifier: 
+  Loop: 1
+  PlaybackSpeed: 2
+  Overridden: 0
+  _animationNodes:
+  - Key: Head
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: -0.5, y: 21.6}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.5
+      PositionKey: {x: -0.4, y: 21.6}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 3
+    - TimeKey: 1
+      PositionKey: {x: -0.5, y: 21.6}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+  - Key: Right leg
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: -0.25, y: -14}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.1666667
+      PositionKey: {x: -1.84, y: -14.72}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.3333334
+      PositionKey: {x: -2.79, y: -11.22}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.5000001
+      PositionKey: {x: -2.31, y: -8.06}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.8333335
+      PositionKey: {x: 2.38, y: -11}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 1
+      PositionKey: {x: -0.25, y: -14}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+  - Key: Left leg
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: 5.37, y: -11}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.1666667
+      PositionKey: {x: 6.4, y: -10.8}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.3333334
+      PositionKey: {x: 7.6, y: -12}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.5000001
+      PositionKey: {x: 8.2, y: -14.8}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.6666668
+      PositionKey: {x: 5.5, y: -14.6}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.8333335
+      PositionKey: {x: 3.9, y: -12}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 1
+      PositionKey: {x: 5.37, y: -11}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+  - Key: Right hand
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: -5.09, y: 3}
+      ScaleKey: {x: -1, y: 1}
+      AngleKey: -65
+    - TimeKey: 0.25
+      PositionKey: {x: -12, y: 5}
+      ScaleKey: {x: -1, y: 1}
+      AngleKey: -65
+    - TimeKey: 0.5
+      PositionKey: {x: -5.09, y: 3}
+      ScaleKey: {x: -1, y: 1}
+      AngleKey: -65
+    - TimeKey: 0.75
+      PositionKey: {x: 1, y: 5}
+      ScaleKey: {x: -1, y: 1}
+      AngleKey: -65
+    - TimeKey: 1
+      PositionKey: {x: -5.09, y: 3}
+      ScaleKey: {x: -1, y: 1}
+      AngleKey: -65
+  - Key: Left hand
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: 7, y: 3}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.25
+      PositionKey: {x: 14, y: 5}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.5
+      PositionKey: {x: 7, y: 3}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.75
+      PositionKey: {x: 0, y: 5}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 1
+      PositionKey: {x: 7, y: 3}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+  - Key: Body
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: 0, y: 0}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+    - TimeKey: 0.5
+      PositionKey: {x: 0, y: 0.5}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: -2
+    - TimeKey: 1
+      PositionKey: {x: 0, y: 0}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: 0
+  - Key: Tail/Body
+    Value:
+    - TimeKey: 0
+      PositionKey: {x: -8.499999, y: 2.1599998}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: -16
+    - TimeKey: 0.5
+      PositionKey: {x: -6.7, y: 2.9}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: -22
+    - TimeKey: 1
+      PositionKey: {x: -8.499999, y: 2.1599998}
+      ScaleKey: {x: 1, y: 1}
+      AngleKey: -16
+  offset: []

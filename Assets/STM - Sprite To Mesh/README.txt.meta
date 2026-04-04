@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c2bf972894c4b4960a2c0d1f082a75db
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 292537
+  packageName: STM - Sprite To Mesh
+  packageVersion: 1.1
+  assetPath: Assets/STM - Sprite To Mesh/README.txt
+  uploadId: 683348
