@@ -2,6 +2,7 @@
 
 public class ZhmyhMovementState : State
 {
+    public IMover Mover => _mover;
     private IMover _mover;
     private Shifter _shifter;
 
@@ -21,17 +22,25 @@ public class ZhmyhMovementState : State
     }
     public override void OnTick()
     {
-        Move();
+        MoveWithGravity();
         Shift();
+    }
+    public void MoveWithGravity()
+    {
+        UseGravity();
+        Move();
     }
     public void SetDirection(Vector3 direction)
     {
         _direction = direction;
     }
+    public void UseGravity()
+    {
+        _characterController.Move(new Vector3(0, Physics.gravity.y * 0.1f, 0));
+    }
     public void Move()
     {
         _mover.Move(_direction);
-        _characterController.Move(new Vector3(0,Physics.gravity.y * 0.5f,0));
     }
     public void Shift()
     {

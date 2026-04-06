@@ -33,14 +33,17 @@ public class TrunkMeshGenerator : MonoBehaviour
 
         var combinedMesh = new Mesh() { name = "trunk" };
 
-        combinedMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+        //combinedMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 
         combinedMesh.CombineMeshes(combines.ToArray());
 
         _meshFilter.sharedMesh = combinedMesh;
         _meshCollider.sharedMesh = combinedMesh;
 
-        _renderer.sharedMaterial.mainTexture = _trunk.texture;
+        var pb = new MaterialPropertyBlock();
+        pb.SetTexture("_MainTex", _trunk.texture);
+
+        _renderer.SetPropertyBlock(pb);
     }
     private Mesh GenerateMesh()
     {

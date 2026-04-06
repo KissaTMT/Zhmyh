@@ -1561,6 +1561,8 @@ MonoBehaviour:
   _climbSpeed: 5
   _dashDistance: 5
   _dashDuration: 0.4
+  _jumpHeight: 0.28
+  _jumpDuration: 0.75
   _dashHeightCurve:
     serializedVersion: 2
     m_Curve:
@@ -1590,6 +1592,39 @@ MonoBehaviour:
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.05319886
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _jumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.97742444
+      outSlope: 0.97742444
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.22000001
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: -0.025509357
+      outSlope: -0.025509357
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

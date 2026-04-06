@@ -14,7 +14,10 @@ public class Zhmyh : Unit
     [SerializeField] private float _climbSpeed;
     [SerializeField] private float _dashDistance;
     [SerializeField] private float _dashDuration;
+    [SerializeField] private float _jumpHeight;
+    [SerializeField] private float _jumpDuration;
     [SerializeField] private AnimationCurve _dashHeightCurve;
+    [SerializeField] private AnimationCurve _jumpCurve;
     [SerializeField] private ShiftConfig[] _shiftConfigs;
     [SerializeField] private ShiftAnimation[] _shiftAnimations;
 
@@ -34,12 +37,14 @@ public class Zhmyh : Unit
     private bool _isClimbing = false;
     private bool _isAiming = false;
     private bool _isDashing = false;
+    private bool _isJumping = false;
 
     private ZhmyhIdleState _idleState;
     private ZhmyhMovementState _movementState;
     private ZhmyhClimbState _climbState;
     private ZhmyhAimingState _aimingState;
     private ZhmyhDashState _dashState;
+    private ZhmyhJumpState _jumpState;
     protected override void OnInit()
     {
         for (var i = 0; i < _shiftConfigs.Length; i++)
@@ -102,7 +107,9 @@ public class Zhmyh : Unit
     }
     public void Jump()
     {
+        if (CurrentState is ZhmyhJumpState jumpState && jumpState.Progress < 1f) return;
 
+        _isJumping = true;
     }
     public void Climb()
     {
@@ -128,13 +135,18 @@ public class Zhmyh : Unit
         _climbState = new ZhmyhClimbState(transform, _shiftAnimator, _shifter, _climbSpeed);
         _aimingState = new ZhmyhAimingState(this, transform, _rightHand, _leftHand, _bow, _shifter);
         _dashState = new ZhmyhDashState(transform, _dashHeightCurve, _dashDistance, _dashDuration);
+        _jumpState = new ZhmyhJumpState(GetComponent<CharacterController>(), _jumpCurve, _jumpHeight, _jumpDuration, transform, 1);
 
         _sm.AddTransition(_idleState, _movementState, IdleToMovement);
         _sm.AddTransition(_movementState, _idleState, MovementToIdle);
+        _sm.AddTransition(_idleState, _jumpState, ToJump, _movementState.Move);
+        _sm.AddTransition(_movementState, _jumpState, ToJump, _movementState.Move);
         _sm.AddAnyTransition(_climbState, ToClimb);
+        _sm.AddTransition(_jumpState, _idleState, JumpToIdle);
+        _sm.AddTransition(_jumpState, _movementState, JumpToMovement);
         _sm.AddTransition(_climbState, _idleState, ClimbToIdle);
         _sm.AddTransition(_idleState, _aimingState, ToAim, Empty);
-        _sm.AddTransition(_movementState, _aimingState, ToAim, _movementState.Move);
+        _sm.AddTransition(_movementState, _aimingState, ToAim, _movementState.MoveWithGravity);
         _sm.AddTransition(_aimingState, _movementState, AimToMovement);
         _sm.AddTransition(_aimingState, _idleState, AimToIdle);
         _sm.AddTransition(_movementState, _dashState, MovementToDash);
@@ -154,6 +166,10 @@ public class Zhmyh : Unit
         bool DashTo() => _dashState.Progress == 1;
         bool DashToMovement() => DashTo() && IdleToMovement();
         bool DashToIdle() => DashTo() && !IdleToMovement();
+        bool ToJump() => _isJumping;
+        bool JumpTo() => _jumpState.Progress == 1;
+        bool JumpToIdle() => JumpTo() && !IdleToMovement();
+        bool JumpToMovement() => JumpTo() && IdleToMovement();
         void Empty() { }
     }
     private void OnDisable()
@@ -163,5 +179,6 @@ public class Zhmyh : Unit
     private void LateUpdate()
     {
         _isDashing = false;
+        _isJumping = false;
     }
 }

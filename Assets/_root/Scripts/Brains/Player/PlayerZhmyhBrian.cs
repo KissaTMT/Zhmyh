@@ -50,7 +50,7 @@ public class PlayerZhmyhBrian : MonoBehaviour, IBrian
     }
     private void Jump()
     {
-        _unit.Climb();
+        _unit.Jump();
     }
     private Vector3 CalculateMovementDirection()
     {
