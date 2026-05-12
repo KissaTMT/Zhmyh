@@ -93,7 +93,10 @@
                 float NdotL = max(0, dot(lightNormals, mainLight.direction));
                 float3 lighting = mainLight.color.rgb * NdotL;
                 clip(texColor.a - _Cutoff);
-                float shade = max(IN.uv.y*1.5,0.2);
+
+                //float2 center = IN.uv - 0.5;
+                //float radius = length(center);
+                float shade = max(IN.uv.y*2, 0.4);
                 
                 return float4(MixFog(texColor.rgb * lighting * shade, IN.fogFactor * _FogIntensity), 1);
             }

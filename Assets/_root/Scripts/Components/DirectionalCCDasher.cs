@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UIElements;
 
 public class DirectionalCCDasher : IDasher
 {
     private CharacterController _characterController;
+    private AnimationCurve _animationCurve;
     private float _distance;
     private float _duration;
 
@@ -19,11 +21,22 @@ public class DirectionalCCDasher : IDasher
         _distance = distance;
         _duration = duration;
     }
+    public DirectionalCCDasher(CharacterController characterController, AnimationCurve curve, float distance, float duration)
+    {
+        _characterController = characterController;
+        _animationCurve = curve;
+        _distance = distance;
+        _duration = duration;
+    }
     public float Dash()
     {
         var t = Mathf.Clamp01(_elapsedTime / _duration);
 
-        var delta = Vector3.Lerp(_startPosition, _targetPosition, t) - _characterController.transform.position;
+        var horizontalTarget = Vector3.Lerp(_startPosition, _targetPosition, t);
+
+        var currentPos = _characterController.transform.position;
+
+        var delta = new Vector3(horizontalTarget.x - currentPos.x, 0, horizontalTarget.z - currentPos.z);
 
         _characterController.Move(delta);
 

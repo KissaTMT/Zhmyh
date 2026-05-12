@@ -82,6 +82,7 @@ public class Zhmyh : Unit
         _movementState.SetDirection(_movementDirection);
         _climbState.SetDirection(new Vector2(_movementDirection.x, _movementDirection.z));
         _dashState.SetDirection(_movementDirection);
+        _jumpState.SetDirection(_movementDirection);
 
         _dashState.SetLookDirection(_shifter.CurrentDirection);
 
@@ -135,15 +136,16 @@ public class Zhmyh : Unit
         _climbState = new ZhmyhClimbState(transform, _shiftAnimator, _shifter, _climbSpeed);
         _aimingState = new ZhmyhAimingState(this, transform, _rightHand, _leftHand, _bow, _shifter);
         _dashState = new ZhmyhDashState(transform, _dashHeightCurve, _dashDistance, _dashDuration);
-        _jumpState = new ZhmyhJumpState(GetComponent<CharacterController>(), _jumpCurve, _jumpHeight, _jumpDuration, transform, 1);
+        _jumpState = new ZhmyhJumpState(transform, _jumpCurve, _movementSpeed * 0.9f,_jumpHeight, _jumpDuration, transform, 1);
 
         _sm.AddTransition(_idleState, _movementState, IdleToMovement);
         _sm.AddTransition(_movementState, _idleState, MovementToIdle);
-        _sm.AddTransition(_idleState, _jumpState, ToJump, _movementState.Move);
-        _sm.AddTransition(_movementState, _jumpState, ToJump, _movementState.Move);
+        _sm.AddTransition(_idleState, _jumpState, ToJump);
+        _sm.AddTransition(_movementState, _jumpState, ToJump);
         _sm.AddAnyTransition(_climbState, ToClimb);
         _sm.AddTransition(_jumpState, _idleState, JumpToIdle);
         _sm.AddTransition(_jumpState, _movementState, JumpToMovement);
+        _sm.AddTransition(_jumpState, _dashState, JumpToDash);
         _sm.AddTransition(_climbState, _idleState, ClimbToIdle);
         _sm.AddTransition(_idleState, _aimingState, ToAim, Empty);
         _sm.AddTransition(_movementState, _aimingState, ToAim, _movementState.MoveWithGravity);
@@ -162,14 +164,16 @@ public class Zhmyh : Unit
         bool ToAim() => _isAiming == true;
         bool AimToIdle() => !ToAim() && MovementToIdle();
         bool AimToMovement() => !ToAim() && IdleToMovement();
-        bool MovementToDash() => _isDashing == true;
+        bool MovementToDash() => ToDash();
         bool DashTo() => _dashState.Progress == 1;
         bool DashToMovement() => DashTo() && IdleToMovement();
         bool DashToIdle() => DashTo() && !IdleToMovement();
         bool ToJump() => _isJumping;
+        bool ToDash() => _isDashing == true;
         bool JumpTo() => _jumpState.Progress == 1;
         bool JumpToIdle() => JumpTo() && !IdleToMovement();
         bool JumpToMovement() => JumpTo() && IdleToMovement();
+        bool JumpToDash() => ToDash();
         void Empty() { }
     }
     private void OnDisable()

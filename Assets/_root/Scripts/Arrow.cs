@@ -6,8 +6,8 @@ public class Arrow : MonoBehaviour
     public float GravityScale => _gravityScale;
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private ParticleSystem _particleSystem;
-    [SerializeField] private float _speed = 2048;
-    [SerializeField] private float _gravityScale = 256;
+    [SerializeField] private float _speed = 128;
+    [SerializeField] private float _gravityScale = 2;
     [SerializeField] private float _radiusOverlapSphere = 0.5f;
     [SerializeField] private float _radiusSphereCast = 0.1f;
 
@@ -63,7 +63,6 @@ public class Arrow : MonoBehaviour
                 - _currentVelocity.normalized * hit.bounds.size.x;
             unit.Health.Decrement();
             var blood = Instantiate(_particleSystem, point, Quaternion.identity);
-            blood.startSize *= 2;
         }
         Destroy(gameObject);
     }

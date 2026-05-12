@@ -64,7 +64,7 @@ MonoBehaviour:
     FieldOfView: 40
     OrthographicSize: 10
     NearClipPlane: 0.1
-    FarClipPlane: 1000
+    FarClipPlane: 512
     Dutch: 0
     ModeOverride: 0
     PhysicalProperties:
@@ -124,7 +124,7 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   VerticalAxis:
-    Value: 15
+    Value: -20
     Center: 15
     Range: {x: -45, y: 15}
     Wrap: 0

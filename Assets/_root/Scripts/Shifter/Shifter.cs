@@ -48,7 +48,7 @@ public class Shifter
     { 
         if(direction == Vector2.zero) return;
 
-        if ((_cashedDirection - direction).sqrMagnitude < 0.01f) return;
+        if ((_cashedDirection - direction).sqrMagnitude < 0.05f) return;
 
         _cashedDirection = direction;
 

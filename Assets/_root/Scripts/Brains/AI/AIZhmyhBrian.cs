@@ -4,14 +4,14 @@ using Zenject;
 
 public class AIZhmyhBrian : MonoBehaviour, IBrian
 {
+    public Transform Transform => _unit.Transform;
     public Zhmyh Unit => _unit;
     private Zhmyh _unit;
 
     private PlayerZhmyhBrian _player;
     private Unit _target;
 
-    [SerializeField] private LayerMask _layerMask;
-    [SerializeField] private Arrow _arrow;
+    private LayerMask _layerMask;
     private RaycastHit[] _hits = new RaycastHit[8];
     private Vector3 _shootDirection;
     private Coroutine _shoot;
@@ -21,10 +21,11 @@ public class AIZhmyhBrian : MonoBehaviour, IBrian
     {
         _player = player;
     }
-    private void Start()
+    public void Init()
     {
         _unit = GetComponent<Zhmyh>().Init() as Zhmyh;
         _target = _player.Unit;
+        _layerMask = LayerMask.NameToLayer("Default");
     }
     private void Update()
     {
@@ -40,7 +41,7 @@ public class AIZhmyhBrian : MonoBehaviour, IBrian
     private Vector3 CalculateMovementDirection()
     {
         var delta = _target.Transform.position - _unit.Transform.position;
-        return delta.magnitude > 25 ? new Vector3(delta.x, 0, delta.z).normalized : Vector3.zero;
+        return delta.magnitude > 2 ? new Vector3(delta.x, 0, delta.z).normalized : Vector3.zero;
     }
 
     private Vector2 CalculateLookDirection()
@@ -74,13 +75,13 @@ public class AIZhmyhBrian : MonoBehaviour, IBrian
         var origin = _unit.Transform.position + offset;
         var target = _target.Transform.position + offset;
         var delta = target - origin;
-        var hitCount = Physics.RaycastNonAlloc(origin, delta.normalized, _hits, delta.sqrMagnitude, _layerMask);
+        var hitCount = Physics.RaycastNonAlloc(origin, delta.normalized, _hits, delta.magnitude, _layerMask);
 
         return hitCount == 0;
     }
     private void CalculateTrajectory(out Vector3 direction, out float tension)
     {
-        var offset = Vector3.up * 10;
+        var offset = Vector3.up * 0;
         var start = _unit.Transform.position + offset;
         var target = _target.Transform.position + offset;
         var delta = target - start;
@@ -88,12 +89,15 @@ public class AIZhmyhBrian : MonoBehaviour, IBrian
         var distanceXZ = deltaXZ.magnitude;
         var heightDiff = delta.y;
 
-        var baseSpeed = _arrow.Speed;
-        var g = _arrow.GravityScale;
+        var baseSpeed = 128;
+        var g = 2;
 
-        var baseTension = distanceXZ / 40f;
+        var baseTension = distanceXZ / 4f;
 
-        baseTension *= heightDiff <= 0 ? (1 - heightDiff / 40f) : (1 + heightDiff / 20f);
+        direction = target;
+        
+
+        baseTension *= heightDiff <= 0 ? (1 - heightDiff / 4f) : (1 + heightDiff / 2f);
         tension = Mathf.Clamp(baseTension, 0.25f, 1f);
 
         var v0 = baseSpeed * tension;
@@ -107,7 +111,7 @@ public class AIZhmyhBrian : MonoBehaviour, IBrian
         if (discriminant < 0)
         {
             var angle45 = Mathf.Deg2Rad * 45;
-            direction = (deltaXZ.normalized * Mathf.Cos(angle45) + Vector3.up * Mathf.Sin(angle45)).normalized;
+            //direction = (deltaXZ.normalized * Mathf.Cos(angle45) + Vector3.up * Mathf.Sin(angle45)).normalized;
             return;
         }
 
@@ -117,6 +121,8 @@ public class AIZhmyhBrian : MonoBehaviour, IBrian
 
         var tanTheta = (Mathf.Abs(tanTheta1) < Mathf.Abs(tanTheta2)) ? tanTheta1 : tanTheta2;
         var angle = Mathf.Atan(tanTheta);
-        direction = (deltaXZ.normalized * Mathf.Cos(angle) + Vector3.up * Mathf.Sin(angle)).normalized;
+        //direction = (deltaXZ.normalized * Mathf.Cos(angle) + Vector3.up * Mathf.Sin(angle)).normalized;
+
+       
     }
 }

@@ -25,7 +25,7 @@ public class ZhmyhIdleState : State
     }
     public void UseGravity()
     {
-        _characterController.Move(new Vector3(0, Physics.gravity.y * 0.5f, 0));
+        _characterController.Move(new Vector3(0, Physics.gravity.y * Time.deltaTime, 0));
     }
     public void SetDirection(Vector3 direction)
     {

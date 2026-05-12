@@ -66,8 +66,8 @@ public class Bow : MonoBehaviour
         var sqrDistanceXZ = new Vector2(delta.x,delta.z).sqrMagnitude;
         var sqrDistanceY = delta.y * delta.y;
 
-        var maxSqrDistanceXZ = 32 * 32;
-        var maxSqrDistanceY = 2 * 2;
+        //var maxSqrDistanceXZ = 32 * 32;
+        //var maxSqrDistanceY = 2 * 2;
 
         var direction = delta.normalized;
 
