@@ -1,3 +1,4 @@
+using Brains;
 using System;
 using System.Collections;
 using Unity.Cinemachine;
@@ -16,7 +17,7 @@ public class OrbitalCameraControllerMono : MonoBehaviour
     private CinemachineRotationComposer _rotationComposer;
     private CinemachineCameraOffset _cameraOffset;
 
-    private Zhmyh _unit;
+    private Transform _target;
     private IInput _input;
     private Transform _transform;
 
@@ -29,7 +30,7 @@ public class OrbitalCameraControllerMono : MonoBehaviour
     [Inject]
     public void Construct(IInput input, PlayerZhmyhBrian player)
     {
-        _unit = player.Unit as Zhmyh;
+        _target = player.Transform;
         _input = input;
         _input.CameraReset += SetCameraDirectionToLookDirectionOfUnit;
         _input.Pulling += SetCameraToAimMode;
@@ -43,8 +44,8 @@ public class OrbitalCameraControllerMono : MonoBehaviour
 
         _transform = GetComponent<Transform>();
 
-        _cinemachineCamera.Follow = _unit.Transform;
-        _cinemachineCamera.LookAt = _unit.Transform;
+        _cinemachineCamera.Follow = _target;
+        _cinemachineCamera.LookAt = _target;
         _rotationOffset = _rotationComposer.TargetOffset;
 
         _sensitivity = SENSITIVITY;
@@ -133,7 +134,7 @@ public class OrbitalCameraControllerMono : MonoBehaviour
         cameraForward.y = 0;
         cameraForward.Normalize();
         
-        var unitForward = _unit.NotZeroMovementDirection;
+        var unitForward = _target.GetComponent<Zhmyh>().NotZeroMovementDirection;
         unitForward.y = 0;
         unitForward.Normalize();
         

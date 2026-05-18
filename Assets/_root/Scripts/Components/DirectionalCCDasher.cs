@@ -32,7 +32,7 @@ public class DirectionalCCDasher : IDasher
     {
         var t = Mathf.Clamp01(_elapsedTime / _duration);
 
-        var horizontalTarget = Vector3.Lerp(_startPosition, _targetPosition, t);
+        var horizontalTarget = Vector3.Lerp(_startPosition, _targetPosition, _animationCurve.Evaluate(t));
 
         var currentPos = _characterController.transform.position;
 

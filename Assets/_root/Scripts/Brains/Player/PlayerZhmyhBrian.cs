@@ -29,6 +29,7 @@ public class PlayerZhmyhBrian : MonoBehaviour, IBrian
     public void Init()
     {
         _unit = GetComponent<Zhmyh>().Init() as Zhmyh;
+        _unit.Timeflow = new Timeflow();
         _cursor.Init(_input);
         _cameraMain = Camera.main;
         _cameraTransform = _cameraMain.GetComponent<Transform>();

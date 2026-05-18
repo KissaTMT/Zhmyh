@@ -8,7 +8,8 @@ public class ZhmyhDashState : State
     private Transform _transform;
     private CharacterController _characterController;
     private Transform _root;
-    private AnimationCurve _curve;
+    private AnimationCurve _height;
+    private AnimationCurve _dash;
     private Vector3 _direction;
     private Vector2 _lookDirection;
 
@@ -20,14 +21,15 @@ public class ZhmyhDashState : State
     private float _duration;
     private float _progress;
 
-    public ZhmyhDashState(Transform transform, AnimationCurve curve, float distance, float duration)
+    public ZhmyhDashState(Transform transform, AnimationCurve dash, AnimationCurve height, float distance, float duration)
     {
         _transform = transform;
         _characterController = transform.GetComponent<CharacterController>();
-        _curve = curve;
+        _dash = dash;
+        _height = height;
         _distance = distance;
         _duration = duration;
-        _dasher = new DirectionalCCDasher(_transform.GetComponent<CharacterController>(), curve, _distance, _duration);
+        _dasher = new DirectionalCCDasher(_transform.GetComponent<CharacterController>(), dash, _distance, _duration);
         _root = _transform.GetChild(0);
         _startLocalEulerAnglesXZ = new Vector2(_root.localEulerAngles.x, _root.localEulerAngles.z);
     }
@@ -51,7 +53,7 @@ public class ZhmyhDashState : State
     {
         _progress = _dasher.Dash();
 
-        float deltaY = _startPosition.y + _curve.Evaluate(_progress) - _characterController.transform.position.y;
+        float deltaY = _startPosition.y + _height.Evaluate(_progress) - _characterController.transform.position.y;
 
 
         _characterController.Move(new Vector3(0, deltaY, 0));

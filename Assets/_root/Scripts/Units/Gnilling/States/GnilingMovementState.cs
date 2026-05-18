@@ -9,7 +9,7 @@ public class GnilingMovementState : State
     private Vector3 _direction;
     public GnilingMovementState(Transform transform, ShiftAnimator shiftAnimator, Shifter shifter, float speed)
     {
-        _mover = new DirectionalMover(transform, speed);
+        _mover = new DirectionalCCMover(transform.GetComponent<CharacterController>(), speed);
         _shiftAnimator = shiftAnimator;
         _shifter = shifter;
     }

@@ -7,6 +7,7 @@ public class Zhmyh : Unit
     public State CurrentState => _sm.CurrentState;
     public Transform Root => _root;
     public Bow Bow => _bow;
+    public Timeflow Timeflow;
     public Vector3 NotZeroMovementDirection {  get; private set; }
 
     [SerializeField] private float _maxHealth;
@@ -17,6 +18,7 @@ public class Zhmyh : Unit
     [SerializeField] private float _jumpHeight;
     [SerializeField] private float _jumpDuration;
     [SerializeField] private AnimationCurve _dashHeightCurve;
+    [SerializeField] private AnimationCurve _dashCurve;
     [SerializeField] private AnimationCurve _jumpCurve;
     [SerializeField] private ShiftConfig[] _shiftConfigs;
     [SerializeField] private ShiftAnimation[] _shiftAnimations;
@@ -135,7 +137,7 @@ public class Zhmyh : Unit
         _movementState = new ZhmyhMovementState(transform, _shiftAnimator, _shifter, _movementSpeed);
         _climbState = new ZhmyhClimbState(transform, _shiftAnimator, _shifter, _climbSpeed);
         _aimingState = new ZhmyhAimingState(this, transform, _rightHand, _leftHand, _bow, _shifter);
-        _dashState = new ZhmyhDashState(transform, _dashHeightCurve, _dashDistance, _dashDuration);
+        _dashState = new ZhmyhDashState(transform, _dashCurve, _dashHeightCurve, _dashDistance, _dashDuration);
         _jumpState = new ZhmyhJumpState(transform, _jumpCurve, _movementSpeed * 0.9f,_jumpHeight, _jumpDuration, transform, 1);
 
         _sm.AddTransition(_idleState, _movementState, IdleToMovement);

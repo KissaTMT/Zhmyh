@@ -4,12 +4,13 @@ using UnityEngine;
 public class Timeflow
 {
     public event Action<int> OnInverse;
-    public int Current => _isPositiveTimeflow ? 1 : -1;
-    private bool _isPositiveTimeflow = true;
-    public Timeflow(bool isPositiveTimeflow = true) => _isPositiveTimeflow = isPositiveTimeflow;
+    public int Current => _current;
+
+    private int _current;
+    public Timeflow(int current = 1) => _current = (int)Mathf.Sign(current);
     public void Inverse()
     {
-        _isPositiveTimeflow = !_isPositiveTimeflow;
-        OnInverse?.Invoke(Current);
+        _current = -1 * _current;
+         OnInverse?.Invoke(_current);
     }
 }

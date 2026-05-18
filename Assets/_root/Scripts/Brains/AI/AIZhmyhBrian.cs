@@ -9,7 +9,7 @@ public class AIZhmyhBrian : MonoBehaviour, IBrian
     private Zhmyh _unit;
 
     private PlayerZhmyhBrian _player;
-    private Unit _target;
+    private Zhmyh _target;
 
     private LayerMask _layerMask;
     private RaycastHit[] _hits = new RaycastHit[8];
@@ -24,6 +24,7 @@ public class AIZhmyhBrian : MonoBehaviour, IBrian
     public void Init()
     {
         _unit = GetComponent<Zhmyh>().Init() as Zhmyh;
+        _unit.Timeflow = new Timeflow(-1 * _target.Timeflow.Current);
         _target = _player.Unit;
         _layerMask = LayerMask.NameToLayer("Default");
     }
