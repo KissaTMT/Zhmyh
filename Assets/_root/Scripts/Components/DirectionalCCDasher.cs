@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DirectionalCCDasher : IDasher
+public class DirectionalCCDasher
 {
     private CharacterController _characterController;
     private AnimationCurve _animationCurve;

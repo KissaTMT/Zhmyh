@@ -3,7 +3,7 @@
 public class ZhmyhDashState : State
 {
     public float Progress => Mathf.Clamp01(_progress);
-    private IDasher _dasher;
+    private DirectionalCCDasher _dasher;
 
     private Transform _transform;
     private CharacterController _characterController;

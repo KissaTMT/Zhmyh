@@ -6,7 +6,6 @@ public class GameplayInstaller : MonoInstaller
 {
     public PlayerUnitBrian PlayerUnitBrian { get; private set; }
     public PlayerZhmyhBrian PlayerBrain { get; private set; }
-    public AIZhmyhBrian AIBrain { get; private set; }
     [SerializeField] private Unit _unitPrefab;
     [SerializeField] private Cursor _cursor;
     public override void InstallBindings()
@@ -19,7 +18,7 @@ public class GameplayInstaller : MonoInstaller
         PlayerBrain = Container.InstantiateComponent<PlayerZhmyhBrian>(unit);
         PlayerBrain.name = "Player";
         PlayerBrain.Init();
-        PlayerBrain.Transform.position = new Vector3(0, 0, 20);
+        PlayerBrain.Transform.position = new Vector3(0, 0, 0);
         Container.Bind<PlayerZhmyhBrian>().FromInstance(PlayerBrain).AsSingle();
 
         //var unit = Container.InstantiatePrefab(_unitPrefab);
@@ -32,11 +31,11 @@ public class GameplayInstaller : MonoInstaller
 
 
 
-        //unit = Container.InstantiatePrefab(_unitPrefab);
-        //AIBrain = Container.InstantiateComponent<AIZhmyhBrian>(unit);
-        //AIBrain.name = "AI";
-        //AIBrain.Init();
-        //AIBrain.Transform.position = new Vector3(10, 0, 20);
-        //Container.Bind<AIZhmyhBrian>().FromInstance(AIBrain).AsSingle();
+        unit = Container.InstantiatePrefab(_unitPrefab);
+        var AIBrain = Container.InstantiateComponent<AIZhmyhInvertedBrain>(unit);
+        AIBrain.name = "AI";
+        AIBrain.Init();
+        AIBrain.Transform.position = new Vector3(10, 0, 20);
+        Container.Bind<AIZhmyhInvertedBrain>().FromInstance(AIBrain).AsSingle();
     }
 }

@@ -2,7 +2,7 @@
 
 public class GnilingMovementState : State
 {
-    private IMover _mover;
+    private DirectionalCCMover _mover;
     private Shifter _shifter;
 
     private ShiftAnimator _shiftAnimator;

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class DirectionalCCMover : IMover
+public class DirectionalCCMover
 {
     private CharacterController _characterController;
     private float _speed;

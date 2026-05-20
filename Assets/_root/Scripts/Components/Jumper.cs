@@ -9,18 +9,20 @@ namespace Components
         private float _duration;
 
         private float _elapsedTime;
-
         private float _previous;
+
+        private float _directionModifier;
         public Jumper(AnimationCurve curve, float height, float duration)
         {
             _animationCurve = curve;
             _height = height;
             _duration = duration;
         }
-        public void PerfomJump()
+        public void PerfomJump(float directionModifier = 1)
         {
-            _previous = 0;
-            _elapsedTime = 0;
+            _directionModifier = Mathf.Sign(directionModifier);
+            _elapsedTime = _directionModifier == 1 ? 0 : 1;
+            _previous = _elapsedTime;
         }
         public Vector3 Jump()
         {
@@ -28,7 +30,7 @@ namespace Components
 
             var deltaY = CalculateCurveDelta(_previous, current) * _height;
 
-            _elapsedTime += Time.deltaTime;
+            _elapsedTime += Time.deltaTime * _directionModifier;
 
             _previous = current;
 
@@ -39,6 +41,13 @@ namespace Components
 
         private float CalculateCurveDelta(float t0, float t1)
         {
+            if (_directionModifier == -1)
+            {
+                var t = t0;
+                t0 = t1;
+                t1 = t;
+            }
+
             return _animationCurve.Evaluate(t1) - _animationCurve.Evaluate(t0);
         }
     }

@@ -2,8 +2,8 @@
 
 public class ZhmyhMovementState : State
 {
-    public IMover Mover => _mover;
-    private IMover _mover;
+    public DirectionalCCMover Mover => _mover;
+    private DirectionalCCMover _mover;
     private Shifter _shifter;
 
     private CharacterController _characterController;
