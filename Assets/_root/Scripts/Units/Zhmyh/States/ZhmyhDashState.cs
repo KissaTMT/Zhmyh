@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿using Components;
+using UnityEngine;
 
-public class ZhmyhDashState : State
+public class ZhmyhDashState : State, IContributable<Vector3>
 {
     public float Progress => Mathf.Clamp01(_progress);
-    private DirectionalCCDasher _dasher;
+    private Dasher _dasher;
 
     private Transform _transform;
-    private CharacterController _characterController;
     private Transform _root;
     private AnimationCurve _height;
     private AnimationCurve _dash;
@@ -21,24 +21,27 @@ public class ZhmyhDashState : State
     private float _duration;
     private float _progress;
 
+    private Vector3 _result;
+
     public ZhmyhDashState(Transform transform, AnimationCurve dash, AnimationCurve height, float distance, float duration)
     {
         _transform = transform;
-        _characterController = transform.GetComponent<CharacterController>();
         _dash = dash;
         _height = height;
         _distance = distance;
         _duration = duration;
-        _dasher = new DirectionalCCDasher(_transform.GetComponent<CharacterController>(), dash, _distance, _duration);
+        _dasher = new Dasher(_distance, _duration);
         _root = _transform.GetChild(0);
         _startLocalEulerAnglesXZ = new Vector2(_root.localEulerAngles.x, _root.localEulerAngles.z);
     }
+
+
     public override void OnEnter()
     {
         _currentDirection = _direction.normalized;
         _currentLookDirection = _lookDirection.normalized;
         _startPosition = _transform.position;
-        _dasher.SetDirection(_currentDirection);
+        _dasher.PerfomDash(_startPosition, _currentDirection);
 
     }
     public override void OnTick()
@@ -48,19 +51,21 @@ public class ZhmyhDashState : State
     public override void OnExit()
     {
         _root.localEulerAngles = new Vector3(_startLocalEulerAnglesXZ.x, _root.localEulerAngles.y, _startLocalEulerAnglesXZ.y);
+        _result = Vector3.zero;
     }
     public void Dash()
     {
-        _progress = _dasher.Dash();
+        var dash = _dasher.Dash();
+        _progress = _dasher.Current;
 
-        float deltaY = _startPosition.y + _height.Evaluate(_progress) - _characterController.transform.position.y;
+        float deltaY = _startPosition.y + 1.5f * _height.Evaluate(_progress) - _transform.position.y;
 
 
-        _characterController.Move(new Vector3(0, deltaY, 0));
+        _result = dash + Vector3.up * deltaY;
 
         _root.localEulerAngles =
             new Vector3(_root.localEulerAngles.x, _root.localEulerAngles.y,
-            Mathf.Lerp(_startLocalEulerAnglesXZ.y, _startLocalEulerAnglesXZ.y - 320 * Mathf.Sign(_currentLookDirection.x), _progress));
+            Mathf.LerpUnclamped(_startLocalEulerAnglesXZ.y, _startLocalEulerAnglesXZ.y - 320 * Mathf.Sign(_currentLookDirection.x), _progress * 2));
     }
     public void SetDirection(Vector3 direction)
     {
@@ -69,5 +74,10 @@ public class ZhmyhDashState : State
     public void SetLookDirection(Vector2 direction)
     {
         _lookDirection = direction;
+    }
+
+    public Vector3 Contribute()
+    {
+        return _result;
     }
 }

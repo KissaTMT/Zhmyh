@@ -1,5 +1,8 @@
+using Components;
+using NUnit.Framework;
 using R3;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Zhmyh : Unit
@@ -27,11 +30,13 @@ public class Zhmyh : Unit
     [SerializeField] private Transform _rightHand;
     [SerializeField] private Transform _leftHand;
 
+
     private Shifter _shifter;
     private ShiftAnimator _shiftAnimator;
     private StateMachine _sm;
 
     private Transform _root;
+    private CharacterController _characterController;
 
     private Vector3 _movementDirection = Vector3.zero;
     private Vector3 _lookDirection = Vector3.zero;
@@ -40,6 +45,7 @@ public class Zhmyh : Unit
     private bool _isAiming = false;
     private bool _isDashing = false;
     private bool _isJumping = false;
+    private bool _isGrounded = false;
 
     private ZhmyhIdleState _idleState;
     private ZhmyhMovementState _movementState;
@@ -47,6 +53,11 @@ public class Zhmyh : Unit
     private ZhmyhAimingState _aimingState;
     private ZhmyhDashState _dashState;
     private ZhmyhJumpState _jumpState;
+
+    private List<IContributable<Vector3>> _contributes = new();
+    private IMovementHandler _movementHandler;
+    private Gravity _gravity;
+    private GroundChecker _groundChecker;
     protected override void OnInit()
     {
         for (var i = 0; i < _shiftConfigs.Length; i++)
@@ -62,18 +73,35 @@ public class Zhmyh : Unit
 
         _shifter = new Shifter(_root, _shiftConfigs).SetPrimeShift();
         _shiftAnimator = new ShiftAnimator(_shifter, _shiftAnimations);
-
-        SetupStateMachine();
+        _characterController = GetComponent<CharacterController>();
 
         health = new Health(_maxHealth);
 
         NotZeroMovementDirection = new Vector3(_shifter.CurrentDirection.x, 0, _shifter.CurrentDirection.y);
+
+
+        _movementHandler = new CCMovementHandler(_characterController);
+        _gravity = new Gravity();
+        _groundChecker = new GroundChecker(LayerMask.GetMask("Default", "Ground"));
+
+        SetupStateMachine();
     }
 
     public override void Tick()
     {
         _sm.Tick();
         _shiftAnimator.Tick();
+        var result = Vector3.zero;
+
+        if(Time.frameCount % 2 == 0) _isGrounded = CheckGround();
+
+        if (_isGrounded) _gravity.Reset();
+
+        foreach(var c in _contributes)
+        {
+            result += c.Contribute();
+        }
+        _movementHandler.Handle(result);
     }
     public void SetMovementDirection(Vector3 input)
     {
@@ -106,12 +134,15 @@ public class Zhmyh : Unit
     public void Dash()
     {
         if (CurrentState is ZhmyhDashState dashState && dashState.Progress < 1f) return;
+
+        _gravity.Reset();
         _isDashing = true;
     }
     public void Jump()
     {
-        if (CurrentState is ZhmyhJumpState jumpState && jumpState.Progress < 1f) return;
+        if (!_isGrounded) return;
 
+        _gravity.Reset();
         _isJumping = true;
     }
     public void Climb()
@@ -129,16 +160,26 @@ public class Zhmyh : Unit
         _aimingState.SetPull(isPull);
         if (!isPull) SetAim(false);
     }
+    private bool CheckGround()
+    {
+        return _groundChecker.Check(transform.position + Vector3.down * 0.05f, 0.05f);
+    }
     private void SetupStateMachine()
     {
         _sm = new StateMachine();
 
-        _idleState = new ZhmyhIdleState(_shifter, _shiftAnimator);
+        _idleState = new ZhmyhIdleState( _shifter, _shiftAnimator);
         _movementState = new ZhmyhMovementState(transform, _shiftAnimator, _shifter, _movementSpeed);
         _climbState = new ZhmyhClimbState(transform, _shiftAnimator, _shifter, _climbSpeed);
         _aimingState = new ZhmyhAimingState(this, transform, _rightHand, _leftHand, _bow, _shifter);
-        _dashState = new ZhmyhDashState(transform, _dashCurve, _dashHeightCurve, _dashDistance, _dashDuration);
-        _jumpState = new ZhmyhJumpState(transform, _jumpCurve, _movementSpeed * 0.9f,_jumpHeight, _jumpDuration, transform, 1);
+        _dashState = new ZhmyhDashState( transform, _dashCurve, _dashHeightCurve, _dashDistance, _dashDuration);
+        _jumpState = new ZhmyhJumpState(transform, _jumpCurve, _movementSpeed * 0.9f,_jumpHeight, _jumpDuration, _shifter);
+
+        _contributes.Add(_idleState);
+        _contributes.Add(_movementState);
+        _contributes.Add(_dashState);
+        _contributes.Add(_jumpState);
+        _contributes.Add(_gravity);
 
         _sm.AddTransition(_idleState, _movementState, IdleToMovement);
         _sm.AddTransition(_movementState, _idleState, MovementToIdle);
@@ -150,7 +191,7 @@ public class Zhmyh : Unit
         _sm.AddTransition(_jumpState, _dashState, JumpToDash);
         _sm.AddTransition(_climbState, _idleState, ClimbToIdle);
         _sm.AddTransition(_idleState, _aimingState, ToAim, Empty);
-        _sm.AddTransition(_movementState, _aimingState, ToAim, _movementState.MoveWithGravity);
+        _sm.AddTransition(_movementState, _aimingState, ToAim, _movementState.Move);
         _sm.AddTransition(_aimingState, _movementState, AimToMovement);
         _sm.AddTransition(_aimingState, _idleState, AimToIdle);
         _sm.AddTransition(_movementState, _dashState, MovementToDash);
@@ -172,7 +213,7 @@ public class Zhmyh : Unit
         bool DashToIdle() => DashTo() && !IdleToMovement();
         bool ToJump() => _isJumping;
         bool ToDash() => _isDashing == true;
-        bool JumpTo() => _jumpState.Progress == 1;
+        bool JumpTo() => _jumpState.Progress > 0.9f && _isGrounded;
         bool JumpToIdle() => JumpTo() && !IdleToMovement();
         bool JumpToMovement() => JumpTo() && IdleToMovement();
         bool JumpToDash() => ToDash();

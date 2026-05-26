@@ -1,31 +1,33 @@
+using Components;
 using UnityEngine;
 
-public class ZhmyhIdleState : State
+public class ZhmyhIdleState : State, IContributable<Vector3>
 {
-    private CharacterController _characterController;
     private ShiftAnimator _shiftAnimator;
     private Shifter _shifter;
     private Vector3 _direction;
+
+    private Vector3 _result;
     public ZhmyhIdleState(Shifter shifter,ShiftAnimator shiftAnimator)
     {
         _shifter = shifter;
         _shiftAnimator = shiftAnimator;
-        _characterController = _shifter.Root.GetComponentInParent<CharacterController>();
         _direction = _shifter.CurrentDirection;
+
     }
+
     public override void OnEnter()
     {
         _shiftAnimator.SetAnimation("idle");
         _shifter.Reset();
     }
+    public override void OnExit()
+    {
+        _result = Vector3.zero;
+    }
     public override void OnTick()
     {
         Shift();
-        UseGravity();
-    }
-    public void UseGravity()
-    {
-        _characterController.Move(new Vector3(0, Physics.gravity.y * Time.deltaTime, 0));
     }
     public void SetDirection(Vector3 direction)
     {
@@ -43,5 +45,10 @@ public class ZhmyhIdleState : State
         var y = _direction.x * sin + _direction.z * cos;
 
         _shifter.Shift(new Vector2(x, y));
+    }
+
+    public Vector3 Contribute()
+    {
+        return _result;
     }
 }

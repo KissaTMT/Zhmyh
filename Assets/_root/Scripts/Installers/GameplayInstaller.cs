@@ -31,11 +31,11 @@ public class GameplayInstaller : MonoInstaller
 
 
 
-        unit = Container.InstantiatePrefab(_unitPrefab);
-        var AIBrain = Container.InstantiateComponent<AIZhmyhInvertedBrain>(unit);
-        AIBrain.name = "AI";
-        AIBrain.Init();
-        AIBrain.Transform.position = new Vector3(10, 0, 20);
-        Container.Bind<AIZhmyhInvertedBrain>().FromInstance(AIBrain).AsSingle();
+        //unit = Container.InstantiatePrefab(_unitPrefab);
+        //var AIBrain = Container.InstantiateComponent<AIZhmyhInvertedBrain>(unit);
+        //AIBrain.name = "AI";
+        //AIBrain.Init();
+        //AIBrain.Transform.position = new Vector3(10, 0, 20);
+        //Container.Bind<AIZhmyhInvertedBrain>().FromInstance(AIBrain).AsSingle();
     }
 }

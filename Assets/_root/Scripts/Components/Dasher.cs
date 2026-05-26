@@ -4,6 +4,7 @@ namespace Components
 {
     public class Dasher : IContributable<Vector3>, IComponent
     {
+        public float Current => _current;
         private float _distance;
         private float _duration;
 
@@ -12,6 +13,7 @@ namespace Components
 
         private float _elapsedTime;
         private float _previous;
+        private float _current;
 
         private float _directionModifier;
 
@@ -27,18 +29,19 @@ namespace Components
             _targetPosition = _startPosition + direction * _distance;
 
             _directionModifier = Mathf.Sign(directionModifier);
-            _elapsedTime = _directionModifier == 1 ? 0 : 1;
+            _current = _directionModifier == 1 ? 0 : 1;
+            _elapsedTime = _current;
             _previous = _elapsedTime;
         }
         public Vector3 Dash()
         {
-            var current = Mathf.Clamp01(_elapsedTime / _duration);
+            _current = Mathf.Clamp01(_elapsedTime / _duration);
 
-            var delta = CalculateDelta(_previous, current);
+            var delta = CalculateDelta(_previous, _current);
 
             _elapsedTime += Time.deltaTime * _directionModifier;
 
-            _previous = current;
+            _previous = _current;
 
             return delta;
         }

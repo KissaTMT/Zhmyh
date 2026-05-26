@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Components;
+using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
@@ -7,21 +8,21 @@ public class Arrow : MonoBehaviour
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private float _speed = 128;
-    [SerializeField] private float _gravityScale = 2;
+    [SerializeField] private float _gravityScale = Physics.gravity.y;
     [SerializeField] private float _radiusOverlapSphere = 0.5f;
     [SerializeField] private float _radiusSphereCast = 0.1f;
 
     private Transform _transform;
     private Collider[] _buffer = new Collider[1];
+    private Gravity _gravity;
 
     private Vector3 _currentVelocity;
     private Vector3 _previousPosition;
-
-    private float _flightTime;
     public void Init(Vector3 direction, float impulseForce = 1)
     {
         _transform = GetComponent<Transform>();
         _previousPosition = _transform.position;
+        _gravity = new Gravity();
 
         _currentVelocity = direction * _speed * impulseForce;
     }
@@ -35,9 +36,7 @@ public class Arrow : MonoBehaviour
 
     private void Flight()
     {
-        _flightTime += Time.deltaTime;
-        _currentVelocity += Vector3.down * 0.5f * _gravityScale * _flightTime;
-        _transform.position += _currentVelocity * Time.deltaTime;
+        _transform.position += _currentVelocity * Time.deltaTime + _gravity.Apply();
     }
     private void CheckCollisions()
     {
@@ -57,13 +56,26 @@ public class Arrow : MonoBehaviour
     {
         var unit = hit.transform.GetComponentInParent<Unit>();
 
-        if (unit != null)
+        if (unit)
         {
             var point = Physics.ClosestPoint(_transform.position, hit, hit.transform.position, Quaternion.identity)
                 - _currentVelocity.normalized * hit.bounds.size.x;
             unit.Health.Decrement();
             var blood = Instantiate(_particleSystem, point, Quaternion.identity);
+
+            Destroy(gameObject);
+            return;
         }
+
+        //var inverted = hit.GetComponent<Inverted>();
+        //
+        //if (inverted)
+        //{
+        //    inverted.Rigidbody.AddForce(_currentVelocity.normalized * 2);
+        //    Destroy(gameObject);
+        //    return;
+        //}
+
         Destroy(gameObject);
     }
 }

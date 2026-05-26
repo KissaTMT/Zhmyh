@@ -64,7 +64,7 @@ MonoBehaviour:
     FieldOfView: 40
     OrthographicSize: 10
     NearClipPlane: 0.1
-    FarClipPlane: 512
+    FarClipPlane: 150
     Dutch: 0
     ModeOverride: 0
     PhysicalProperties:
@@ -121,12 +121,12 @@ MonoBehaviour:
     Recentering:
       Enabled: 0
       Wait: 1
-      Time: 2
+      Time: 1
     Restrictions: 0
   VerticalAxis:
     Value: -20
-    Center: 15
-    Range: {x: -45, y: 15}
+    Center: -20
+    Range: {x: -45, y: 30}
     Wrap: 0
     Recentering:
       Enabled: 0
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineDeoccluder
   CollideAgainst:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 128
   IgnoreTag: 
   TransparentLayers:
     serializedVersion: 2

@@ -7,7 +7,7 @@ using Zenject;
 
 public class OrbitalCameraControllerMono : MonoBehaviour
 {
-    private const float SENSITIVITY = 10f;
+    private const float SENSITIVITY = 12f;
     private const float ROTATION_DURATION = 0.3f;
 
     public Transform Transform => _transform;
@@ -45,7 +45,7 @@ public class OrbitalCameraControllerMono : MonoBehaviour
         _transform = GetComponent<Transform>();
 
         _cinemachineCamera.Follow = _target;
-        _cinemachineCamera.LookAt = _target;
+
         _rotationOffset = _rotationComposer.TargetOffset;
 
         _sensitivity = SENSITIVITY;
@@ -70,7 +70,8 @@ public class OrbitalCameraControllerMono : MonoBehaviour
     }
     private void SetCameraToAimMode(bool aim)
     {
-        StartCoroutine(SetCameraAimOffset(aim ? new Vector3(0, 4/20f, 64/20f) : Vector3.zero));
+        StartCoroutine(SetCameraAimOffset(aim ? new Vector3(0, .1f, 2.5f) : Vector3.zero));
+        StartCoroutine(SetCameraAimRange(new Vector3(-45, aim ? 15 : 35)));
         _sensitivity = aim ? SENSITIVITY / 2 : SENSITIVITY;
     }
 
@@ -103,6 +104,20 @@ public class OrbitalCameraControllerMono : MonoBehaviour
             yield return null;
         }
         _cameraOffset.Offset = offset;
+    }
+    private IEnumerator SetCameraAimRange(Vector3 range)
+    {
+        var startValue = _orbitalFollow.VerticalAxis.Value;
+
+        if(_orbitalFollow.VerticalAxis.Value > 15)
+        {
+            for (var t = 0f; t < 1f; t += 4 * Time.deltaTime)
+            {
+                _orbitalFollow.VerticalAxis.Value = Mathf.Lerp(startValue, 10, t);
+                yield return null;
+            }
+        }
+        _orbitalFollow.VerticalAxis.Range = range;
     }
     private IEnumerator SetCameraDirectionToLookDirectionOfUnitRoutine()
     {

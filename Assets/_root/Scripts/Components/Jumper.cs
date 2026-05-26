@@ -4,11 +4,13 @@ namespace Components
 {
     public class Jumper : IContributable<Vector3>, IComponent
     {
+        public float Current => _current;
         private AnimationCurve _animationCurve;
         private float _height;
         private float _duration;
 
         private float _elapsedTime;
+        private float _current;
         private float _previous;
 
         private float _directionModifier;
@@ -21,18 +23,19 @@ namespace Components
         public void PerfomJump(float directionModifier = 1)
         {
             _directionModifier = Mathf.Sign(directionModifier);
-            _elapsedTime = _directionModifier == 1 ? 0 : 1;
+            _current = _directionModifier == 1 ? 0 : 1;
+            _elapsedTime = _current;
             _previous = _elapsedTime;
         }
         public Vector3 Jump()
         {
-            var current = Mathf.Clamp01(_elapsedTime / _duration);
+            _current = Mathf.Clamp01(_elapsedTime / _duration);
 
-            var deltaY = CalculateCurveDelta(_previous, current) * _height;
+            var deltaY = CalculateCurveDelta(_previous, _current) * _height;
 
             _elapsedTime += Time.deltaTime * _directionModifier;
 
-            _previous = current;
+            _previous = _current;
 
             return new Vector3(0, deltaY, 0);
         }

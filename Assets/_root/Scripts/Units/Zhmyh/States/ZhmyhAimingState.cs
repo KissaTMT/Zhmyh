@@ -33,10 +33,12 @@ public class ZhmyhAimingState : DecorateState
         Transform(_aim,_shifter.Root,new Vector3(0,10,-1),Vector3.one, Quaternion.Euler(-_shifter.Root.localEulerAngles.x + 90, 0, 0));
 
         _body = _bow.Transform.parent;
+
     }
     public override void OnEnter()
     {
         Detach();
+
     }
 
     public override void OnExit()

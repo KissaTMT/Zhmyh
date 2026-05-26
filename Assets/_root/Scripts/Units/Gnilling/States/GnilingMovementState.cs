@@ -1,15 +1,18 @@
-﻿using UnityEngine;
+﻿using Components;
+using UnityEngine;
 
 public class GnilingMovementState : State
 {
-    private DirectionalCCMover _mover;
+    private Mover _mover;
     private Shifter _shifter;
 
+    private CharacterController _characterController;
     private ShiftAnimator _shiftAnimator;
     private Vector3 _direction;
     public GnilingMovementState(Transform transform, ShiftAnimator shiftAnimator, Shifter shifter, float speed)
     {
-        _mover = new DirectionalCCMover(transform.GetComponent<CharacterController>(), speed);
+        _mover = new Mover(speed);
+        _characterController = transform.GetComponent<CharacterController>();
         _shiftAnimator = shiftAnimator;
         _shifter = shifter;
     }
@@ -25,8 +28,9 @@ public class GnilingMovementState : State
     public void SetDirection(Vector3 direction)
     {
         _direction = direction;
+        _mover.SetDirection(direction);
     }
-    public void Move() => _mover.Move(_direction);
+    public void Move() => _characterController.Move(_mover.Move());
     public void Shift()
     {
         var rotation = _shifter.Root.localEulerAngles.y * Mathf.Deg2Rad;

@@ -1561,8 +1561,8 @@ MonoBehaviour:
   _climbSpeed: 5
   _dashDistance: 5
   _dashDuration: 0.5
-  _jumpHeight: 2
-  _jumpDuration: 0.575
+  _jumpHeight: 3.5
+  _jumpDuration: 0.4
   _dashHeightCurve:
     serializedVersion: 2
     m_Curve:
@@ -1626,30 +1626,21 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2.2645109
-      outSlope: 2.2645109
+      inSlope: 2.344707
+      outSlope: 2.344707
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.08333333
+      outWeight: 0.04666667
     - serializedVersion: 3
-      time: 0.55
+      time: 1
       value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -5.1787343
-      outSlope: -5.1787343
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.051851936
-      outWeight: 0
+      inWeight: 0.23333335
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -1663,6 +1654,7 @@ MonoBehaviour:
   _shiftAnimations:
   - {fileID: 11400000, guid: 290681d31a872924c98246dab6dbb7db, type: 2}
   - {fileID: 11400000, guid: 9705901e33689094398f81c686b8f38a, type: 2}
+  _transperent: {fileID: 2100000, guid: edfad7d688a7a0c499162e783d47d48f, type: 2}
   _bow: {fileID: 2329432285860984712}
   _rightHand: {fileID: 1459837598135857368}
   _leftHand: {fileID: 3482263887965403985}

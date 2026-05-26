@@ -3,6 +3,7 @@
     Properties
     {
         _MainTex ("Sprite Texture", 2D) = "white" {}
+        _Alpha ("Alpha", Range(0.0,1.0)) = 1.0
     }
 
     SubShader
@@ -57,6 +58,7 @@
             SAMPLER(sampler_MainTex);
             CBUFFER_START(UnityPerMaterial)
                 float4 _MainTex_ST;
+                float _Alpha;
             CBUFFER_END
 
             Varyings vert (Attributes IN)
@@ -97,7 +99,7 @@
                 float3 lighting = mainLight.color.rgb * NdotL;
             
                 //return float4(IN.uv,-normal.z,1);
-                return float4(texColor.rgb * lighting, texColor.a);
+                return float4(texColor.rgb * lighting, texColor.a * _Alpha);
             }
             ENDHLSL
         }

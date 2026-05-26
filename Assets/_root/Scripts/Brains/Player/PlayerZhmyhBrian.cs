@@ -74,7 +74,10 @@ public class PlayerZhmyhBrian : MonoBehaviour, IBrian
     private Vector3 CalculateShootDirection()
     {
         var ray = _cameraMain.ScreenPointToRay(_cursor.ScreenPosition);
-        return Physics.Raycast(ray, out var hitInfo, 32) ? hitInfo.point : ray.origin + ray.direction * 32;
+        ray.origin = _unit.Transform.position + Vector3.up * 3;
+        var distance = 32;
+        var point = Physics.Raycast(ray, out var hitInfo, distance) ? hitInfo.point : ray.origin + ray.direction * distance;
+        return point;
     }
     private void Update()
     {
