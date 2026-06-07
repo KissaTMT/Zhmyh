@@ -3,7 +3,7 @@
 public abstract class State
 {
     public Action Ticker;
-    public void Tick() => Ticker();
+    public void Tick() => Ticker.Invoke();
     public virtual void Enter()
     {
         ResetTicker();

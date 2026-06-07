@@ -7,6 +7,7 @@ namespace Components
         public Vector3 Direction => _direction;
         public Vector3 Force => _force;
 
+
         private Vector3 _force;
         private Vector3 _direction;
 
@@ -27,13 +28,17 @@ namespace Components
         {
             _enableModifier = 0;
         }
-        public void Reset()
+        public void Zero()
         {
-            _velocity = new Vector3(_direction.x * _force.x, _direction.y * _force.y, _direction.z * _force.z) * 0.5f;
+            _velocity = Vector3.zero;
         }
-        public void Reset(Vector3 force)
+        public void SetModifier(float modifier)
         {
-            _velocity = force;
+            SetModifier(Vector3.one * modifier);
+        }
+        public void SetModifier(Vector3 modifier)
+        {
+            _velocity = Adamar(Adamar(_direction, _force), modifier);
         }
         public void SetDirection(Vector3 direction)
         {
@@ -42,8 +47,12 @@ namespace Components
         public Vector3 Contribute() => Apply();
         public Vector3 Apply()
         {
-            _velocity += new Vector3(_direction.x * _force.x, _direction.y * _force.y, _direction.z * _force.z) * Time.deltaTime * _enableModifier;
+            _velocity += Adamar(_direction, _force) * Time.deltaTime * _enableModifier;
             return _velocity * Time.deltaTime;
+        }
+        private Vector3 Adamar(Vector3 a, Vector3 b)
+        {
+            return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
         }
     }
 }

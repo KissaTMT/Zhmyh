@@ -1,10 +1,8 @@
 #if UNITY_EDITOR
 
 using R3;
-using System;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.Rendering.STP;
 
 public class ShiftAnimationBuilderWindow : EditorWindow
 {

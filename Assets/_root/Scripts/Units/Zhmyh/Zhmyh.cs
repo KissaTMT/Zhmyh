@@ -57,7 +57,7 @@ public class Zhmyh : Unit
     private List<IContributable<Vector3>> _contributes = new();
     private IMovementHandler _movementHandler;
     private Gravity _gravity;
-    private GroundChecker _groundChecker;
+    private GroundSphereChecker _groundChecker;
     protected override void OnInit()
     {
         for (var i = 0; i < _shiftConfigs.Length; i++)
@@ -82,7 +82,7 @@ public class Zhmyh : Unit
 
         _movementHandler = new CCMovementHandler(_characterController);
         _gravity = new Gravity();
-        _groundChecker = new GroundChecker(LayerMask.GetMask("Default", "Ground"));
+        _groundChecker = new GroundSphereChecker(LayerMask.GetMask("Default", "Ground"));
 
         SetupStateMachine();
     }
@@ -95,7 +95,7 @@ public class Zhmyh : Unit
 
         if(Time.frameCount % 2 == 0) _isGrounded = CheckGround();
 
-        if (_isGrounded) _gravity.Reset();
+        if (_isGrounded) _gravity.SetModifier(0.5f);
 
         foreach(var c in _contributes)
         {
@@ -135,14 +135,14 @@ public class Zhmyh : Unit
     {
         if (CurrentState is ZhmyhDashState dashState && dashState.Progress < 1f) return;
 
-        _gravity.Reset();
+        _gravity.Zero();
         _isDashing = true;
     }
     public void Jump()
     {
         if (!_isGrounded) return;
 
-        _gravity.Reset();
+        _gravity.Zero();
         _isJumping = true;
     }
     public void Climb()
