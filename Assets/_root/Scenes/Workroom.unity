@@ -1652,7 +1652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inverted
   _impulseForce: {x: -4, y: 0, z: 0}
-  _atenuationSpeed: 5
+  _atenuationTime: 5
   _isPhysical: 1
 --- !u!23 &567497400
 MeshRenderer:
@@ -1758,7 +1758,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!135 &567497404
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4845,7 +4845,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1709352018
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4984,7 +4984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2829581edccb2c547bc363e10bba4b34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ball
-  _impulse: {x: 100, y: 0, z: 0}
+  _impulseForce: {x: -0.1, y: 0, z: 0}
 --- !u!1 &1749602143
 GameObject:
   m_ObjectHideFlags: 0

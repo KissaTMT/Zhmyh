@@ -6,6 +6,7 @@ namespace Components
     {
         public Vector3 Direction => _direction;
         public Vector3 Force => _force;
+        public bool Enabled => _enableModifier == 1;
 
 
         private Vector3 _force;
@@ -44,11 +45,11 @@ namespace Components
         {
             _direction = direction;
         }
-        public Vector3 Contribute() => Apply();
-        public Vector3 Apply()
+        public Vector3 Contribute() => Apply(Time.deltaTime);
+        public Vector3 Apply(float deltaTime)
         {
-            _velocity += Adamar(_direction, _force) * Time.deltaTime * _enableModifier;
-            return _velocity * Time.deltaTime;
+            _velocity += Adamar(_direction, _force) * deltaTime * _enableModifier;
+            return _velocity * deltaTime;
         }
         private Vector3 Adamar(Vector3 a, Vector3 b)
         {

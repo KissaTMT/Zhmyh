@@ -36,7 +36,7 @@ public class Arrow : MonoBehaviour
 
     private void Flight()
     {
-        _transform.position += _currentVelocity * Time.deltaTime + _gravity.Apply();
+        _transform.position += _currentVelocity * Time.deltaTime + _gravity.Apply(Time.deltaTime);
     }
     private void CheckCollisions()
     {
