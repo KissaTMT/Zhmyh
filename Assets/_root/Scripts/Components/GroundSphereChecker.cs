@@ -2,7 +2,7 @@
 
 namespace Components
 {
-    public class GroundSphereChecker : IGroundChecker, IComponent
+    public class GroundSphereChecker : IGroundChecker
     {
         private LayerMask _layerMask;
         public GroundSphereChecker(LayerMask layerMask)

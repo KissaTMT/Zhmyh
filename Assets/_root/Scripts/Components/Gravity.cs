@@ -2,32 +2,23 @@
 
 namespace Components
 {
-    public class Gravity : IContributable<Vector3>, IComponent
+    public class Gravity : UnitComponent, IContributable<Vector3>, ITickable
     {
         public Vector3 Direction => _direction;
         public Vector3 Force => _force;
-        public bool Enabled => _enableModifier == 1;
-
+        public Vector3 Contribute => _contribute;
 
         private Vector3 _force;
         private Vector3 _direction;
 
         private Vector3 _velocity;
 
-        private float _enableModifier = 1;
+        private Vector3 _contribute;
         public Gravity() : this(new Vector3(0, -1, 0), new Vector3(0, Mathf.Abs(Physics.gravity.y), 0)) { }
         public Gravity(Vector3 direction, Vector3 force)
         {
             _direction = direction;
             _force = force;
-        }
-        public void Enable()
-        {
-            _enableModifier = 1;
-        }
-        public void Disable()
-        {
-            _enableModifier = 0;
         }
         public void Zero()
         {
@@ -45,15 +36,19 @@ namespace Components
         {
             _direction = direction;
         }
-        public Vector3 Contribute() => Apply(Time.deltaTime);
-        public Vector3 Apply(float deltaTime)
+        public void Apply(float deltaTime)
         {
-            _velocity += Adamar(_direction, _force) * deltaTime * _enableModifier;
-            return _velocity * deltaTime;
+            _velocity += Adamar(_direction, _force) * deltaTime;
+            _contribute = _velocity * deltaTime;
         }
         private Vector3 Adamar(Vector3 a, Vector3 b)
         {
             return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
+        }
+
+        public void Tick(float dt)
+        {
+            Apply(dt);
         }
     }
 }

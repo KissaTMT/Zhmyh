@@ -2,9 +2,11 @@
 
 namespace Components
 {
-    public class Jumper : IContributable<Vector3>, IComponent
+    public class Jumper : UnitComponent, IContributable<Vector3>, ITickable
     {
+        public Vector3 Contribute => _contribute;
         public float Current => _current;
+
         private AnimationCurve _animationCurve;
         private float _height;
         private float _duration;
@@ -14,6 +16,8 @@ namespace Components
         private float _previous;
 
         private float _directionModifier;
+
+        private Vector3 _contribute;
         public Jumper(AnimationCurve curve, float height, float duration)
         {
             _animationCurve = curve;
@@ -27,20 +31,18 @@ namespace Components
             _elapsedTime = _current;
             _previous = _elapsedTime;
         }
-        public Vector3 Jump()
+        public void Jump(float dt)
         {
             _current = Mathf.Clamp01(_elapsedTime / _duration);
 
             var deltaY = CalculateCurveDelta(_previous, _current) * _height;
 
-            _elapsedTime += Time.deltaTime * _directionModifier;
+            _elapsedTime += dt * _directionModifier;
 
             _previous = _current;
 
-            return new Vector3(0, deltaY, 0);
+            _contribute = new Vector3(0, deltaY, 0);
         }
-
-        public Vector3 Contribute() => Jump();
 
         private float CalculateCurveDelta(float t0, float t1)
         {
@@ -52,6 +54,11 @@ namespace Components
             }
 
             return _animationCurve.Evaluate(t1) - _animationCurve.Evaluate(t0);
+        }
+
+        public void Tick(float dt)
+        {
+            Jump(dt);
         }
     }
 }

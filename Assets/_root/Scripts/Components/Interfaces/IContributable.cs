@@ -8,6 +8,6 @@ namespace Components
 {
     public interface IContributable<T>
     {
-        public T Contribute();
+        public T Contribute { get; }
     }
 }

@@ -4,6 +4,9 @@ using UnityEngine;
 public class ZhmyhDashState : State, IContributable<Vector3>
 {
     public float Progress => Mathf.Clamp01(_progress);
+
+    public Vector3 Contribute => _result;
+
     private Dasher _dasher;
 
     private Transform _transform;
@@ -55,13 +58,13 @@ public class ZhmyhDashState : State, IContributable<Vector3>
     }
     public void Dash()
     {
-        var dash = _dasher.Dash();
+        _dasher.Tick(Time.deltaTime);
         _progress = _dasher.Current;
 
         float deltaY = _startPosition.y + 1.5f * _height.Evaluate(_progress) - _transform.position.y;
 
 
-        _result = dash + Vector3.up * deltaY;
+        _result = _dasher.Contribute + Vector3.up * deltaY;
 
         _root.localEulerAngles =
             new Vector3(_root.localEulerAngles.x, _root.localEulerAngles.y,
@@ -74,10 +77,5 @@ public class ZhmyhDashState : State, IContributable<Vector3>
     public void SetLookDirection(Vector2 direction)
     {
         _lookDirection = direction;
-    }
-
-    public Vector3 Contribute()
-    {
-        return _result;
     }
 }

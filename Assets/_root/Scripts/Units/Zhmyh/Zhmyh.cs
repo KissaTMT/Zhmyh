@@ -3,6 +3,7 @@ using NUnit.Framework;
 using R3;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Zhmyh : Unit
@@ -54,7 +55,6 @@ public class Zhmyh : Unit
     private ZhmyhDashState _dashState;
     private ZhmyhJumpState _jumpState;
 
-    private List<IContributable<Vector3>> _contributes = new();
     private IMovementHandler _movementHandler;
     private Gravity _gravity;
     private GroundSphereChecker _groundChecker;
@@ -91,17 +91,15 @@ public class Zhmyh : Unit
     {
         _sm.Tick();
         _shiftAnimator.Tick();
-        var result = Vector3.zero;
+        _gravity.Apply(Time.deltaTime);
+        _movementHandler.Tick(Time.deltaTime);
 
-        if(Time.frameCount % 2 == 0) _isGrounded = CheckGround();
+        if (Time.frameCount % 2 == 0) _isGrounded = CheckGround();
 
         if (_isGrounded) _gravity.SetModifier(0.5f);
 
-        foreach(var c in _contributes)
-        {
-            result += c.Contribute();
-        }
-        _movementHandler.Handle(result);
+        var result = Vector3.zero;
+        
     }
     public void SetMovementDirection(Vector3 input)
     {
@@ -175,11 +173,11 @@ public class Zhmyh : Unit
         _dashState = new ZhmyhDashState( transform, _dashCurve, _dashHeightCurve, _dashDistance, _dashDuration);
         _jumpState = new ZhmyhJumpState(transform, _jumpCurve, _movementSpeed * 0.9f,_jumpHeight, _jumpDuration, _shifter);
 
-        _contributes.Add(_idleState);
-        _contributes.Add(_movementState);
-        _contributes.Add(_dashState);
-        _contributes.Add(_jumpState);
-        _contributes.Add(_gravity);
+        _movementHandler.Add(_idleState);
+        _movementHandler.Add(_movementState);
+        _movementHandler.Add(_dashState);
+        _movementHandler.Add(_jumpState);
+        _movementHandler.Add(_gravity);
 
         _sm.AddTransition(_idleState, _movementState, IdleToMovement);
         _sm.AddTransition(_movementState, _idleState, MovementToIdle);

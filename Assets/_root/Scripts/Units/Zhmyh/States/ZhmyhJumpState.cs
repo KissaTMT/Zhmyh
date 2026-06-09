@@ -5,6 +5,9 @@ public class ZhmyhJumpState : State, IContributable<Vector3>
 {
     public float Progress => _progress;
     public Jumper Jumper => _jumper;
+
+    public Vector3 Contribute => _result;
+
     private Jumper _jumper;
     private Shifter _shifter;
 
@@ -34,11 +37,9 @@ public class ZhmyhJumpState : State, IContributable<Vector3>
     {
         Shift();
 
+        _jumper.Tick(Time.deltaTime);
         _progress = _jumper.Current;
-
-        var jump = _jumper.Jump();
-
-        _result = jump + _direction * _speedInAir * Time.deltaTime;
+        _result = _jumper.Contribute + _direction * _speedInAir * Time.deltaTime;
 
     }
     public void SetDirection(Vector3 direction)
@@ -56,10 +57,5 @@ public class ZhmyhJumpState : State, IContributable<Vector3>
         var y = _direction.x * sin + _direction.z * cos;
 
         _shifter.Shift(new Vector2(x, y));
-    }
-
-    public Vector3 Contribute()
-    {
-        return _result;
     }
 }

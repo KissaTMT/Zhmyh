@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ZhmyhIdleState : State, IContributable<Vector3>
 {
+    public Vector3 Contribute => _result;
     private ShiftAnimator _shiftAnimator;
     private Shifter _shifter;
     private Vector3 _direction;
@@ -45,10 +46,5 @@ public class ZhmyhIdleState : State, IContributable<Vector3>
         var y = _direction.x * sin + _direction.z * cos;
 
         _shifter.Shift(new Vector2(x, y));
-    }
-
-    public Vector3 Contribute()
-    {
-        return _result;
     }
 }

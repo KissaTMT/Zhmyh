@@ -29,8 +29,13 @@ namespace Brains
             _unit.Add(new Jumper(animationCurve, 2, 0.575f));
             _unit.Add(new Gravity());
 
-            _contributables.AddRange(_unit.Components.Values.Where(v => v is IContributable<Vector3>).Cast<IContributable<Vector3>>());
-            
+            var mh = _unit.Get<CCMovementHandler>();
+
+            mh.Add(_unit.Get<Mover>());
+            mh.Add(_unit.Get<Dasher>());
+            mh.Add(_unit.Get<Jumper>());
+            mh.Add(_unit.Get<Gravity>());
+
             StartCoroutine(CastRoutine());
         }
 
@@ -66,13 +71,7 @@ namespace Brains
         {
             _unit.Get<Mover>().SetDirection(Vector3.forward);
 
-            var result = Vector3.zero;
-            foreach (var c in _contributables)
-            {
-                result += c.Contribute();
-            }
-
-            _unit.Get<CCMovementHandler>().Handle(result);
+            _unit.Get<CCMovementHandler>().Tick(Time.deltaTime);
         }
 
     }

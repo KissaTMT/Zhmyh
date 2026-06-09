@@ -2,8 +2,9 @@
 
 namespace Components
 {
-    public interface IMovementHandler : IComponent
+    public interface IMovementHandler : ITickable
     {
-        public void Handle(Vector3 vector);
+        public void Add(IContributable<Vector3> contributable);
+        public bool Remove(IContributable<Vector3> contributable);
     }
 }

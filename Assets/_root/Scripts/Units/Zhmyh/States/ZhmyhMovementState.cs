@@ -3,6 +3,9 @@ using UnityEngine;
 public class ZhmyhMovementState : State, IContributable<Vector3>
 {
     public Mover Mover => _mover;
+
+    public Vector3 Contribute => _result;
+
     private Mover _mover;
     private Shifter _shifter;
 
@@ -33,7 +36,8 @@ public class ZhmyhMovementState : State, IContributable<Vector3>
     }
     public void Move()
     {
-        _result = _mover.Move();
+        _mover.Tick(Time.deltaTime);
+        _result = _mover.Contribute;
     }
     public void SetDirection(Vector3 direction)
     {
@@ -51,10 +55,5 @@ public class ZhmyhMovementState : State, IContributable<Vector3>
         var y = _direction.x * sin + _direction.z * cos;
 
         _shifter.Shift(new Vector2(x,y));
-    }
-
-    public Vector3 Contribute()
-    {
-        return _result;
     }
 }

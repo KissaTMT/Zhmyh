@@ -2,9 +2,12 @@
 
 namespace Components
 {
-    public class Dasher : IContributable<Vector3>, IComponent
+    public class Dasher : UnitComponent, IContributable<Vector3>, ITickable
     {
         public float Current => _current;
+
+        public Vector3 Contribute => _contribute;
+
         private float _distance;
         private float _duration;
 
@@ -17,12 +20,13 @@ namespace Components
 
         private float _directionModifier;
 
+        private Vector3 _contribute;
+
         public Dasher(float distance, float duration)
         {
             _distance = distance;
             _duration = duration;
         }
-        public Vector3 Contribute() => Dash();
         public void PerfomDash(Vector3 start, Vector3 direction, float directionModifier = 1)
         {
             _startPosition = start;
@@ -33,17 +37,17 @@ namespace Components
             _elapsedTime = _current;
             _previous = _elapsedTime;
         }
-        public Vector3 Dash()
+        public void Dash(float dt)
         {
             _current = Mathf.Clamp01(_elapsedTime / _duration);
 
             var delta = CalculateDelta(_previous, _current);
 
-            _elapsedTime += Time.deltaTime * _directionModifier;
+            _elapsedTime += dt * _directionModifier;
 
             _previous = _current;
 
-            return delta;
+            _contribute = delta;
         }
         private Vector3 CalculateDelta(float t0, float t1)
         {
@@ -54,6 +58,11 @@ namespace Components
                 t1 = t;
             }
             return Vector3.Lerp(_startPosition, _targetPosition, t1) - Vector3.Lerp(_startPosition, _targetPosition, t0);
+        }
+
+        public void Tick(float dt)
+        {
+            Dash(dt);
         }
     }
 }

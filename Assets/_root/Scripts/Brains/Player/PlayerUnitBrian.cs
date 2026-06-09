@@ -20,8 +20,6 @@ namespace Brains
         private IInput _input;
         private bool _isPull;
 
-        private List<IContributable<Vector3>> _contributables = new();
-
         [Inject]
         public void Construct(IInput input, Cursor cursor)
         {
@@ -50,7 +48,12 @@ namespace Brains
             _unit.Add(new Jumper(animationCurve, 2, 0.575f));
             _unit.Add(new Gravity());
 
-            _contributables.AddRange(_unit.Components.Values.Where(v => v is IContributable<Vector3>).Cast<IContributable<Vector3>>());
+            var mh = _unit.Get<CCMovementHandler>();
+
+            mh.Add(_unit.Get<Mover>());
+            mh.Add(_unit.Get<Dasher>());
+            mh.Add(_unit.Get<Jumper>());
+            mh.Add(_unit.Get<Gravity>());
 
             _cursor.Init(_input);
             _cameraMain = Camera.main;
@@ -102,13 +105,7 @@ namespace Brains
         {
             _unit.Get<Mover>().SetDirection(CalculateMovementDirection());
 
-            var result = Vector3.zero;
-            foreach (var c in _contributables)
-            {
-                result += c.Contribute();
-            }
-
-            _unit.Get<CCMovementHandler>().Handle(result);
+            _unit.Get<CCMovementHandler>().Tick(Time.deltaTime);
 
             _cursor.Tick();
         }

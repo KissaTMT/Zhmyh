@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Components
 {
-    public class GroundSphereOverlapChecker : IGroundChecker, IComponent
+    public class GroundSphereOverlapChecker : IGroundChecker
     {
         private LayerMask _layerMask;
         private Transform _ignore;

@@ -30,7 +30,11 @@ public class GnilingMovementState : State
         _direction = direction;
         _mover.SetDirection(direction);
     }
-    public void Move() => _characterController.Move(_mover.Move());
+    public void Move()
+    {
+        _mover.Tick(Time.deltaTime);
+        _characterController.Move(_mover.Contribute);
+    }
     public void Shift()
     {
         var rotation = _shifter.Root.localEulerAngles.y * Mathf.Deg2Rad;
