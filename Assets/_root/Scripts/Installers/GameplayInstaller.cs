@@ -18,7 +18,7 @@ public class GameplayInstaller : MonoInstaller
         PlayerBrain = Container.InstantiateComponent<PlayerZhmyhBrian>(unit);
         PlayerBrain.name = "Player";
         PlayerBrain.Init();
-        PlayerBrain.Transform.position = new Vector3(0, 10, 0);
+        PlayerBrain.Transform.position = new Vector3(0, 2, 0);
         Container.Bind<PlayerZhmyhBrian>().FromInstance(PlayerBrain).AsSingle();
 
         //var unit = Container.InstantiatePrefab(_unitPrefab);

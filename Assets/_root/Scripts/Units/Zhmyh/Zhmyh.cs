@@ -91,14 +91,12 @@ public class Zhmyh : Unit
     {
         _sm.Tick();
         _shiftAnimator.Tick();
-        _gravity.Apply(Time.deltaTime);
+        _gravity.Tick(Time.deltaTime);
         _movementHandler.Tick(Time.deltaTime);
 
-        if (Time.frameCount % 2 == 0) _isGrounded = CheckGround();
+        _isGrounded = CheckGround();
 
-        if (_isGrounded) _gravity.SetModifier(0.5f);
-
-        var result = Vector3.zero;
+        if (_isGrounded) _gravity.Zero();
         
     }
     public void SetMovementDirection(Vector3 input)

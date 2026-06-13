@@ -44,12 +44,12 @@ namespace Brains
             while (true)
             {
                 yield return new WaitForSeconds(2);
-                _unit.Get<Dasher>().PerfomDash(_unit.Transform.position, _unit.Transform.forward,_unit.Timeflow.Current);
+                _unit.Get<Dasher>().PerfomDash(_unit.Transform.position, _unit.Transform.forward,_unit.Timeflow.Absolute);
 
                 yield return new WaitForSeconds(2);
                 _unit.Get<Gravity>().Disable();
 
-                _unit.Get<Jumper>().PerfomJump(_unit.Timeflow.Current);
+                _unit.Get<Jumper>().PerfomJump(_unit.Timeflow.Absolute);
 
                 yield return new WaitForSeconds(1);
 
@@ -59,7 +59,7 @@ namespace Brains
 
                 _unit.Get<Gravity>().Disable();
 
-                _unit.Get<Jumper>().PerfomJump(-_unit.Timeflow.Current);
+                _unit.Get<Jumper>().PerfomJump(-_unit.Timeflow.Absolute);
 
                 yield return new WaitForSeconds(1);
 

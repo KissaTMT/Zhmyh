@@ -6,5 +6,6 @@ namespace Components
     {
         public void Add(IContributable<Vector3> contributable);
         public bool Remove(IContributable<Vector3> contributable);
+        public IContributable<Vector3> Get<T>() where T : IContributable<Vector3>;
     }
 }

@@ -19,6 +19,15 @@ namespace Components
             _contributables.Add(contributable);
         }
 
+        public IContributable<Vector3> Get<T>() where T : IContributable<Vector3>
+        {
+            for(var i=0;i<_contributables.Count;i++)
+            {
+                if (_contributables[i].GetType() == typeof(T)) return _contributables[i];
+            }
+            return null;
+        }
+
         public bool Remove(IContributable<Vector3> contributable)
         {
             return _contributables.Remove(contributable);

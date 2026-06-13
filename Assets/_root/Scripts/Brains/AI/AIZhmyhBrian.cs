@@ -24,7 +24,7 @@ public class AIZhmyhBrian : MonoBehaviour, IBrian
     public void Init()
     {
         _unit = GetComponent<Zhmyh>().Init() as Zhmyh;
-        _unit.Timeflow = new Timeflow(-1 * _target.Timeflow.Current);
+        _unit.Timeflow = new Timeflow(-1 * _target.Timeflow.Absolute);
         _target = _player.Unit;
         _layerMask = LayerMask.NameToLayer("Default");
     }

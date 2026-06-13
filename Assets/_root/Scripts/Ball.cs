@@ -11,7 +11,7 @@ public class Ball:MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _impulse = new Impulse();
 
-        _impulse.Init(new Vector3(4, 0, 0), 5);
+        _impulse.Apply(new Vector3(4, 0, 0), 5);
 
         _rb.linearVelocity = Vector3.right * 10;
     }

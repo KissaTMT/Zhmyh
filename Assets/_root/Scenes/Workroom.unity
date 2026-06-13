@@ -1651,8 +1651,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0ff8ab9c23d3742b128dbaa8183d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inverted
-  _impulseForce: {x: -4, y: 0, z: 0}
-  _atenuationTime: 5
+  _impulseForce: {x: -0.1, y: 0, z: 0}
+  _atenuationTime: 4
   _isPhysical: 1
 --- !u!23 &567497400
 MeshRenderer:
@@ -1755,10 +1755,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!135 &567497404
 SphereCollider:
   m_ObjectHideFlags: 0
