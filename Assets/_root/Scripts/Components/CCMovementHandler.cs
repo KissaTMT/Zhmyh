@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Components
@@ -18,10 +20,14 @@ namespace Components
         {
             _contributables.Add(contributable);
         }
-
+        /// <summary>
+        /// Use only via cashed, don't calls in update
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public IContributable<Vector3> Get<T>() where T : IContributable<Vector3>
         {
-            for(var i=0;i<_contributables.Count;i++)
+            for(var i=0;i< _contributables.Count;i++)
             {
                 if (_contributables[i].GetType() == typeof(T)) return _contributables[i];
             }
@@ -36,7 +42,7 @@ namespace Components
         public void Tick(float dt)
         {
             var result = Vector3.zero;
-            for(var i=0;i<_contributables.Count;i++)
+            for (var i = 0; i < _contributables.Count; i++)
             {
                 result += _contributables[i].Contribute;
             }

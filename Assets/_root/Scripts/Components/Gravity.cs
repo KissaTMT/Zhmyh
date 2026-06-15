@@ -26,13 +26,21 @@ namespace Components
             _velocity = Vector3.zero;
             _contribute = Vector3.zero;
         }
-        public void SetVelocity(float modifier)
+        public void SetVelocity(float modifier = 1)
         {
-            SetVelocity(Vector3.one * modifier);
+            SetVelocity(new Vector3(Mathf.Abs(_direction.x),Mathf.Abs(_direction.y), Mathf.Abs(_direction.z)) * modifier);
         }
         public void SetVelocity(Vector3 modifier)
         {
             _velocity = Vector3.Max(Vector3.zero, modifier);
+        }
+        public void SetVelocityModifier(float modifier = 1)
+        {
+            SetVelocityModifier(Vector3.one * modifier);
+        }
+        public void SetVelocityModifier(Vector3 modifier)
+        {
+            _velocity = Adamar(_acceleration, modifier);
         }
         public void SetDirection(Vector3 direction)
         {
@@ -57,5 +65,6 @@ namespace Components
             Apply(dt);
         }
         protected override void OnDisable() => Zero();
+
     }
 }

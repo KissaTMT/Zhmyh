@@ -1561,8 +1561,8 @@ MonoBehaviour:
   _climbSpeed: 5
   _dashDistance: 5
   _dashDuration: 0.5
-  _jumpHeight: 6
-  _jumpDuration: 4
+  _jumpHeight: 5.5
+  _jumpDuration: 1
   _dashHeightCurve:
     serializedVersion: 2
     m_Curve:

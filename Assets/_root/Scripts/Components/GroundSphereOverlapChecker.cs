@@ -25,7 +25,7 @@ namespace Components
         }
         public bool Check(Vector3 point, float radius)
         { 
-            var count = Physics.OverlapSphereNonAlloc(point, radius, _buffer,_layerMask);
+            var count = Physics.OverlapSphereNonAlloc(point, radius, _buffer,_layerMask,QueryTriggerInteraction.Ignore);
             if (_ignore == null) return count > 0;
 
             for(var i = 0; i < count; i++)
