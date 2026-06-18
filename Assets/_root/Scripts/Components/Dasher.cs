@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Security.Cryptography;
+using UnityEngine;
 
 namespace Components
 {
@@ -8,6 +9,7 @@ namespace Components
 
         public Vector3 Contribute => _contribute;
 
+        private AnimationCurve _curve;
         private float _distance;
         private float _duration;
 
@@ -24,6 +26,12 @@ namespace Components
 
         public Dasher(float distance, float duration)
         {
+            _distance = distance;
+            _duration = duration;
+        }
+        public Dasher(AnimationCurve curve, float distance, float duration)
+        {
+            _curve = curve;
             _distance = distance;
             _duration = duration;
         }
@@ -57,7 +65,7 @@ namespace Components
                 t0 = t1;
                 t1 = t;
             }
-            return Vector3.Lerp(_startPosition, _targetPosition, t1) - Vector3.Lerp(_startPosition, _targetPosition, t0);
+            return Vector3.Lerp(_startPosition, _targetPosition, _curve.Evaluate(t1)) - Vector3.Lerp(_startPosition, _targetPosition, _curve.Evaluate(t0));
         }
 
         public void Tick(float dt)

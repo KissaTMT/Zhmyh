@@ -140,14 +140,13 @@ public class Zhmyh : Unit
     {
         if (CurrentState is ZhmyhDashState dashState && dashState.Progress < 1f) return;
 
-        _gravity.Zero();
+        
         _isDashing = true;
     }
     public void Jump()
     {
         if (_coyoteTime > 0.15f) return;
 
-        _gravity.SetVelocity(4);
         _isJumping = true;
     }
     public void Climb()
@@ -177,8 +176,8 @@ public class Zhmyh : Unit
         _movementState = new ZhmyhMovementState(transform, _shiftAnimator, _shifter, _movementSpeed);
         _climbState = new ZhmyhClimbState(transform, _shiftAnimator, _shifter, _climbSpeed);
         _aimingState = new ZhmyhAimingState(this, transform, _rightHand, _leftHand, _bow, _shifter);
-        _dashState = new ZhmyhDashState(transform, _dashCurve, _dashHeightCurve, _dashDistance, _dashDuration);
-        _jumpState = new ZhmyhJumpState(transform, _jumpCurve, _movementSpeed * 0.9f, _jumpHeight, _jumpDuration, _shifter, this);
+        _dashState = new ZhmyhDashState(transform, _dashCurve, _dashHeightCurve, _shiftAnimator,_dashDistance, _dashDuration,this, _gravity);
+        _jumpState = new ZhmyhJumpState(transform, _jumpCurve, _movementSpeed * 0.9f, _jumpHeight, _jumpDuration, _shifter, this, _gravity);
 
         _movementHandler.Add(_idleState);
         _movementHandler.Add(_movementState);
@@ -217,11 +216,11 @@ public class Zhmyh : Unit
         bool DashToMovement() => DashTo() && IdleToMovement();
         bool DashToIdle() => DashTo() && !IdleToMovement();
         bool ToJump() => _isJumping;
-        bool ToDash() => _isDashing == true;
+        bool ToDash() => IdleToMovement() && _isDashing == true;
         bool JumpTo() => _jumpState.Progress > 0.2f && _isGrounded;
         bool JumpToIdle() => JumpTo() && !IdleToMovement();
         bool JumpToMovement() => JumpTo() && IdleToMovement();
-        bool JumpToDash() => ToDash();
+        bool JumpToDash() => IdleToMovement() && ToDash();
         void Empty() { }
     }
     private void OnDisable()

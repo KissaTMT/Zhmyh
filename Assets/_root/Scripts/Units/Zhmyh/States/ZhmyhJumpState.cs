@@ -22,8 +22,10 @@ public class ZhmyhJumpState : State, IContributable<Vector3>
     private float _progress;
     private MonoBehaviour _ctx;
     private Vector3 _scale;
+    private Gravity _gravity;
 
-    public ZhmyhJumpState(Transform transform, AnimationCurve curve, float speedInAir, float height, float duration, Shifter shifter, MonoBehaviour ctx)
+
+    public ZhmyhJumpState(Transform transform, AnimationCurve curve, float speedInAir, float height, float duration, Shifter shifter, MonoBehaviour ctx, Gravity gravity)
     {
         _transform = transform;
         _jumper = new Jumper(curve, height, duration);
@@ -31,10 +33,12 @@ public class ZhmyhJumpState : State, IContributable<Vector3>
         _shifter = shifter;
         _ctx = ctx;
         _scale = _transform.localScale;
+        _gravity = gravity;
     }
 
     public override void OnEnter()
     {
+        _gravity.SetVelocity(4);
         _jumper.PerfomJump();
         _transform.localScale = _scale;
         _ctx.StartCoroutine(PopupRoutine(0.1f));

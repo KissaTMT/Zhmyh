@@ -24,12 +24,12 @@ public class Inverted : MonoBehaviour
     private bool _isPreviousGrounded;
 
     private Dictionary<Vector3, Action> _commands;
-    
+
     private Timeflow _timeflow;
 
     private List<ITickable> _contributables;
     private Vector3 _currentPosition;
-
+    private Vector3 _initPosition;
     private void Awake()
     {
         _transform = GetComponent<Transform>();
@@ -38,7 +38,7 @@ public class Inverted : MonoBehaviour
         _gravity = new Gravity();
         _impulse = new Impulse();
         _gravity.Zero();
-
+        _initPosition = _rigidbody.position;
         _contributables = new List<ITickable>
         {
             _gravity,
@@ -72,9 +72,7 @@ public class Inverted : MonoBehaviour
 
             yield return new WaitUntil(() => _impulse.Progress == 1);
             yield return new WaitForSeconds(0.25f);
-            yield return StartCoroutine(InvertRoutine(_contributables.Cast<IContributable<Vector3>>().ToList(), new Vector3(-7, 6.5f, 23)));
-
-            _timeflow.Inverse();
+            yield return StartCoroutine(InvertRoutine(_contributables.Cast<IContributable<Vector3>>().ToList(), _initPosition));
         }
     }
     private void FixedUpdate()
@@ -83,11 +81,12 @@ public class Inverted : MonoBehaviour
 
         _isGrounded = CheckGround(_currentPosition);
 
-        var delta = CalculateMovement(Time.deltaTime);
+        var delta = CalculateMovement(Time.fixedDeltaTime);
 
-        _rigidbody.MovePosition(_rigidbody.position + delta);
+        _currentPosition += delta;
 
-        _currentPosition = _rigidbody.position;
+        _rigidbody.MovePosition(_currentPosition);
+
 
         ApplyRotation();
 
@@ -103,7 +102,7 @@ public class Inverted : MonoBehaviour
     private IEnumerator InvertRoutine(List<IContributable<Vector3>> contributables, Vector3 to)
     {
         _commands = Predict(to, _contributables.Cast<IContributable<Vector3>>().ToList());
-        
+
         _timeflow.Inverse();
 
         _impulse.SetTimeflow(_timeflow.Relative);
@@ -117,11 +116,15 @@ public class Inverted : MonoBehaviour
         _gravity.Zero();
         _gravity.Disable();
 
+        _currentPosition = _rigidbody.position;
+
         while (true)
         {
-            TickContributables(Time.deltaTime);
+            TickContributables(Time.fixedDeltaTime);
 
-            _rigidbody.MovePosition(_rigidbody.position + _impulse.Contribute + _gravity.Contribute);
+            _currentPosition += _impulse.Contribute + _gravity.Contribute;
+
+            _rigidbody.MovePosition(_currentPosition);
 
             if (CalculateApprocach(_transform.position, out var key))
             {
@@ -132,22 +135,28 @@ public class Inverted : MonoBehaviour
 
             ApplyRotation();
 
-            if(_impulse.Progress >= 1) break;
+            if (_impulse.Progress >= 1) break;
 
             yield return new WaitForFixedUpdate();
         }
-        
+
+        _currentPosition = to;
+        _rigidbody.position = _currentPosition;
+        _gravity.Disable();
+
+        _timeflow.Inverse();
+
     }
     private bool CalculateApprocach(Vector3 position, out Vector3 key)
     {
-        if(_commands.Keys.IsEmpty())
+        if (_commands.Keys.IsEmpty())
         {
             key = Vector3.negativeInfinity;
             return false;
         }
         var keys = _commands.Keys.ToArray();
         var threshold = 0.25f;
-        for(var i = 0; i < keys.Length; i++)
+        for (var i = 0; i < keys.Length; i++)
         {
             if ((position - keys[i]).sqrMagnitude < threshold * threshold)
             {
@@ -174,7 +183,7 @@ public class Inverted : MonoBehaviour
         {
             _isGrounded = CheckGround(_currentPosition);
 
-            
+
 
             if (_isGrounded && !_isPreviousGrounded)
             {
@@ -245,10 +254,9 @@ public class Inverted : MonoBehaviour
     }
     private bool CheckGround(Vector3 point)
     {
-        var hit = Physics.SphereCast(point, 0.75f * (_collider.bounds.size.x / 2), Vector3.down, out var hitInfo, 0.4f,LayerMask.GetMask("Default", "Ground"));
+        var hit = Physics.SphereCast(point, 0.75f * (_collider.bounds.size.x / 2), Vector3.down, out var hitInfo, 0.4f, LayerMask.GetMask("Default", "Ground"));
 
         return hit;
     }
 }
-
 
