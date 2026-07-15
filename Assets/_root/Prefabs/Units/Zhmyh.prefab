@@ -2580,7 +2580,7 @@ Transform:
   - {fileID: 8437518213190953885}
   - {fileID: 4959025898292570002}
   m_Father: {fileID: 8939994548786194394}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &3422562968103558642
 SphereCollider:
   m_ObjectHideFlags: 0

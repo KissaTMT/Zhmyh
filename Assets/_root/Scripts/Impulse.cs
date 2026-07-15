@@ -1,4 +1,5 @@
 using Components;
+using System;
 using UnityEngine;
 
 public class Impulse : UnitComponent, IContributable<Vector3>, ITickable
@@ -42,4 +43,5 @@ public class Impulse : UnitComponent, IContributable<Vector3>, ITickable
     {
         _contribute = Vector3.zero;
     }
+    
 }

@@ -29,6 +29,8 @@ Shader "Custom/URP/SpriteUnlit3D"
             #pragma fragment frag
             #pragma multi_compile_fog
 
+            #define SPRITE_SHADER_2D
+
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             struct Attributes
@@ -68,7 +70,11 @@ Shader "Custom/URP/SpriteUnlit3D"
 
                 OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
-                OUT.color = IN.color;
+                #ifdef SPRITE_SHADER_2D
+                    OUT.color = IN.color * unity_SpriteColor;
+                #else
+                    OUT.color = IN.color;
+                #endif
                 OUT.fogFactor = ComputeFogFactor(OUT.positionHCS.z);
                 
                 return OUT;

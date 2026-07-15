@@ -2,7 +2,7 @@
 {
     Properties
     {
-        _MainTex ("Sprite Texture", 2D) = "white" {}
+        [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
         _Cutoff("Alpha Cutout", Range(0.0, 1.0)) = 0.5
         _FogIntensity("Fog Intensity", float) = 0.8
     }
@@ -11,7 +11,10 @@
     {
         Tags 
         { 
-            "RenderPipeline" = "UniversalPipeline" "RenderType"="Opaque" "Queue"="AlphaTest"
+            "RenderPipeline" = "UniversalPipeline" 
+            "RenderType" = "Opaque" 
+            "Queue" = "AlphaTest"
+            "CanUseSpriteAtlas" = "True"
         }
         Cull Off
         ZTest LEqual
@@ -32,6 +35,9 @@
             //#pragma multi_compile _ _ADDITIONAL_LIGHTS
             //#pragma multi_compile_fragment _ _ADDITIONAL_LIGHTS_VERTEX
             //#pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
+
+            // Включаем поддержку 2D SRP Batcher
+            #define SPRITE_SHADER_2D
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -73,7 +79,15 @@
                 
                 OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
-                OUT.color = IN.color;
+                
+                // Используем специальную переменную unity_SpriteColor,
+                // чтобы получить цвет от SpriteRenderer без MaterialPropertyBlock
+                #ifdef SPRITE_SHADER_2D
+                    OUT.color = IN.color * unity_SpriteColor;
+                #else
+                    OUT.color = IN.color;
+                #endif
+                
                 OUT.fogFactor = ComputeFogFactor(OUT.positionHCS.z);
                 
                 return OUT;
@@ -94,8 +108,6 @@
                 float3 lighting = mainLight.color.rgb * NdotL;
                 clip(texColor.a - _Cutoff);
 
-                //float2 center = IN.uv - 0.5;
-                //float radius = length(center);
                 float shade = max(IN.uv.y*2, 0.4);
                 
                 return float4(MixFog(texColor.rgb * lighting * shade, IN.fogFactor * _FogIntensity), 1);

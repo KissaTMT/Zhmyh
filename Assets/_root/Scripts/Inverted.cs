@@ -1,5 +1,6 @@
 using Components;
 using ModestTree;
+using NUnit;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +11,6 @@ public class Inverted : MonoBehaviour
 {
     [SerializeField] private Vector3 _impulseForce = new Vector3(-4f, 0, 0);
     [SerializeField] private float _atenuationTime = 1;
-    [SerializeField] private bool _isPhysical = false;
 
     private Transform _transform;
     private Rigidbody _rigidbody;
@@ -19,13 +19,14 @@ public class Inverted : MonoBehaviour
     private Impulse _impulse;
     private Collider _collider;
     
-    private Dictionary<Vector3, (string name, Action command)> _commands;
+    private Stack<Command> _commands;
 
     private Timeflow _timeflow;
 
     private List<ITickable> _contributables;
     private Vector3 _currentPosition;
     private Vector3 _initPosition;
+    private Vector3 _normal;
 
     private bool _isGrounded;
     private bool _isPreviousGrounded;
@@ -48,8 +49,6 @@ public class Inverted : MonoBehaviour
         };
 
         _timeflow = new Timeflow().SetRelativeFlow(new Timeflow());
-
-        
     }
     private void Start()
     {
@@ -102,14 +101,14 @@ public class Inverted : MonoBehaviour
     }
     private void ApplyRotation()
     {
-        var axis = -new Vector3(_impulse.Contribute.z, _impulse.Contribute.y, _impulse.Contribute.x);
+        var axis = -new Vector3(-_impulse.Contribute.z, _impulse.Contribute.y, _impulse.Contribute.x);
         var angle = axis.magnitude * 3200 * Time.deltaTime;
         _rigidbody.MoveRotation(Quaternion.AngleAxis(angle, axis.normalized) * _rigidbody.rotation);
     }
 
     private IEnumerator InvertRoutine(List<IContributable<Vector3>> contributables, Vector3 to)
     {
-        _commands = Predict(to, _contributables.Cast<IContributable<Vector3>>().ToList());
+        _commands =  Predict(to, _contributables.Cast<IContributable<Vector3>>().ToList());
 
         _impulse.SetTimeflow(_timeflow.Relative);
         _gravity.SetTimeflow(_timeflow.Relative);
@@ -121,10 +120,8 @@ public class Inverted : MonoBehaviour
         _gravity.Disable();
 
         _currentPosition = _rigidbody.position;
-        var keys = _commands.Keys.ToList();
-        _commands[keys[_commands.Count - 1]].command.Invoke();
 
-        var currentIndex = keys.Count - 2;
+        _commands.Pop().Action.Invoke();
 
 
         while (true)
@@ -135,16 +132,15 @@ public class Inverted : MonoBehaviour
 
             _rigidbody.MovePosition(_currentPosition);
 
-            if (CalculateApprocach(_transform.position, keys[currentIndex]))
+            if (CalculateApprocach(_currentPosition, _commands.Peek().Position))
             {
                 _rigidbody.position = _currentPosition;
-                _commands[keys[currentIndex]].command.Invoke();
-                currentIndex--;
+                _commands.Pop().Action.Invoke();
             }
 
             ApplyRotation();
 
-            if (currentIndex < 0) break;
+            if (_commands.IsEmpty()) break;
 
             yield return new WaitForFixedUpdate();
         }
@@ -157,18 +153,14 @@ public class Inverted : MonoBehaviour
     }
     private bool CalculateApprocach(Vector3 position, Vector3 next)
     {
-        var threshold = 0.4f;
-        if ((position - next).sqrMagnitude < threshold * threshold)
-        {
-            return true;
-        }
-        return false;
+        var threshold = 0.8f;
+        return (position - next).sqrMagnitude < threshold * threshold;
     }
 
-    private Dictionary<Vector3, (string name, Action command)> Predict(Vector3 to, List<IContributable<Vector3>> contributable)
+    private Stack<Command> Predict(Vector3 to, List<IContributable<Vector3>> contributable)
     {
         _collider.enabled = false;
-        var result = new Dictionary<Vector3, (string name, Action command)>();
+        var result = new Stack<Command>();
         _currentPosition = to;
 
         _gravity.SetTimeflow(1);
@@ -186,128 +178,65 @@ public class Inverted : MonoBehaviour
             _isGrounded = CheckGround(_currentPosition);
             _isForwardHit = CheckForwardObstacle(_currentPosition, _impulse.Force.normalized);
 
-            if (_impulse.Force == _impulseForce && _impulse.Progress < float.Epsilon)
+            if (_impulse.Force == _impulseForce && _impulse.Progress == 0)
             {
-                if (result.ContainsKey(_currentPosition))
+                result.Push(new Command("impulse off",
+                    () =>
                 {
-                    var t = result[_currentPosition];
-                    t.name += "impusle off";
-                    t.command += () =>
-                    {
-                        _impulse.Disable();
-                    };
-                    result[_currentPosition] = t;
-                }
-                else
-                {
-                    result[_currentPosition] = ("impusle off", () =>
-                    {
-                        _impulse.Disable();
-                    }
-                    );
-                }
+                    _impulse.Disable();
+                }, _currentPosition, _gravity.Contribute, _impulse.Contribute));
             }
 
             if (_isGrounded && !_isPreviousGrounded)
             {
                 var velocity = _gravity.Velocity;
 
-                if (result.ContainsKey(_currentPosition))
-                {
-                    var t = result[_currentPosition];
-                    t.name += "gravity on";
-                    t.command += () =>
+                result.Push(new Command("gravity on",
+                    () =>
                     {
                         _gravity.Enable();
                         _gravity.SetVelocity(velocity);
-                    };
-                    result[_currentPosition] = t;
-                }
-                else
-                {
-                    result[_currentPosition] = ("gravity on", () =>
-                    {
-                        _gravity.Enable();
-                        _gravity.SetVelocity(velocity);
-                    }
-                    );
-                }
+                    }, _currentPosition, _gravity.Contribute, _impulse.Contribute));
+
             }
             if (!_isGrounded && _isPreviousGrounded)
             {
                 var velocity = _gravity.Velocity;
 
-                if (result.ContainsKey(_currentPosition))
-                {
-                    var t = result[_currentPosition];
-                    t.name += "gravity off";
-                    t.command += () =>
+                result.Push(new Command("gravity off",
+                    () =>
                     {
                         _gravity.Disable();
-                    };
-                    result[_currentPosition] = t;
-                }
-                else
-                {
-                    result[_currentPosition] = ("gravity off", () =>
-                    {
-                        _gravity.Disable();
-                    }
-                    );
-                }
+                    }, _currentPosition, _gravity.Contribute, _impulse.Contribute));
+
             }
             if (_isForwardHit && !_isPreviousForwardHit)
             {
                 var end = -_impulse.Contribute;
                 var start = -_impulse.Force;
-                var atenuationTime = _impulse.AtenuationTime * _impulse.Progress * 1.2f;
+                var atenuationTime = _impulse.AtenuationTime * _impulse.Progress;
 
-                if (result.ContainsKey(_currentPosition))
-                {
-                    var t = result[_currentPosition];
-                    t.name += "impusle change";
-                    t.command += () =>
+                result.Push(new Command("impusle change",
+                    () =>
                     {
                         _impulse.Apply(start, end, atenuationTime);
-                    };
-                    result[_currentPosition] = t;
-                }
-                else
-                {
-                    result[_currentPosition] = ("impusle change", () =>
-                    {
-                        _impulse.Apply(start, end, atenuationTime);
-                    }
-                    );
-                }
+                    }, _currentPosition, _gravity.Contribute, _impulse.Contribute));
+
             }
             if (_impulse.Progress == 1)
             {
                 var force = -_impulse.Force;
                 var atenuationTime = _impulse.AtenuationTime;
 
-                if (result.ContainsKey(_currentPosition))
-                {
-                    var t = result[_currentPosition];
-                    t.name += "impusle last";
-                    t.command += () =>
+                result.Push(new Command("impusle last",
+                    () =>
                     {
                         _impulse.Apply(force, atenuationTime);
-                    };
-                    result[_currentPosition] = t;
-                }
-                else
-                {
+                    }, _currentPosition, _gravity.Contribute, _impulse.Contribute));
 
-                    result[_currentPosition] = ("impusle last", () =>
-                    {
-                        _impulse.Apply(force, atenuationTime);
-                    }
-                    );
-                    break;
-                }
+                break;
             }
-            
+
             _currentPosition += CalculateMovement(deltaTime);
 
             _isPreviousGrounded = _isGrounded;
@@ -346,17 +275,13 @@ public class Inverted : MonoBehaviour
 
         if (_isForwardHit)
         {
-            _impulse.Apply(-_impulse.Contribute, _impulse.AtenuationTime * _impulse.Progress * 0.8f);
+            _impulse.Apply(Vector3.Reflect(_impulse.Contribute, _normal), _impulse.AtenuationTime * _impulse.Progress);
         }
         
         var gravity = _gravity.Contribute;
         var impulse = _impulse.Contribute;
         var result = gravity + impulse;
 
-        if (_isGrounded)
-        {
-            //result -= impulse * 0.25f;
-        }
         return result;
     }
     private void TickContributables(float deltaTime)
@@ -370,14 +295,37 @@ public class Inverted : MonoBehaviour
     private bool CheckGround(Vector3 point)
     {
         var hit = Physics.SphereCast(point, 0.75f * (_collider.bounds.size.x / 2), Vector3.down, out var hitInfo, 0.4f, LayerMask.GetMask("Default", "Ground"));
-
         return hit;
     }
     private bool CheckForwardObstacle(Vector3 point, Vector3 direction)
     {
-        var hit = Physics.Raycast(point, direction, out var hitInfo,1, LayerMask.GetMask("Default", "Ground"));
+        var hit = Physics.Raycast(point, direction, out var hitInfo, 0.65f, LayerMask.GetMask("Default", "Ground"));
 
-        return hit;
+        if (hit)
+        {
+            
+            _normal = hitInfo.normal;
+            return hit;
+        }
+        _normal = Vector3.zero;
+        return false;
+    }
+    public class Command
+    {
+        public string Name;
+        public Action Action;
+        public Vector3 Position;
+        public Vector3 Gravity;
+        public Vector3 Impulse;
+
+        public Command(string name, Action action, Vector3 position, Vector3 gravity, Vector3 impulse)
+        {
+            Name = name;
+            Action = action;
+            Position = position;
+            Gravity = gravity;
+            Impulse = impulse;
+        }
     }
 }
 

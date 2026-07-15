@@ -1,13 +1,17 @@
-﻿using UnityEngine;
+﻿using Presenter2D;
+using System.Linq;
+using UnityEngine;
 
 public class BillboardingMono : MonoBehaviour
 {
     private Transform _cameraTransform;
     private Transform _root;
+
     private void Awake()
     {
         _cameraTransform = Camera.main.GetComponent<Transform>();
         _root = GetComponent<Transform>();
+
     }
     private void Update()
     {
