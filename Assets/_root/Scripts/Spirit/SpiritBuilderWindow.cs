@@ -14,6 +14,7 @@ namespace Spirit
 
         private Transform _root;
         private SpiritConfig _config;
+        private SpiritConfig _referenceConfig;
         private Mesh _lastMesh;
         private GameObject _lastSkeleton;
 
@@ -23,7 +24,6 @@ namespace Spirit
         private string _lastSavedMeshPath;
         private string _lastSavedConfigPath;
 
-        private bool _preserveRectSize = true;
         private int _gridX = 4;
         private int _gridY = 4;
 
@@ -36,6 +36,10 @@ namespace Spirit
             EditorGUILayout.Space();
 
             _root = (Transform)EditorGUILayout.ObjectField("Root", _root, typeof(Transform), true);
+
+            EditorGUILayout.Space();
+
+            _referenceConfig = (SpiritConfig)EditorGUILayout.ObjectField("Reference config", _referenceConfig, typeof(SpiritConfig), true);
 
             EditorGUILayout.Space();
 
@@ -55,7 +59,6 @@ namespace Spirit
 
             EditorGUILayout.Space();
 
-            _preserveRectSize = EditorGUILayout.Toggle("Preserve Rect Size", _preserveRectSize);
             _gridX = EditorGUILayout.IntField("Grid X (cells)", _gridX);
             _gridY = EditorGUILayout.IntField("Grid Y (cells)", _gridY);
             _gridX = Mathf.Max(2, _gridX);
@@ -122,7 +125,7 @@ namespace Spirit
 
             _meshBuilder.SetRoot(_root);
             _meshBuilder.SetSkinned(_lastSkeleton);
-            Mesh mesh = _meshBuilder.BuildGridMesh(_gridX, _gridY, _preserveRectSize);
+            Mesh mesh = _meshBuilder.BuildGridMesh(_gridX, _gridY);
 
             if (mesh == null)
             {
@@ -154,7 +157,7 @@ namespace Spirit
             if (tempMesh == null)
             {
                 _meshBuilder.SetRoot(_root);
-                tempMesh = _meshBuilder.BuildGridMesh(_gridX, _gridY, _preserveRectSize);
+                tempMesh = _meshBuilder.BuildGridMesh(_gridX, _gridY);
                 if (tempMesh == null)
                 {
                     EditorUtility.DisplayDialog("Error", "Failed to build temporary mesh.", "OK");
@@ -163,7 +166,8 @@ namespace Spirit
             }
 
             _configGenerator.SetRoot(_root);
-            SpiritConfig config = _configGenerator.GenerateConfig(tempMesh,_gridX,_gridY,_meshBuilder.Renderers.ToArray());
+            _configGenerator.SetReference(_referenceConfig);
+            SpiritConfig config = _configGenerator.GenerateConfig(tempMesh,_gridX,_gridY);
 
             if (config == null)
             {

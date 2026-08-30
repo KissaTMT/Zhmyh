@@ -9,10 +9,16 @@ namespace Spirit
     public class SpiritConfigGenerator
     {
         private Transform _root;
-
+        private Rect[] _rects;
         public void SetRoot(Transform root) => _root = root;
+        public void SetReference(SpiritConfig config)
+        {
+            if (config == null) return;
 
-        public SpiritConfig GenerateConfig(Mesh referenceMesh, int gridX, int gridY, SpriteRenderer[] renderers)
+            _rects = config.Rects;
+        }
+
+        public SpiritConfig GenerateConfig(Mesh referenceMesh, int gridX, int gridY)
         {
             if (_root == null || referenceMesh == null)
             {
@@ -22,7 +28,7 @@ namespace Spirit
 
             // Сортируем рендереры так же, как в MeshBuilder (по убыванию Z)
 
-            renderers = _root.GetComponentsInChildren<SpriteRenderer>().ToArray();
+            var renderers = _root.GetComponentsInChildren<SpriteRenderer>().ToArray();
 
             if (renderers.Length == 0)
             {
@@ -47,6 +53,7 @@ namespace Spirit
             }
 
             var uvs = new List<Vector2>(expectedVertexCount);
+            var rects = new List<Rect>(renderers.Length);
 
             // Проходим по спрайтам в том же порядке, что и в MeshBuilder
             foreach (var node in renderers)
@@ -57,6 +64,8 @@ namespace Spirit
                 Rect uvRect = GetSpriteUVRect(sprite);
                 bool flipX = node.flipX;
                 bool flipY = node.flipY;
+
+                rects.Add(uvRect);
 
                 // Генерируем UV для каждой вершины сетки (row-major, как в MeshBuilder)
                 for (int row = 0; row <= gridY; row++)
@@ -90,52 +99,64 @@ namespace Spirit
             }
 
             config.Uvs = uvs.ToArray();
+            config.Rects = rects.ToArray();
 
             // ---- 2. Данные о костях из болванки (без изменений) ----
             var boneDataList = new List<BoneData>();
             var boneNameToIndex = new Dictionary<string, int>();
 
-            foreach (var node in renderers)
+            for (var i=0;i<renderers.Length;i++)
             {
+                var node = renderers[i];
                 if (node.sprite == null) continue;
 
                 string centerName = $"Bone_{node.name}_Center";
+
+                var scale = node.transform.localScale;
+
+                if(_rects != null)
+                {
+                    var sr = GetSpriteUVRect(node.sprite);
+                    var v = new Vector3(_rects[i].width / sr.width, _rects[i].height / sr.height, 1);
+                    scale = new Vector3(scale.x/v.x, scale.y / v.y, scale.z / v.z);
+                }
+
                 var centerData = new BoneData
                 {
                     name = centerName,
                     parentName = null,
                     localPosition = node.transform.localPosition,
                     localRotation = node.transform.localRotation,
-                    localScale = node.transform.localScale
+                    localScale = scale
                 };
                 boneDataList.Add(centerData);
                 boneNameToIndex[centerName] = boneDataList.Count - 1;
 
-                float width = node.sprite.rect.width / node.sprite.pixelsPerUnit;
-                float height = node.sprite.rect.height / node.sprite.pixelsPerUnit;
+                //float width = node.sprite.rect.width / node.sprite.pixelsPerUnit;
+                //float height = node.sprite.rect.height / node.sprite.pixelsPerUnit;
 
-                var anchors = new (string suffix, Vector3 offset)[]
-                {
-                    ("Left", new Vector3(-width / 2, 0, 0)),
-                    ("Right", new Vector3(width / 2, 0, 0)),
-                    ("Top", new Vector3(0, height / 2, 0)),
-                    ("Bottom", new Vector3(0, -height / 2, 0))
-                };
+                //var anchors = new (string suffix, Vector3 offset)[]
+                //{
+                //    ("Left", new Vector3(-width / 2, 0, 0)),
+                //    ("Right", new Vector3(width / 2, 0, 0)),
+                //    ("Top", new Vector3(0, height / 2, 0)),
+                //    ("Bottom", new Vector3(0, -height / 2, 0))
+                //};
 
-                foreach (var anchor in anchors)
-                {
-                    string anchorName = $"Bone_{node.name}_{anchor.suffix}";
-                    var anchorData = new BoneData
-                    {
-                        name = anchorName,
-                        parentName = centerName,
-                        localPosition = anchor.offset,
-                        localRotation = Quaternion.identity,
-                        localScale = Vector3.one
-                    };
-                    boneDataList.Add(anchorData);
-                    boneNameToIndex[anchorName] = boneDataList.Count - 1;
-                }
+                //foreach (var anchor in anchors)
+                //{
+                //    string anchorName = $"Bone_{node.name}_{anchor.suffix}";
+                //    var anchorData = new BoneData
+                //    {
+                //        name = anchorName,
+                //        parentName = centerName,
+                //        localPosition = anchor.offset,
+                //        localRotation = Quaternion.identity,
+                //        localScale = Vector3.one
+                //    };
+                //    boneDataList.Add(anchorData);
+                //    boneNameToIndex[anchorName] = boneDataList.Count - 1;
+                //}
             }
 
             config.Names = boneDataList.Select(b => b.name).ToArray();

@@ -8,7 +8,6 @@ namespace Spirit
 {
     public class SpiritMeshBuilder
     {
-        public List<SpriteRenderer> Renderers => _renderers;
         private Transform _root;
         private GameObject _skinnedRoot;
         private List<Transform> _lastBones;
@@ -17,7 +16,7 @@ namespace Spirit
         public void SetRoot(Transform root) => _root = root;
         public void SetSkinned(GameObject skinnedRoot) => _skinnedRoot = skinnedRoot;
 
-        public Mesh BuildGridMesh(int gridX = 4, int gridY = 4, bool preserveRectSize = true)
+        public Mesh BuildGridMesh(int gridX = 4, int gridY = 4)
         {
             if (_root == null)
             {

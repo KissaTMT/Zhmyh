@@ -14,6 +14,7 @@ namespace Spirit
         [Header("Mesh Data")]
         [Space]
         public Vector2[] Uvs;
+        public Rect[] Rects;
 
         [Space]
 

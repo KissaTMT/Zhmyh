@@ -89,67 +89,35 @@ MonoBehaviour:
   - {x: 0.31884766, y: 0.5187988}
   - {x: 0.35412598, y: 0.5187988}
   - {x: 0.3894043, y: 0.5187988}
+  Rects:
+  - serializedVersion: 2
+    x: 0.3269043
+    y: 0.76782227
+    width: 0.2841797
+    height: 0.22802734
+  - serializedVersion: 2
+    x: 0.69555664
+    y: 0.5637207
+    width: 0.12011719
+    height: 0.1665039
+  - serializedVersion: 2
+    x: 0.24829102
+    y: 0.35229492
+    width: 0.14111328
+    height: 0.1665039
   Names:
   - Bone_Head_Center
-  - Bone_Head_Left
-  - Bone_Head_Right
-  - Bone_Head_Top
-  - Bone_Head_Bottom
   - Bone_Left hear_Center
-  - Bone_Left hear_Left
-  - Bone_Left hear_Right
-  - Bone_Left hear_Top
-  - Bone_Left hear_Bottom
   - Bone_Right hear_Center
-  - Bone_Right hear_Left
-  - Bone_Right hear_Right
-  - Bone_Right hear_Top
-  - Bone_Right hear_Bottom
   Positions:
   - {x: 0, y: 3, z: 0}
-  - {x: -5.81, y: 0, z: 0}
-  - {x: 5.81, y: 0, z: 0}
-  - {x: 0, y: 4.66, z: 0}
-  - {x: 0, y: -4.66, z: 0}
   - {x: 4.6500015, y: 7, z: 0.10000001}
-  - {x: -2.45, y: 0, z: 0}
-  - {x: 2.45, y: 0, z: 0}
-  - {x: 0, y: 3.4, z: 0}
-  - {x: 0, y: -3.4, z: 0}
   - {x: -5.3600025, y: 7, z: 0.10000001}
-  - {x: -2.88, y: 0, z: 0}
-  - {x: 2.88, y: 0, z: 0}
-  - {x: 0, y: 3.4, z: 0}
-  - {x: 0, y: -3.4, z: 0}
   Rotations:
   - {x: -0, y: -0, z: -0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
   - {x: -0, y: -0, z: -0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
   - {x: -0, y: -0, z: -0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
   Scales:
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
+  - {x: 0.9150944, y: 1, z: 1}
+  - {x: 0.83108103, y: 1, z: 1}
+  - {x: 0.9763514, y: 1, z: 1}

@@ -8,6 +8,7 @@ namespace Spirit
     public class Presenter2D : MonoBehaviour
     {
         [SerializeField] private List<SpiritConfig> _configs;
+        [SerializeField] private List<Transform> _bonesList;
         private Dictionary<string, Transform> _bones;
         private SkinnedMeshRenderer _smr;
         private Camera _camera;
@@ -16,13 +17,11 @@ namespace Spirit
             _smr = GetComponent<SkinnedMeshRenderer>();
             _camera = Camera.main;
 
-            var bones = transform.GetComponentsInChildren<Transform>().Skip(1).ToArray();
-
             _bones = new Dictionary<string, Transform>();   
 
-            for (var i=0; i<bones.Length; i++)
+            for (var i=0; i< _bonesList.Count; i++)
             {
-                _bones[bones[i].name] = bones[i];
+                _bones[_bonesList[i].name] = _bonesList[i];
             }
         }
 
