@@ -19,13 +19,15 @@ namespace Spirit
         private GameObject _lastSkeleton;
 
         private string _meshSavePath = "Assets/_root/Meshes/Character.asset";
-        private string _configSavePath = "Assets/Configs/Character_Config.asset";
+        private string _configSavePath = "Assets/_root/Configs/Character_Config.asset";
 
         private string _lastSavedMeshPath;
         private string _lastSavedConfigPath;
 
         private int _gridX = 4;
         private int _gridY = 4;
+        private Vector3 _direction;
+        private float _angle;
 
         [MenuItem("Tools/Spirit Builder")]
         public static void ShowWindow() => GetWindow<SpiritBuilderWindow>("Spirit Builder");
@@ -38,6 +40,11 @@ namespace Spirit
             _root = (Transform)EditorGUILayout.ObjectField("Root", _root, typeof(Transform), true);
 
             EditorGUILayout.Space();
+
+            _lastMesh = (Mesh)EditorGUILayout.ObjectField("Mesh", _lastMesh, typeof(Mesh), true);
+
+            EditorGUILayout.Space();
+
 
             _referenceConfig = (SpiritConfig)EditorGUILayout.ObjectField("Reference config", _referenceConfig, typeof(SpiritConfig), true);
 
@@ -53,7 +60,7 @@ namespace Spirit
             _configSavePath = EditorGUILayout.TextField("Config Save Path", _configSavePath);
             if (GUILayout.Button("Select Config Path"))
             {
-                string path = EditorUtility.SaveFilePanelInProject("Save Config", "SpiritConfig", "asset", "Choose location");
+                string path = EditorUtility.SaveFilePanelInProject("Save Config", _angle.ToString(), "asset", "Choose location");
                 if (!string.IsNullOrEmpty(path)) _configSavePath = path;
             }
 
@@ -63,6 +70,14 @@ namespace Spirit
             _gridY = EditorGUILayout.IntField("Grid Y (cells)", _gridY);
             _gridX = Mathf.Max(2, _gridX);
             _gridY = Mathf.Max(2, _gridY);
+
+            EditorGUILayout.Space();
+
+            _direction = EditorGUILayout.Vector3Field("Config direction", _direction);
+
+            EditorGUILayout.Space();
+
+            _angle = EditorGUILayout.FloatField("Config angle", _angle);
 
             EditorGUILayout.Space();
 
@@ -153,21 +168,21 @@ namespace Spirit
             }
 
             // Используем последний меш или строим временный
-            Mesh tempMesh = _lastMesh;
-            if (tempMesh == null)
-            {
-                _meshBuilder.SetRoot(_root);
-                tempMesh = _meshBuilder.BuildGridMesh(_gridX, _gridY);
-                if (tempMesh == null)
-                {
-                    EditorUtility.DisplayDialog("Error", "Failed to build temporary mesh.", "OK");
-                    return;
-                }
-            }
+            //Mesh tempMesh = _lastMesh;
+            //if (tempMesh == null)
+            //{
+            //    _meshBuilder.SetRoot(_root);
+            //    tempMesh = _meshBuilder.BuildGridMesh(_gridX, _gridY);
+            //    if (tempMesh == null)
+            //    {
+            //        EditorUtility.DisplayDialog("Error", "Failed to build temporary mesh.", "OK");
+            //        return;
+            //    }
+            //}
 
             _configGenerator.SetRoot(_root);
             _configGenerator.SetReference(_referenceConfig);
-            SpiritConfig config = _configGenerator.GenerateConfig(tempMesh,_gridX,_gridY);
+            SpiritConfig config = _configGenerator.GenerateConfig(_direction);
 
             if (config == null)
             {

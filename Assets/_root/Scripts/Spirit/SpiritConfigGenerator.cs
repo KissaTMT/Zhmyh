@@ -18,15 +18,8 @@ namespace Spirit
             _rects = config.Rects;
         }
 
-        public SpiritConfig GenerateConfig(Mesh referenceMesh, int gridX, int gridY)
+        public SpiritConfig GenerateConfig(Vector3 direction)
         {
-            if (_root == null || referenceMesh == null)
-            {
-                Debug.LogError("Root or mesh is null!");
-                return null;
-            }
-
-            // Сортируем рендереры так же, как в MeshBuilder (по убыванию Z)
 
             var renderers = _root.GetComponentsInChildren<SpriteRenderer>().ToArray();
 
@@ -38,72 +31,11 @@ namespace Spirit
 
             var config = ScriptableObject.CreateInstance<SpiritConfig>();
 
-            // ---- 1. Генерация UV (абсолютные) в ТОЧНОМ ПОРЯДКЕ, как в MeshBuilder ----
-            int vertsPerRow = gridX + 1;
-            int vertsPerCol = gridY + 1;
-            int vertsPerSprite = vertsPerRow * vertsPerCol;
+            config.Direction = direction;
 
-            // Проверяем, что количество вершин в меше соответствует ожидаемому
-            int expectedVertexCount = renderers.Length * vertsPerSprite;
-            if (referenceMesh.vertexCount != expectedVertexCount)
-            {
-                Debug.LogWarning($"Vertex count mismatch: mesh has {referenceMesh.vertexCount}, expected {expectedVertexCount}. " +
-                                 "Check that gridX/gridY match those used in MeshBuilder.");
-                // Продолжаем, но может быть ошибка
-            }
-
-            var uvs = new List<Vector2>(expectedVertexCount);
-            var rects = new List<Rect>(renderers.Length);
-
-            // Проходим по спрайтам в том же порядке, что и в MeshBuilder
-            foreach (var node in renderers)
-            {
-                var sprite = node.sprite;
-                if (sprite == null) continue;
-
-                Rect uvRect = GetSpriteUVRect(sprite);
-                bool flipX = node.flipX;
-                bool flipY = node.flipY;
-
-                rects.Add(uvRect);
-
-                // Генерируем UV для каждой вершины сетки (row-major, как в MeshBuilder)
-                for (int row = 0; row <= gridY; row++)
-                {
-                    for (int col = 0; col <= gridX; col++)
-                    {
-                        float tX = (float)col / gridX;
-                        float tY = (float)row / gridY;
-
-                        float u = Mathf.Lerp(uvRect.xMin, uvRect.xMax, tX);
-                        float v = Mathf.Lerp(uvRect.yMin, uvRect.yMax, tY);
-
-                        // Применяем зеркалирование (если включено)
-                        if (flipX) u = uvRect.xMax + uvRect.xMin - u;
-                        if (flipY) v = uvRect.yMax + uvRect.yMin - v;
-
-                        uvs.Add(new Vector2(u, v));
-                    }
-                }
-
-                // Отладка: выводим имена спрайтов и количество добавленных UV
-                Debug.Log($"Config: processed sprite '{sprite.name}' -> added {vertsPerSprite} UVs");
-            }
-
-            // Проверяем, что количество UV совпадает с количеством вершин в меше
-            if (uvs.Count != referenceMesh.vertexCount)
-            {
-                Debug.LogError($"UV count ({uvs.Count}) does not match vertex count ({referenceMesh.vertexCount})!");
-                // Попробуем обрезать или дополнить (но это костыль)
-                // В идеале — нужно исправить параметры сетки
-            }
-
-            config.Uvs = uvs.ToArray();
-            config.Rects = rects.ToArray();
-
-            // ---- 2. Данные о костях из болванки (без изменений) ----
-            var boneDataList = new List<BoneData>();
-            var boneNameToIndex = new Dictionary<string, int>();
+            
+            var boneDatas = new Dictionary<string,BoneData>();
+            var viewDatas = new Dictionary<string, RendererData>();
 
             for (var i=0;i<renderers.Length;i++)
             {
@@ -116,21 +48,28 @@ namespace Spirit
 
                 if(_rects != null)
                 {
-                    var sr = GetSpriteUVRect(node.sprite);
+                    var sr = ViewUvCalculator.CalculateSpriteRect(node.sprite);
                     var v = new Vector3(_rects[i].width / sr.width, _rects[i].height / sr.height, 1);
                     scale = new Vector3(scale.x/v.x, scale.y / v.y, scale.z / v.z);
                 }
 
                 var centerData = new BoneData
                 {
-                    name = centerName,
-                    parentName = null,
-                    localPosition = node.transform.localPosition,
-                    localRotation = node.transform.localRotation,
-                    localScale = scale
+                    Position = node.transform.localPosition,
+                    Rotation = node.transform.localRotation,
+                    Scale = scale
                 };
-                boneDataList.Add(centerData);
-                boneNameToIndex[centerName] = boneDataList.Count - 1;
+                var viewData = new RendererData
+                {
+                    Sprite = node.sprite,
+                    FlipX = node.flipX,
+                    FlipY = node.flipY,
+                    GridSize = new Vector2(4, 4)
+                };
+                boneDatas.Add(centerName,centerData);
+                viewDatas.Add(centerName, viewData);
+
+                //boneNameToIndex[centerName] = boneDatas.Count - 1;
 
                 //float width = node.sprite.rect.width / node.sprite.pixelsPerUnit;
                 //float height = node.sprite.rect.height / node.sprite.pixelsPerUnit;
@@ -159,33 +98,12 @@ namespace Spirit
                 //}
             }
 
-            config.Names = boneDataList.Select(b => b.name).ToArray();
-            config.Positions = boneDataList.Select(b => b.localPosition).ToArray();
-            config.Rotations = boneDataList.Select(b => b.localRotation).ToArray();
-            config.Scales = boneDataList.Select(b => b.localScale).ToArray();
-            //config.boneParentIndices = boneDataList.Select(b =>
-            //{
-            //    if (string.IsNullOrEmpty(b.parentName)) return -1;
-            //    if (boneNameToIndex.TryGetValue(b.parentName, out int parentIdx))
-            //        return parentIdx;
-            //    return -1;
-            //}).ToList();
-
-            Debug.Log($"Config generated: {config.Uvs.Length} UVs, {config.Names.Length} bones.");
+            config.BoneDatas = boneDatas;
+            config.ViewDatas = viewDatas;
+            
             return config;
         }
 
-        private Rect GetSpriteUVRect(Sprite sprite)
-        {
-            var tex = sprite.texture;
-            var r = sprite.textureRect;
-            return new Rect(
-                r.x / tex.width,
-                r.y / tex.height,
-                r.width / tex.width,
-                r.height / tex.height
-            );
-        }
 
         public string SaveConfigAsset(SpiritConfig config, string assetPath)
         {
@@ -202,15 +120,6 @@ namespace Spirit
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             return assetPath;
-        }
-
-        private class BoneData
-        {
-            public string name;
-            public string parentName;
-            public Vector3 localPosition;
-            public Quaternion localRotation;
-            public Vector3 localScale;
         }
     }
 }

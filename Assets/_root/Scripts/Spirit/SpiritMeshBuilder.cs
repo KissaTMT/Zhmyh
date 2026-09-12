@@ -30,7 +30,7 @@ namespace Spirit
             gridY = Mathf.Max(2, gridY);
 
             var renderers = _root.GetComponentsInChildren<SpriteRenderer>();
-                //.OrderByDescending(i => i.transform.localPosition.z).ToArray();
+            //.OrderByDescending(i => i.transform.localPosition.z).ToArray();
 
             _renderers = renderers.ToList();
 

@@ -2,6 +2,7 @@
 using Spirit;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.Rendering.STP;
 
 namespace Spirit
 {
@@ -35,18 +36,20 @@ namespace Spirit
             }
 
             // Применяем трансформации костей из конфига (если есть)
-            if (_config != null && _config.Names.Length > 0)
+            if (_config != null && _config.BoneDatas.Count > 0)
             {
-                Transform skeletonRoot = _skinnedRoot.transform;
-                for (int i = 0; i < _config.Names.Length; i++)
+
+                var skeletonRoot = _skinnedRoot.transform;
+
+                foreach (var boneName in _config.BoneDatas.Keys)
                 {
-                    string boneName = _config.Names[i];
-                    Transform bone = skeletonRoot.Find(boneName);
+                    var bone = skeletonRoot.Find(boneName);
+                    var data = _config.BoneDatas[boneName];
                     if (bone != null)
                     {
-                        bone.localPosition = _config.Positions[i];
-                        bone.localRotation = _config.Rotations[i];
-                        bone.localScale = _config.Scales[i];
+                        bone.localPosition = data.Position;
+                        bone.localRotation = data.Rotation;
+                        bone.localScale = data.Scale;
                     }
                     else
                     {
@@ -65,7 +68,7 @@ namespace Spirit
             // ---- ПРИМЕНЯЕМ UV ИЗ КОНФИГА ----
             if (_config != null && _config.Uvs != null && _config.Uvs.Length == _mesh.vertexCount)
             {
-                _mesh.uv = _config.Uvs;
+                _mesh.uv = _config.Uvs; 
                 _mesh.UploadMeshData(false);
             }
             else

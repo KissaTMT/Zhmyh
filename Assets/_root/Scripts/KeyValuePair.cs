@@ -15,7 +15,7 @@ public class KeyValuePair<TKey, TValue>
         Value = value;
     }
 
-    public static void Serialize(Dictionary<TKey, TValue> map, List<KeyValuePair<TKey, TValue>> list)
+    public static void Map2KVPList(Dictionary<TKey, TValue> map, List<KeyValuePair<TKey, TValue>> list)
     {
         if (map == null || list == null)
         {
@@ -31,7 +31,7 @@ public class KeyValuePair<TKey, TValue>
             list.Add(new KeyValuePair<TKey, TValue>(keys[i], map[keys[i]]));
         }
     }
-    public static void Deserialize(Dictionary<TKey, TValue> map, List<KeyValuePair<TKey, TValue>> list)
+    public static void KVPList2Map(Dictionary<TKey, TValue> map, List<KeyValuePair<TKey, TValue>> list)
     {
         if (map == null || list == null)
         {

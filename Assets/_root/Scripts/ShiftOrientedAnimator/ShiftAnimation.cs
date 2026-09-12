@@ -15,10 +15,10 @@ public class ShiftAnimation : ScriptableObject
 
     public void Serialize()
     {
-        KeyValuePair<string, List<ShiftAnimationData>>.Serialize(AnimationNodes, _animationNodes);
+        KeyValuePair<string, List<ShiftAnimationData>>.Map2KVPList(AnimationNodes, _animationNodes);
     }
     public void Deserialize()
     {
-        KeyValuePair<string, List<ShiftAnimationData>>.Deserialize(AnimationNodes, _animationNodes);
+        KeyValuePair<string, List<ShiftAnimationData>>.KVPList2Map(AnimationNodes, _animationNodes);
     }
 }

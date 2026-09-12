@@ -14,13 +14,13 @@ public class ShiftConfig : ScriptableObject
 
     public void Serialize()
     {
-        KeyValuePair<string, ShiftTransformData>.Serialize(ShiftTransformData, _shiftTransformData);
-        KeyValuePair<string, Sprite>.Serialize(ShiftVisualData, _shiftVisualData);
+        KeyValuePair<string, ShiftTransformData>.Map2KVPList(ShiftTransformData, _shiftTransformData);
+        KeyValuePair<string, Sprite>.Map2KVPList(ShiftVisualData, _shiftVisualData);
     }
 
     public void Deserialize()
     {
-        KeyValuePair<string, ShiftTransformData>.Deserialize(ShiftTransformData, _shiftTransformData);
-        KeyValuePair<string, Sprite>.Deserialize(ShiftVisualData, _shiftVisualData);
+        KeyValuePair<string, ShiftTransformData>.KVPList2Map(ShiftTransformData, _shiftTransformData);
+        KeyValuePair<string, Sprite>.KVPList2Map(ShiftVisualData, _shiftVisualData);
     }
 }
