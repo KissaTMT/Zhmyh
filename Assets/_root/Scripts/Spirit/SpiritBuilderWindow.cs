@@ -181,6 +181,7 @@ namespace Spirit
             //}
 
             _configGenerator.SetRoot(_root);
+            _configGenerator.SetGrid(_gridX, _gridY);
             _configGenerator.SetReference(_referenceConfig);
             SpiritConfig config = _configGenerator.GenerateConfig(_direction);
 

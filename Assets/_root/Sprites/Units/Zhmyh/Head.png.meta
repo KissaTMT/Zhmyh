@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -412,10 +412,10 @@ TextureImporter:
       name: Head_13
       rect:
         serializedVersion: 2
-        x: 2777
+        x: 2834
         y: 3385
-        width: 354
-        height: 317
+        width: 279
+        height: 290
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -698,9 +698,9 @@ TextureImporter:
       name: Head_26
       rect:
         serializedVersion: 2
-        x: 1879
+        x: 1814
         y: 1405
-        width: 512
+        width: 588
         height: 679
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -720,9 +720,9 @@ TextureImporter:
       name: Head_27
       rect:
         serializedVersion: 2
-        x: 2533
+        x: 2435
         y: 1405
-        width: 481
+        width: 588
         height: 679
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1112,6 +1112,50 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Head_45
+      rect:
+        serializedVersion: 2
+        x: 2798
+        y: 3171
+        width: 373
+        height: 121
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76974cd1d967373438106a8096b5b473
+      internalID: -497585824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Head_46
+      rect:
+        serializedVersion: 2
+        x: 3247
+        y: 3057
+        width: 100
+        height: 222
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7f06d95d23cc174f816802754a7c7bd
+      internalID: 280614789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -1168,6 +1212,8 @@ TextureImporter:
       Head_42: 1383106416
       Head_43: -1083836243
       Head_44: -852494949
+      Head_45: -497585824
+      Head_46: 280614789
       Head_5: -1016243001
       Head_6: -1924052128
       Head_7: 107443208

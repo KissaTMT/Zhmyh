@@ -18,12 +18,18 @@ namespace Spirit
             _smr = GetComponent<SkinnedMeshRenderer>();
             _camera = Camera.main;
 
-            _bones = new Dictionary<string, Transform>();   
+            _bones = new Dictionary<string, Transform>();
 
             for (var i=0; i< _bonesList.Count; i++)
             {
                 _bones[_bonesList[i].name] = _bonesList[i];
             }
+
+            ApplyConfig(_configs[0]);
+        }
+        private void OnDisable()
+        {
+            ApplyConfig(_configs[0]);
         }
 
         private void Update()

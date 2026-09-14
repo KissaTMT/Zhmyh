@@ -32,6 +32,7 @@ Shader "Custom/MeshLitSprite"
                 float4 positionHCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float3 normalWS : TEXCOORD1;
+                float3 normalOS : TEXCOORD2;
             };
 
             TEXTURE2D(_BaseMap);
@@ -47,6 +48,7 @@ Shader "Custom/MeshLitSprite"
                 Varyings OUT;
                 OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
+                OUT.normalOS = IN.normalOS;
                 OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS);
                 return OUT;
             }
@@ -62,7 +64,7 @@ Shader "Custom/MeshLitSprite"
                 float NdotL = max(0.2, dot(IN.normalWS, mainLight.direction));
                 float3 lighting = mainLight.color.rgb * NdotL;
                 
-                float3 color = texColor * lighting;
+                float3 color = texColor.rgb * lighting;
 
                 return float4(color,1);
             }

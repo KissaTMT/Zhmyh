@@ -10,12 +10,17 @@ namespace Spirit
     {
         private Transform _root;
         private Rect[] _rects;
+        private Vector2 _grid;
         public void SetRoot(Transform root) => _root = root;
         public void SetReference(SpiritConfig config)
         {
             if (config == null) return;
 
             _rects = config.Rects;
+        }
+        public void SetGrid(float gridX, float gridY)
+        {
+            _grid = new Vector2(gridX, gridY);
         }
 
         public SpiritConfig GenerateConfig(Vector3 direction)
@@ -64,7 +69,7 @@ namespace Spirit
                     Sprite = node.sprite,
                     FlipX = node.flipX,
                     FlipY = node.flipY,
-                    GridSize = new Vector2(4, 4)
+                    GridSize = _grid
                 };
                 boneDatas.Add(centerName,centerData);
                 viewDatas.Add(centerName, viewData);
