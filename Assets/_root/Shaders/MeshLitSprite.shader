@@ -10,6 +10,8 @@ Shader "Custom/MeshLitSprite"
     {
         Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" }
 
+        Cull off
+
         Pass
         {
             HLSLPROGRAM
@@ -64,7 +66,7 @@ Shader "Custom/MeshLitSprite"
                 float NdotL = max(0.2, dot(IN.normalWS, mainLight.direction));
                 float3 lighting = mainLight.color.rgb * NdotL;
                 
-                float3 color = texColor.rgb * lighting;
+                float3 color = texColor.rgb;
 
                 return float4(color,1);
             }

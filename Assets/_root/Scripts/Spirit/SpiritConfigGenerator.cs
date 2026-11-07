@@ -67,8 +67,8 @@ namespace Spirit
                 var viewData = new RendererData
                 {
                     Sprite = node.sprite,
-                    FlipX = node.flipX,
-                    FlipY = node.flipY,
+                    FlipX = node.flipX || node.transform.localScale.x < 0,
+                    FlipY = node.flipY || node.transform.localScale.y < 0,
                     GridSize = _grid
                 };
                 boneDatas.Add(centerName,centerData);

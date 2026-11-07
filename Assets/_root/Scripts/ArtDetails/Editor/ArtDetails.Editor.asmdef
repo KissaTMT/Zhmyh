@@ -1,0 +1,19 @@
+{
+    "name": "ArtDetails.Editor",
+    "rootNamespace": "ArtDetails.Editor",
+    "references": [
+        "ArtDetails.Runtime",
+        "ArtMesh.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

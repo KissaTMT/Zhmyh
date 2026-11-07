@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Custom_AnimeToon
+  m_Shader: {fileID: 4800000, guid: 90a379cc690eaa54dbb2dc6b77e8a746, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AmbientIntensity: 0.5
+    - _Contrast: 1
+    - _DitherIntensity: 0
+    - _DitherScale: 3
+    - _FogEnd: 100
+    - _FogIntensity: 0.5
+    - _FogStart: 20
+    - _HeightBlend: 0
+    - _HeightEnd: 10
+    - _HeightStart: 0
+    - _LightThreshold: 0.7
+    - _OutlineEnabled: 0
+    - _OutlineWidth: 0.008
+    - _RimIntensity: 0.8
+    - _RimPower: 3
+    - _Saturation: 0.85
+    - _ShadowSmooth: 0.04
+    - _ShadowSoftness: 0.07
+    - _ShadowThreshold: 0.35
+    - _SpecIntensity: 0.5
+    - _SpecSize: 0.15
+    m_Colors:
+    - _AmbientColor: {r: 0.55, g: 0.58, b: 0.68, a: 1}
+    - _BaseColor: {r: 0.09468849, g: 0.12452829, b: 0.100856, a: 1}
+    - _FogColor: {r: 0.67, g: 0.72, b: 0.78, a: 1}
+    - _HeightColor: {r: 0.65, g: 0.78, b: 0.65, a: 1}
+    - _LightColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MidColor: {r: 0.75, g: 0.78, b: 0.9, a: 1}
+    - _OutlineColor: {r: 0.04, g: 0.025, b: 0.06, a: 1}
+    - _RimColor: {r: 0.4, g: 0.7, b: 1, a: 1}
+    - _ShadowColor: {r: 0.35, g: 0.38, b: 0.55, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

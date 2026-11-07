@@ -2,19 +2,26 @@
 using System.Linq;
 using UnityEngine;
 
+[ExecuteAlways]
 public class BillboardingMono : MonoBehaviour
 {
-    private Transform _cameraTransform;
-    private Transform _root;
+    [SerializeField] private bool _isTesting;
+    [SerializeField] private Transform _refTransform;
+    [SerializeField] private Transform _root;
+
 
     private void Awake()
     {
-        _cameraTransform = Camera.main.GetComponent<Transform>();
-        _root = GetComponent<Transform>();
-
+        Cashe();
+    }
+    private void Cashe()
+    {
+        if(_refTransform == null) _refTransform = Camera.main.GetComponent<Transform>();
+        if (_root == null) _root = GetComponent<Transform>();
     }
     private void Update()
     {
-        _root.localEulerAngles = new Vector3(_root.localEulerAngles.x, _cameraTransform.eulerAngles.y, _root.localEulerAngles.z);
+        Cashe();
+        _root.localEulerAngles = new Vector3(_root.localEulerAngles.x, (_isTesting ? 180-_refTransform.eulerAngles.y : _refTransform.eulerAngles.y), _root.localEulerAngles.z);
     }
 }

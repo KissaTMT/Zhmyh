@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2ed0642e396ea64ca5e1e5a5f553ab8, type: 3}
+  m_Name: Hair back.authoring
+  m_EditorClassIdentifier: ArtMesh.Editor::ArtMesh.Editor.ArtMeshAuthoring
+  target: {fileID: 11400000, guid: 2fcde7243ed5b7144907619f82836e22, type: 2}
+  build:
+    rays: 128
+    rings: 1
+    alphaThreshold: 0.01
+    ringBias: 0.3
+    rimSmooth: 0
+  sourceSprite: {fileID: 741868024, guid: 60342e24c9e4ce34ca34aee1ba5ae881, type: 3}
+  contourSprite: {fileID: 0}
+  autoAnchor: 1
+  anchor: {x: 0.49505672, y: 0.4474295}
