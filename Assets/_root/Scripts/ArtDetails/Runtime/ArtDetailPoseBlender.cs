@@ -4,8 +4,9 @@ using UnityEngine;
 namespace ArtDetails
 {
     /// <summary>
-    /// Смешивает виды детали по направлению (Shepard, 1/d^power по угловому расстоянию на сфере, как у видов ArtMesh).
-    /// Позиция и масштаб смешиваются линейно, поворот как взвешенное среднее кватернионов (с выравниванием знака).
+    /// Смешивает виды детали в позу по направлению. Режим задаётся в ассете (ArtDetailBlendMode):
+    /// Local (по умолчанию) интерполирует только между соседними видами, Shepard смешивает все виды (1/d^power).
+    /// В обоих режимах позиция и масштаб линейные, поворот по кватернионам.
     /// </summary>
     public sealed class ArtDetailPoseBlender
     {
@@ -14,6 +15,13 @@ namespace ArtDetails
         public ArtDetailPose Blend(ArtDetailAsset asset, float yaw, float pitch)
         {
             if (asset == null || asset.views == null || asset.views.Count == 0) return ArtDetailPose.Identity;
+            if (asset.blendMode == ArtDetailBlendMode.Local) return LocalPoseInterpolator.Evaluate(asset.views, yaw, pitch);
+            return BlendShepard(asset, yaw, pitch);
+        }
+
+        // Все виды влияют на любой угол: вес = 1 / (угол до направления)^power. Поворот: взвешенное среднее кватернионов.
+        ArtDetailPose BlendShepard(ArtDetailAsset asset, float yaw, float pitch)
+        {
             var views = asset.views;
             Vector3 dir = ArtMeshViewDirection.FromAngles(yaw, pitch);
             if (weights.Length != views.Count) weights = new float[views.Count];

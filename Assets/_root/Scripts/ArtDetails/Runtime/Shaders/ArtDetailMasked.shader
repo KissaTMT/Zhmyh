@@ -50,7 +50,7 @@ Shader "ArtDetails/MaskedUnlit"
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = v.uv;
                 o.wpos = mul(unity_ObjectToWorld, v.vertex).xyz;
                 return o;
             }
@@ -87,7 +87,9 @@ Shader "ArtDetails/MaskedUnlit"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 c = tex2D(_MainTex, i.uv) * _Color;
+                // Tiling/Offset материала: для спрайта с нарезанной текстуры это его прямоугольник на листе.
+                fixed4 texColor = tex2D(_MainTex, TRANSFORM_TEX(i.uv, _MainTex));
+                fixed4 c = texColor * _Color;
                 clip(c.a - _Cutoff);
 
                 if (_MaskOn > 0.5)

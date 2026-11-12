@@ -5,7 +5,8 @@ namespace ArtDetails.Editor
 {
     /// <summary>
     /// Поле Sprite в материале ArtDetails/MaskedUnlit.
-    /// Прямоугольник спрайта пишется в текстуру и Tiling/Offset, шейдер читает их через TRANSFORM_TEX.
+    /// Текстура спрайта пишется в _MainTex, прямоугольник — в Tiling/Offset.
+    /// Шейдер читает их через TRANSFORM_TEX.
     /// </summary>
     public class ArtDetailMaskedGUI : ShaderGUI
     {
@@ -30,7 +31,11 @@ namespace ArtDetails.Editor
 
             EditorGUI.showMixedValue = mixed;
             EditorGUI.BeginChangeCheck();
-            var picked = (Sprite)EditorGUILayout.ObjectField("Sprite", current, typeof(Sprite), false);
+            var picked = (Sprite)EditorGUILayout.ObjectField(
+                new GUIContent("Sprite", "Спрайт с нарезанной текстуры. В материал попадут его текстура, Tiling и Offset."),
+                current,
+                typeof(Sprite),
+                false);
             EditorGUI.showMixedValue = false;
             if (!EditorGUI.EndChangeCheck()) return;
 
@@ -45,6 +50,7 @@ namespace ArtDetails.Editor
                 Debug.LogWarning("ArtDetails: спрайт плотно упакован в атлас, прямоугольник недоступен. Нужен Full Rect без Sprite Atlas.");
                 return;
             }
+
             mainTex.textureValue = tex;
             mainTex.textureScaleAndOffset = new Vector4(
                 r.width / tex.width,

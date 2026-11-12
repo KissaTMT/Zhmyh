@@ -29,7 +29,9 @@ namespace ArtDetails.Editor
             using (var so = new SerializedObject(asset))
             {
                 so.Update();
-                EditorGUILayout.PropertyField(so.FindProperty("weightPower"));
+                EditorGUILayout.PropertyField(so.FindProperty("blendMode"));
+                if (asset.blendMode == ArtDetailBlendMode.Shepard)
+                    EditorGUILayout.PropertyField(so.FindProperty("weightPower"));
                 var list = so.FindProperty("views");
                 for (int i = 0; i < list.arraySize; i++)
                 {

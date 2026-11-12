@@ -13,6 +13,12 @@ namespace ArtMesh
         {
             Camera cam = Camera != null ? Camera : Camera.main;
             if (cam != null) last = ArtMeshViewDirection.FromCamera(cam, part, Space);
+            last.y = 0f;
+
+            if (last.sqrMagnitude > 1e-12f)
+                last.Normalize();
+            else
+                last = Vector3.forward;
             blender.Blend(asset, last, state);
             return last;
         }
