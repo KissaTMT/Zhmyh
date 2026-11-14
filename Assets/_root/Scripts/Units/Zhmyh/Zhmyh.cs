@@ -8,35 +8,37 @@ using UnityEngine;
 
 public class Zhmyh : Unit
 {
-    public State CurrentState => _sm.CurrentState;
-    public Transform Root => _root;
-    public Bow Bow => _bow;
+    public virtual State CurrentState => _sm.CurrentState;
+    public virtual Transform Root => _root;
+    public virtual Bow Bow => _bow;
     public Timeflow Timeflow;
-    public Vector3 NotZeroMovementDirection { get; private set; }
+    public virtual Vector3 NotZeroMovementDirection { get; protected set; }
 
-    [SerializeField] private float _maxHealth;
-    [SerializeField] private float _movementSpeed;
-    [SerializeField] private float _climbSpeed;
-    [SerializeField] private float _dashDistance;
-    [SerializeField] private float _dashDuration;
-    [SerializeField] private float _jumpHeight;
-    [SerializeField] private float _jumpDuration;
-    [SerializeField] private AnimationCurve _dashHeightCurve;
-    [SerializeField] private AnimationCurve _dashCurve;
-    [SerializeField] private AnimationCurve _jumpCurve;
+    [SerializeField] protected float _maxHealth;
+    [SerializeField] protected float _movementSpeed;
+    [SerializeField] protected float _climbSpeed;
+    [SerializeField] protected float _dashDistance;
+    [SerializeField] protected float _dashDuration;
+    [SerializeField] protected float _jumpHeight;
+    [SerializeField] protected float _jumpDuration;
+    [SerializeField] protected AnimationCurve _dashHeightCurve;
+    [SerializeField] protected AnimationCurve _dashCurve;
+    [SerializeField] protected AnimationCurve _jumpCurve;
     [SerializeField] private ShiftConfig[] _shiftConfigs;
     [SerializeField] private ShiftAnimation[] _shiftAnimations;
 
-    [SerializeField] private Bow _bow;
-    [SerializeField] private Transform _rightHand;
-    [SerializeField] private Transform _leftHand;
+    [SerializeField] protected Bow _bow;
+    [SerializeField] protected Transform _rightHand;
+    [SerializeField] protected Transform _leftHand;
+
+    protected Transform _root;
 
 
     private Shifter _shifter;
     private ShiftAnimator _shiftAnimator;
     private StateMachine _sm;
 
-    private Transform _root;
+    
     private CharacterController _characterController;
 
     private Vector3 _movementDirection = Vector3.zero;
@@ -108,7 +110,7 @@ public class Zhmyh : Unit
         if (_gravity.Enabled) _gravity.Tick(Time.deltaTime);
         _movementHandler.Tick(Time.deltaTime);
     }
-    public void SetMovementDirection(Vector3 input)
+    public virtual void SetMovementDirection(Vector3 input)
     {
         if (_movementDirection == input) return;
         _movementDirection = input;
@@ -125,40 +127,40 @@ public class Zhmyh : Unit
 
         NotZeroMovementDirection = _movementDirection;
     }
-    public void SetLookDirection(Vector3 input)
+    public virtual void SetLookDirection(Vector3 input)
     {
         if (_lookDirection == input) return;
         _lookDirection = input;
         _aimingState.SetLookDirection(input);
 
     }
-    public void SetShootDirection(Vector3 input)
+    public virtual void SetShootDirection(Vector3 input)
     {
         _aimingState.SetShootDirection(input);
     }
-    public void Dash()
+    public virtual void Dash()
     {
         if (CurrentState is ZhmyhDashState dashState && dashState.Progress < 1f) return;
 
         
         _isDashing = true;
     }
-    public void Jump()
+    public virtual void Jump()
     {
         if (_coyoteTime > 0.15f) return;
 
         _isJumping = true;
     }
-    public void Climb()
+    public virtual void Climb()
     {
         if (_isClimbing) _isClimbing = false;
         else if (_climbState.Climber.IsClimb()) _isClimbing = true;
     }
-    public void SetAim(bool isAiming)
+    public virtual void SetAim(bool isAiming)
     {
         _isAiming = isAiming;
     }
-    public void Pull(bool isPull)
+    public virtual void Pull(bool isPull)
     {
         if (CurrentState is ZhmyhAimingState == false) SetAim(isPull);
         _aimingState.SetPull(isPull);
@@ -225,7 +227,7 @@ public class Zhmyh : Unit
     }
     private void OnDisable()
     {
-        _shiftAnimator.Dispose();
+        _shiftAnimator?.Dispose();
     }
     private void LateUpdate()
     {

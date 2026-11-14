@@ -20,6 +20,11 @@ Shader "Custom/URP/Pupil"
         _ShineWarpAmount ("Shine Warp", Float) = 0.03
 
         _Cutoff("Alpha Cutout", Range(0.0, 1.0)) = 0.5
+
+        // задаёт ArtDetailMaskBinder через MaterialPropertyBlock
+        [HideInInspector] _MaskOn ("Mask on", Float) = 0
+        [HideInInspector] _MaskCount ("Mask point count", Float) = 0
+        [HideInInspector] _MaskInset ("Mask inset", Float) = 0
     }
 
     SubShader
@@ -40,6 +45,7 @@ Shader "Custom/URP/Pupil"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma target 3.5
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             struct Attributes
@@ -54,6 +60,7 @@ Shader "Custom/URP/Pupil"
             {
                 float2 uv : TEXCOORD0;
                 float4 positionHCS : SV_POSITION;
+                float3 positionWS : TEXCOORD1;
 
                 UNITY_VERTEX_INPUT_INSTANCE_ID
                 UNITY_VERTEX_OUTPUT_STEREO
@@ -80,9 +87,13 @@ Shader "Custom/URP/Pupil"
                 float _ShineWarpAmount;
 
                 float _Cutoff;
+                float _MaskOn;
+                float _MaskCount;
+                float _MaskInset;
             CBUFFER_END
 
-            
+            float4x4 _PartWorldToLocal;   // мир → оси ArtMesh-детали (там же лежит силуэт)
+            float4 _MaskPoly[64];         // до 128 точек силуэта: чётная = xy, нечётная = zw
 
             Varyings vert(Attributes IN)
             {
@@ -93,8 +104,39 @@ Shader "Custom/URP/Pupil"
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
 
                 OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
+                OUT.positionWS = TransformObjectToWorld(IN.positionOS.xyz);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
                 return OUT;
+            }
+
+            float2 polyPoint(int i)
+            {
+                float4 q = _MaskPoly[i >> 1];
+                return (i & 1) ? q.zw : q.xy;
+            }
+
+            // Расстояние до границы силуэта со знаком: > 0 внутри, < 0 снаружи (чётно-нечётное правило + ближайший отрезок).
+            float maskDistance(float2 p)
+            {
+                int n = (int)_MaskCount;
+                bool inside = false;
+                float minD2 = 1e20;
+                float2 prev = polyPoint(n - 1);
+                [loop] for (int i = 0; i < n; i++)
+                {
+                    float2 cur = polyPoint(i);
+                    if (((cur.y > p.y) != (prev.y > p.y)) &&
+                        (p.x < (prev.x - cur.x) * (p.y - cur.y) / (prev.y - cur.y) + cur.x))
+                        inside = !inside;
+
+                    float2 e = prev - cur;
+                    float2 w = p - cur;
+                    float t = saturate(dot(w, e) / max(dot(e, e), 1e-12));
+                    float2 d = w - e * t;
+                    minD2 = min(minD2, dot(d, d));
+                    prev = cur;
+                }
+                return inside ? sqrt(minD2) : -sqrt(minD2);
             }
 
             float warpedBlob(float2 uv, float2 center, float size, float timeOffset, float warp)
@@ -133,6 +175,12 @@ Shader "Custom/URP/Pupil"
                 color = lerp(color, float4(_ShineColor,1), shineMask);
 
                 clip(color.a - _Cutoff);
+
+                if (_MaskOn > 0.5)
+                {
+                    float3 lp = mul(_PartWorldToLocal, float4(IN.positionWS, 1)).xyz;
+                    clip(maskDistance(lp.xy) - _MaskInset);
+                }
 
                 return color;
             }

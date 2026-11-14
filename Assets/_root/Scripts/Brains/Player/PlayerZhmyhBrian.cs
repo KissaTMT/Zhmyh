@@ -6,9 +6,9 @@ using Zenject;
 public class PlayerZhmyhBrian : MonoBehaviour, IBrian
 {
     public Transform Transform => _unit.Transform;
-    public Zhmyh Unit => _unit;
+    public ArtMeshZhmyh Unit => _unit;
 
-    private Zhmyh _unit;
+    private ArtMeshZhmyh _unit;
     private Camera _cameraMain;
     private Cursor _cursor;
     private Transform _cameraTransform;
@@ -28,7 +28,7 @@ public class PlayerZhmyhBrian : MonoBehaviour, IBrian
     }
     public void Init()
     {
-        _unit = GetComponent<Zhmyh>().Init() as Zhmyh;
+        _unit = GetComponent<Zhmyh>().Init() as ArtMeshZhmyh;
         _unit.Timeflow = new Timeflow();
         _cursor.Init(_input);
         _cameraMain = Camera.main;
